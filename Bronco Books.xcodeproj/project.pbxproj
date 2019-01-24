@@ -1,0 +1,608 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */; };
+		6558CD1821FA6AB300AF2ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1721FA6AB300AF2ABF /* ViewController.swift */; };
+		6558CD1B21FA6AB300AF2ABF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD1921FA6AB300AF2ABF /* Main.storyboard */; };
+		6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1C21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld */; };
+		6558CD2021FA6AB400AF2ABF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */; };
+		6558CD2321FA6AB400AF2ABF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */; };
+		6558CD2E21FA6AB400AF2ABF /* Bronco_BooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD2D21FA6AB400AF2ABF /* Bronco_BooksTests.swift */; };
+		6558CD3921FA6AB400AF2ABF /* Bronco_BooksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD3821FA6AB400AF2ABF /* Bronco_BooksUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6558CD2A21FA6AB400AF2ABF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6558CD0A21FA6AB300AF2ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6558CD1121FA6AB300AF2ABF;
+			remoteInfo = "Bronco Books";
+		};
+		6558CD3521FA6AB400AF2ABF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6558CD0A21FA6AB300AF2ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6558CD1121FA6AB300AF2ABF;
+			remoteInfo = "Bronco Books";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6558CD1221FA6AB300AF2ABF /* Bronco Books.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bronco Books.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6558CD1721FA6AB300AF2ABF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6558CD1A21FA6AB300AF2ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6558CD1D21FA6AB300AF2ABF /* Bronco_Books.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Bronco_Books.xcdatamodel; sourceTree = "<group>"; };
+		6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6558CD2221FA6AB400AF2ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6558CD2421FA6AB400AF2ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6558CD2921FA6AB400AF2ABF /* Bronco BooksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bronco BooksTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6558CD2D21FA6AB400AF2ABF /* Bronco_BooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bronco_BooksTests.swift; sourceTree = "<group>"; };
+		6558CD2F21FA6AB400AF2ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6558CD3421FA6AB400AF2ABF /* Bronco BooksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bronco BooksUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6558CD3821FA6AB400AF2ABF /* Bronco_BooksUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bronco_BooksUITests.swift; sourceTree = "<group>"; };
+		6558CD3A21FA6AB400AF2ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6558CD0F21FA6AB300AF2ABF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6558CD2621FA6AB400AF2ABF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6558CD3121FA6AB400AF2ABF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6558CD0921FA6AB300AF2ABF = {
+			isa = PBXGroup;
+			children = (
+				6558CD1421FA6AB300AF2ABF /* Bronco Books */,
+				6558CD2C21FA6AB400AF2ABF /* Bronco BooksTests */,
+				6558CD3721FA6AB400AF2ABF /* Bronco BooksUITests */,
+				6558CD1321FA6AB300AF2ABF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6558CD1321FA6AB300AF2ABF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6558CD1221FA6AB300AF2ABF /* Bronco Books.app */,
+				6558CD2921FA6AB400AF2ABF /* Bronco BooksTests.xctest */,
+				6558CD3421FA6AB400AF2ABF /* Bronco BooksUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6558CD1421FA6AB300AF2ABF /* Bronco Books */ = {
+			isa = PBXGroup;
+			children = (
+				6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */,
+				6558CD1721FA6AB300AF2ABF /* ViewController.swift */,
+				6558CD1921FA6AB300AF2ABF /* Main.storyboard */,
+				6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */,
+				6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */,
+				6558CD2421FA6AB400AF2ABF /* Info.plist */,
+				6558CD1C21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld */,
+			);
+			path = "Bronco Books";
+			sourceTree = "<group>";
+		};
+		6558CD2C21FA6AB400AF2ABF /* Bronco BooksTests */ = {
+			isa = PBXGroup;
+			children = (
+				6558CD2D21FA6AB400AF2ABF /* Bronco_BooksTests.swift */,
+				6558CD2F21FA6AB400AF2ABF /* Info.plist */,
+			);
+			path = "Bronco BooksTests";
+			sourceTree = "<group>";
+		};
+		6558CD3721FA6AB400AF2ABF /* Bronco BooksUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6558CD3821FA6AB400AF2ABF /* Bronco_BooksUITests.swift */,
+				6558CD3A21FA6AB400AF2ABF /* Info.plist */,
+			);
+			path = "Bronco BooksUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6558CD1121FA6AB300AF2ABF /* Bronco Books */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6558CD3D21FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco Books" */;
+			buildPhases = (
+				6558CD0E21FA6AB300AF2ABF /* Sources */,
+				6558CD0F21FA6AB300AF2ABF /* Frameworks */,
+				6558CD1021FA6AB300AF2ABF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bronco Books";
+			productName = "Bronco Books";
+			productReference = 6558CD1221FA6AB300AF2ABF /* Bronco Books.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6558CD2821FA6AB400AF2ABF /* Bronco BooksTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6558CD4021FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco BooksTests" */;
+			buildPhases = (
+				6558CD2521FA6AB400AF2ABF /* Sources */,
+				6558CD2621FA6AB400AF2ABF /* Frameworks */,
+				6558CD2721FA6AB400AF2ABF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6558CD2B21FA6AB400AF2ABF /* PBXTargetDependency */,
+			);
+			name = "Bronco BooksTests";
+			productName = "Bronco BooksTests";
+			productReference = 6558CD2921FA6AB400AF2ABF /* Bronco BooksTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6558CD3321FA6AB400AF2ABF /* Bronco BooksUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6558CD4321FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco BooksUITests" */;
+			buildPhases = (
+				6558CD3021FA6AB400AF2ABF /* Sources */,
+				6558CD3121FA6AB400AF2ABF /* Frameworks */,
+				6558CD3221FA6AB400AF2ABF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6558CD3621FA6AB400AF2ABF /* PBXTargetDependency */,
+			);
+			name = "Bronco BooksUITests";
+			productName = "Bronco BooksUITests";
+			productReference = 6558CD3421FA6AB400AF2ABF /* Bronco BooksUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6558CD0A21FA6AB300AF2ABF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Vineet Joshi";
+				TargetAttributes = {
+					6558CD1121FA6AB300AF2ABF = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					6558CD2821FA6AB400AF2ABF = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 6558CD1121FA6AB300AF2ABF;
+					};
+					6558CD3321FA6AB400AF2ABF = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 6558CD1121FA6AB300AF2ABF;
+					};
+				};
+			};
+			buildConfigurationList = 6558CD0D21FA6AB300AF2ABF /* Build configuration list for PBXProject "Bronco Books" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6558CD0921FA6AB300AF2ABF;
+			productRefGroup = 6558CD1321FA6AB300AF2ABF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6558CD1121FA6AB300AF2ABF /* Bronco Books */,
+				6558CD2821FA6AB400AF2ABF /* Bronco BooksTests */,
+				6558CD3321FA6AB400AF2ABF /* Bronco BooksUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6558CD1021FA6AB300AF2ABF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6558CD2321FA6AB400AF2ABF /* LaunchScreen.storyboard in Resources */,
+				6558CD2021FA6AB400AF2ABF /* Assets.xcassets in Resources */,
+				6558CD1B21FA6AB300AF2ABF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6558CD2721FA6AB400AF2ABF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6558CD3221FA6AB400AF2ABF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6558CD0E21FA6AB300AF2ABF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */,
+				6558CD1821FA6AB300AF2ABF /* ViewController.swift in Sources */,
+				6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6558CD2521FA6AB400AF2ABF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6558CD2E21FA6AB400AF2ABF /* Bronco_BooksTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6558CD3021FA6AB400AF2ABF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6558CD3921FA6AB400AF2ABF /* Bronco_BooksUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6558CD2B21FA6AB400AF2ABF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6558CD1121FA6AB300AF2ABF /* Bronco Books */;
+			targetProxy = 6558CD2A21FA6AB400AF2ABF /* PBXContainerItemProxy */;
+		};
+		6558CD3621FA6AB400AF2ABF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6558CD1121FA6AB300AF2ABF /* Bronco Books */;
+			targetProxy = 6558CD3521FA6AB400AF2ABF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6558CD1921FA6AB300AF2ABF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6558CD1A21FA6AB300AF2ABF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6558CD2221FA6AB400AF2ABF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6558CD3B21FA6AB400AF2ABF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6558CD3C21FA6AB400AF2ABF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6558CD3E21FA6AB400AF2ABF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C9R438Z887;
+				INFOPLIST_FILE = "Bronco Books/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vineet0713.Bronco-Books";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6558CD3F21FA6AB400AF2ABF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C9R438Z887;
+				INFOPLIST_FILE = "Bronco Books/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vineet0713.Bronco-Books";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6558CD4121FA6AB400AF2ABF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C9R438Z887;
+				INFOPLIST_FILE = "Bronco BooksTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vineet0713.Bronco-BooksTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bronco Books.app/Bronco Books";
+			};
+			name = Debug;
+		};
+		6558CD4221FA6AB400AF2ABF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C9R438Z887;
+				INFOPLIST_FILE = "Bronco BooksTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vineet0713.Bronco-BooksTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bronco Books.app/Bronco Books";
+			};
+			name = Release;
+		};
+		6558CD4421FA6AB400AF2ABF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C9R438Z887;
+				INFOPLIST_FILE = "Bronco BooksUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vineet0713.Bronco-BooksUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Bronco Books";
+			};
+			name = Debug;
+		};
+		6558CD4521FA6AB400AF2ABF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C9R438Z887;
+				INFOPLIST_FILE = "Bronco BooksUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vineet0713.Bronco-BooksUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Bronco Books";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6558CD0D21FA6AB300AF2ABF /* Build configuration list for PBXProject "Bronco Books" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6558CD3B21FA6AB400AF2ABF /* Debug */,
+				6558CD3C21FA6AB400AF2ABF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6558CD3D21FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco Books" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6558CD3E21FA6AB400AF2ABF /* Debug */,
+				6558CD3F21FA6AB400AF2ABF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6558CD4021FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco BooksTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6558CD4121FA6AB400AF2ABF /* Debug */,
+				6558CD4221FA6AB400AF2ABF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6558CD4321FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco BooksUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6558CD4421FA6AB400AF2ABF /* Debug */,
+				6558CD4521FA6AB400AF2ABF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6558CD1C21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6558CD1D21FA6AB300AF2ABF /* Bronco_Books.xcdatamodel */,
+			);
+			currentVersion = 6558CD1D21FA6AB300AF2ABF /* Bronco_Books.xcdatamodel */;
+			path = Bronco_Books.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 6558CD0A21FA6AB300AF2ABF /* Project object */;
+}
