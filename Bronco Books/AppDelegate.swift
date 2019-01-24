@@ -14,9 +14,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func checkIfLoggedIn() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let identifier = (UserDefaults.standard.bool(forKey: "loggedIn")) ? "MainVC" : "LoginVC"
+        window?.rootViewController = storyboard.instantiateViewController(withIdentifier: identifier)
+        
+        window?.makeKeyAndVisible()
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        checkIfLoggedIn()
+        
         return true
     }
 

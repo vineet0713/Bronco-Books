@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */; };
-		6558CD1821FA6AB300AF2ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1721FA6AB300AF2ABF /* ViewController.swift */; };
 		6558CD1B21FA6AB300AF2ABF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD1921FA6AB300AF2ABF /* Main.storyboard */; };
 		6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1C21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld */; };
 		6558CD2021FA6AB400AF2ABF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */; };
 		6558CD2321FA6AB400AF2ABF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */; };
 		6558CD2E21FA6AB400AF2ABF /* Bronco_BooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD2D21FA6AB400AF2ABF /* Bronco_BooksTests.swift */; };
 		6558CD3921FA6AB400AF2ABF /* Bronco_BooksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD3821FA6AB400AF2ABF /* Bronco_BooksUITests.swift */; };
+		6558CD4721FA6BD000AF2ABF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4621FA6BD000AF2ABF /* LoginViewController.swift */; };
+		6558CD4921FA7C9500AF2ABF /* ListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */; };
+		6558CD4B21FA7CAB00AF2ABF /* ListingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */; };
+		6558CD4D21FA804700AF2ABF /* ListingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +40,6 @@
 /* Begin PBXFileReference section */
 		6558CD1221FA6AB300AF2ABF /* Bronco Books.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bronco Books.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6558CD1721FA6AB300AF2ABF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6558CD1A21FA6AB300AF2ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6558CD1D21FA6AB300AF2ABF /* Bronco_Books.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Bronco_Books.xcdatamodel; sourceTree = "<group>"; };
 		6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +51,10 @@
 		6558CD3421FA6AB400AF2ABF /* Bronco BooksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bronco BooksUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558CD3821FA6AB400AF2ABF /* Bronco_BooksUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bronco_BooksUITests.swift; sourceTree = "<group>"; };
 		6558CD3A21FA6AB400AF2ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6558CD4621FA6BD000AF2ABF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingTableViewCell.swift; sourceTree = "<group>"; };
+		6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewController.swift; sourceTree = "<group>"; };
+		6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,8 +106,11 @@
 			isa = PBXGroup;
 			children = (
 				6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */,
-				6558CD1721FA6AB300AF2ABF /* ViewController.swift */,
 				6558CD1921FA6AB300AF2ABF /* Main.storyboard */,
+				6558CD4621FA6BD000AF2ABF /* LoginViewController.swift */,
+				6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */,
+				6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */,
+				6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */,
 				6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */,
 				6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */,
 				6558CD2421FA6AB400AF2ABF /* Info.plist */,
@@ -259,9 +268,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6558CD4D21FA804700AF2ABF /* ListingDetailViewController.swift in Sources */,
+				6558CD4721FA6BD000AF2ABF /* LoginViewController.swift in Sources */,
 				6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */,
-				6558CD1821FA6AB300AF2ABF /* ViewController.swift in Sources */,
+				6558CD4921FA7C9500AF2ABF /* ListingTableViewCell.swift in Sources */,
 				6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */,
+				6558CD4B21FA7CAB00AF2ABF /* ListingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +451,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C9R438Z887;
 				INFOPLIST_FILE = "Bronco Books/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,6 +470,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C9R438Z887;
 				INFOPLIST_FILE = "Bronco Books/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
