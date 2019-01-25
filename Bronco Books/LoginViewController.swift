@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginTapped(_ sender: Any) {
-        UserDefaults.standard.set(true, forKey: "loggedIn")
+        UserDefaults.standard.set("test_username", forKey: "loggedIn")
         UserDefaults.standard.synchronize()
         
         self.performSegue(withIdentifier: "loginToHomeSegue", sender: self)

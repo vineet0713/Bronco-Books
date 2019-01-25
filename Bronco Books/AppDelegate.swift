@@ -17,8 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func checkIfLoggedIn() {
         window = UIWindow(frame: UIScreen.main.bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let identifier = (UserDefaults.standard.bool(forKey: "loggedIn")) ? "MainVC" : "LoginVC"
+        let identifier = (UserDefaults.standard.string(forKey: "loggedIn") == nil) ? "LoginVC" : "MainVC"
         window?.rootViewController = storyboard.instantiateViewController(withIdentifier: identifier)
         
         window?.makeKeyAndVisible()

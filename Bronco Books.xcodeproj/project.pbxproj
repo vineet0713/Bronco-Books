@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		651B773E21FB858700EDC29C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B773D21FB858700EDC29C /* ProfileViewController.swift */; };
+		6543DCE921FA8FCA00AC4A9B /* StartSellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */; };
+		6543DCEB21FA90FA00AC4A9B /* SellFieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */; };
 		6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */; };
 		6558CD1B21FA6AB300AF2ABF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD1921FA6AB300AF2ABF /* Main.storyboard */; };
 		6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1C21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld */; };
@@ -38,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		651B773D21FB858700EDC29C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSellViewController.swift; sourceTree = "<group>"; };
+		6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellFieldsViewController.swift; sourceTree = "<group>"; };
 		6558CD1221FA6AB300AF2ABF /* Bronco Books.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bronco Books.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6558CD1A21FA6AB300AF2ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -111,6 +117,9 @@
 				6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */,
 				6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */,
 				6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */,
+				6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */,
+				6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */,
+				651B773D21FB858700EDC29C /* ProfileViewController.swift */,
 				6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */,
 				6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */,
 				6558CD2421FA6AB400AF2ABF /* Info.plist */,
@@ -274,6 +283,9 @@
 				6558CD4921FA7C9500AF2ABF /* ListingTableViewCell.swift in Sources */,
 				6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */,
 				6558CD4B21FA7CAB00AF2ABF /* ListingsViewController.swift in Sources */,
+				651B773E21FB858700EDC29C /* ProfileViewController.swift in Sources */,
+				6543DCE921FA8FCA00AC4A9B /* StartSellViewController.swift in Sources */,
+				6543DCEB21FA90FA00AC4A9B /* SellFieldsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
