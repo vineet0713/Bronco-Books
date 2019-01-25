@@ -113,13 +113,9 @@
 			children = (
 				6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */,
 				6558CD1921FA6AB300AF2ABF /* Main.storyboard */,
-				6558CD4621FA6BD000AF2ABF /* LoginViewController.swift */,
-				6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */,
-				6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */,
-				6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */,
-				6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */,
-				6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */,
-				651B773D21FB858700EDC29C /* ProfileViewController.swift */,
+				65C8760921FBCD9500E9BB8F /* Model */,
+				65C8760821FBCD8100E9BB8F /* View */,
+				65C8760721FBCD6D00E9BB8F /* Controller */,
 				6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */,
 				6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */,
 				6558CD2421FA6AB400AF2ABF /* Info.plist */,
@@ -144,6 +140,34 @@
 				6558CD3A21FA6AB400AF2ABF /* Info.plist */,
 			);
 			path = "Bronco BooksUITests";
+			sourceTree = "<group>";
+		};
+		65C8760721FBCD6D00E9BB8F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6558CD4621FA6BD000AF2ABF /* LoginViewController.swift */,
+				6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */,
+				6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */,
+				6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */,
+				6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */,
+				651B773D21FB858700EDC29C /* ProfileViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		65C8760821FBCD8100E9BB8F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		65C8760921FBCD9500E9BB8F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
