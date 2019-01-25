@@ -1,4 +1,5 @@
 # Bronco Books
+This application provides an e-commerce platform for college students to buy and sell their textbooks.
 
 ## Features
 * 
