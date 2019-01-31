@@ -1,0 +1,6 @@
+framework module Pods_Bronco_BooksTests {
+  umbrella header "Pods-Bronco BooksTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

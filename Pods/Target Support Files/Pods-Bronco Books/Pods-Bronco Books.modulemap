@@ -1,0 +1,6 @@
+framework module Pods_Bronco_Books {
+  umbrella header "Pods-Bronco Books-umbrella.h"
+
+  export *
+  module * { export * }
+}

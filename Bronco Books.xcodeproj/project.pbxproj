@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2498F8670816638FA3054844 /* Pods_Bronco_Books.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EDC7B2538FB75816F2FF5D /* Pods_Bronco_Books.framework */; };
+		2AE217FAA8A55588BB0FEA37 /* Pods_Bronco_BooksUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2502BA2D16184C1202999B2 /* Pods_Bronco_BooksUITests.framework */; };
 		651B773E21FB858700EDC29C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B773D21FB858700EDC29C /* ProfileViewController.swift */; };
 		6543DCE921FA8FCA00AC4A9B /* StartSellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */; };
 		6543DCEB21FA90FA00AC4A9B /* SellFieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */; };
@@ -21,6 +23,10 @@
 		6558CD4921FA7C9500AF2ABF /* ListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */; };
 		6558CD4B21FA7CAB00AF2ABF /* ListingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */; };
 		6558CD4D21FA804700AF2ABF /* ListingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */; };
+		65789ED82203B47000FDF809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65789ED72203B47000FDF809 /* GoogleService-Info.plist */; };
+		65789ED92203B47000FDF809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65789ED72203B47000FDF809 /* GoogleService-Info.plist */; };
+		65789EDA2203B47000FDF809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65789ED72203B47000FDF809 /* GoogleService-Info.plist */; };
+		713594B1B2502C2B064EAB3E /* Pods_Bronco_BooksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AE5DEF15087CE9DCC60E23 /* Pods_Bronco_BooksTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +47,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28EDC7B2538FB75816F2FF5D /* Pods_Bronco_Books.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bronco_Books.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DC443B7A26F749A68A5361E /* Pods-Bronco BooksUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco BooksUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco BooksUITests/Pods-Bronco BooksUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		518689A9804DB3C37A3D4417 /* Pods-Bronco BooksTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco BooksTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco BooksTests/Pods-Bronco BooksTests.release.xcconfig"; sourceTree = "<group>"; };
+		56A4F7151E900E8097544887 /* Pods-Bronco BooksTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco BooksTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco BooksTests/Pods-Bronco BooksTests.debug.xcconfig"; sourceTree = "<group>"; };
 		651B773D21FB858700EDC29C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSellViewController.swift; sourceTree = "<group>"; };
 		6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellFieldsViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +71,12 @@
 		6558CD4821FA7C9500AF2ABF /* ListingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingTableViewCell.swift; sourceTree = "<group>"; };
 		6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewController.swift; sourceTree = "<group>"; };
 		6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingDetailViewController.swift; sourceTree = "<group>"; };
+		65789ED72203B47000FDF809 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		780F2D5F61896FD36E15AA31 /* Pods-Bronco Books.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco Books.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books.debug.xcconfig"; sourceTree = "<group>"; };
+		BDF164324AFE37E7B297D6E5 /* Pods-Bronco BooksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco BooksUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco BooksUITests/Pods-Bronco BooksUITests.release.xcconfig"; sourceTree = "<group>"; };
+		C6E4F9BB09A3ECA9BB2C0ED5 /* Pods-Bronco Books.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco Books.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books.release.xcconfig"; sourceTree = "<group>"; };
+		D3AE5DEF15087CE9DCC60E23 /* Pods_Bronco_BooksTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bronco_BooksTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2502BA2D16184C1202999B2 /* Pods_Bronco_BooksUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bronco_BooksUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2498F8670816638FA3054844 /* Pods_Bronco_Books.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				713594B1B2502C2B064EAB3E /* Pods_Bronco_BooksTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AE217FAA8A55588BB0FEA37 /* Pods_Bronco_BooksUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +114,8 @@
 				6558CD2C21FA6AB400AF2ABF /* Bronco BooksTests */,
 				6558CD3721FA6AB400AF2ABF /* Bronco BooksUITests */,
 				6558CD1321FA6AB300AF2ABF /* Products */,
+				BEAF15161547E7E0E3256DA6 /* Pods */,
+				B63773960A82824C9A1F8B06 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +139,7 @@
 				65C8760721FBCD6D00E9BB8F /* Controller */,
 				6558CD1F21FA6AB400AF2ABF /* Assets.xcassets */,
 				6558CD2121FA6AB400AF2ABF /* LaunchScreen.storyboard */,
+				65789ED72203B47000FDF809 /* GoogleService-Info.plist */,
 				6558CD2421FA6AB400AF2ABF /* Info.plist */,
 				6558CD1C21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld */,
 			);
@@ -170,6 +192,29 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		B63773960A82824C9A1F8B06 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28EDC7B2538FB75816F2FF5D /* Pods_Bronco_Books.framework */,
+				D3AE5DEF15087CE9DCC60E23 /* Pods_Bronco_BooksTests.framework */,
+				E2502BA2D16184C1202999B2 /* Pods_Bronco_BooksUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BEAF15161547E7E0E3256DA6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				780F2D5F61896FD36E15AA31 /* Pods-Bronco Books.debug.xcconfig */,
+				C6E4F9BB09A3ECA9BB2C0ED5 /* Pods-Bronco Books.release.xcconfig */,
+				56A4F7151E900E8097544887 /* Pods-Bronco BooksTests.debug.xcconfig */,
+				518689A9804DB3C37A3D4417 /* Pods-Bronco BooksTests.release.xcconfig */,
+				4DC443B7A26F749A68A5361E /* Pods-Bronco BooksUITests.debug.xcconfig */,
+				BDF164324AFE37E7B297D6E5 /* Pods-Bronco BooksUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -177,9 +222,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558CD3D21FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco Books" */;
 			buildPhases = (
+				96DFABA4B84F6D6512994337 /* [CP] Check Pods Manifest.lock */,
 				6558CD0E21FA6AB300AF2ABF /* Sources */,
 				6558CD0F21FA6AB300AF2ABF /* Frameworks */,
 				6558CD1021FA6AB300AF2ABF /* Resources */,
+				641106047F2FBD2FAC39AF46 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -194,6 +241,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558CD4021FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco BooksTests" */;
 			buildPhases = (
+				334696EBB174EE5BD4A88E3E /* [CP] Check Pods Manifest.lock */,
 				6558CD2521FA6AB400AF2ABF /* Sources */,
 				6558CD2621FA6AB400AF2ABF /* Frameworks */,
 				6558CD2721FA6AB400AF2ABF /* Resources */,
@@ -212,6 +260,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558CD4321FA6AB400AF2ABF /* Build configuration list for PBXNativeTarget "Bronco BooksUITests" */;
 			buildPhases = (
+				B6E70E22D409C658141B70A6 /* [CP] Check Pods Manifest.lock */,
 				6558CD3021FA6AB400AF2ABF /* Sources */,
 				6558CD3121FA6AB400AF2ABF /* Frameworks */,
 				6558CD3221FA6AB400AF2ABF /* Resources */,
@@ -275,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6558CD2321FA6AB400AF2ABF /* LaunchScreen.storyboard in Resources */,
+				65789ED82203B47000FDF809 /* GoogleService-Info.plist in Resources */,
 				6558CD2021FA6AB400AF2ABF /* Assets.xcassets in Resources */,
 				6558CD1B21FA6AB300AF2ABF /* Main.storyboard in Resources */,
 			);
@@ -284,6 +334,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65789ED92203B47000FDF809 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,10 +342,106 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65789EDA2203B47000FDF809 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		334696EBB174EE5BD4A88E3E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bronco BooksTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		641106047F2FBD2FAC39AF46 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		96DFABA4B84F6D6512994337 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bronco Books-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6E70E22D409C658141B70A6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bronco BooksUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6558CD0E21FA6AB300AF2ABF /* Sources */ = {
@@ -482,6 +629,7 @@
 		};
 		6558CD3E21FA6AB400AF2ABF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 780F2D5F61896FD36E15AA31 /* Pods-Bronco Books.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -501,6 +649,7 @@
 		};
 		6558CD3F21FA6AB400AF2ABF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C6E4F9BB09A3ECA9BB2C0ED5 /* Pods-Bronco Books.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -520,6 +669,7 @@
 		};
 		6558CD4121FA6AB400AF2ABF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56A4F7151E900E8097544887 /* Pods-Bronco BooksTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -541,6 +691,7 @@
 		};
 		6558CD4221FA6AB400AF2ABF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 518689A9804DB3C37A3D4417 /* Pods-Bronco BooksTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -562,6 +713,7 @@
 		};
 		6558CD4421FA6AB400AF2ABF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DC443B7A26F749A68A5361E /* Pods-Bronco BooksUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -582,6 +734,7 @@
 		};
 		6558CD4521FA6AB400AF2ABF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BDF164324AFE37E7B297D6E5 /* Pods-Bronco BooksUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
