@@ -134,7 +134,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k8s-9n-cTY" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="938"/>
                                         <subviews>
-                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title (long form)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XnN-84-caY">
+                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XnN-84-caY">
                                                 <rect key="frame" x="8" y="8" width="359" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -143,7 +143,7 @@
                                                     <outlet property="delegate" destination="Rtc-gA-OKR" id="X2Q-Y8-uuc"/>
                                                 </connections>
                                             </textField>
-                                            <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title (short form)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j6S-6G-BaP">
+                                            <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title (shortened)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j6S-6G-BaP">
                                                 <rect key="frame" x="8" y="46" width="359" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -187,7 +187,7 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="seA-Rk-fu4">
+                                                    <textField opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="seA-Rk-fu4">
                                                         <rect key="frame" x="123" y="0.0" width="113" height="44"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -423,6 +423,7 @@
                         <outlet property="listingPhotosCollection" destination="S6c-7n-Qfu" id="egf-SK-xIE"/>
                         <outlet property="pagesField" destination="syl-rf-OT3" id="kCm-Xf-Iil"/>
                         <outlet property="paymentMethodPicker" destination="qAH-k6-3lk" id="Wn9-4W-AAs"/>
+                        <outlet property="postButton" destination="zQM-Uj-nEF" id="g3r-nZ-j4d"/>
                         <outlet property="priceField" destination="seA-Rk-fu4" id="c0T-0N-KD2"/>
                         <outlet property="publishDateField" destination="KkD-nA-9SF" id="Br2-Ho-NaK"/>
                         <outlet property="publisherField" destination="AHz-Xb-1hV" id="anE-Ts-feU"/>

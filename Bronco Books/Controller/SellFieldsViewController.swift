@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 class SellFieldsViewController: UIViewController {
     
+    @IBOutlet weak var postButton: UIButton!
+    
     @IBOutlet weak var titleLongField: UITextField!
     @IBOutlet weak var titleShortField: UITextField!
     @IBOutlet weak var authorsField: UITextField!
@@ -31,7 +33,8 @@ class SellFieldsViewController: UIViewController {
     
     var listingToPost: Listing?
     
-    let preferredPaymentMethods = ["[Select Preferred Payment Method]", "Apple Pay", "Cash", "Check"]
+    let preferredPaymentMethods = ["[Preferred Payment Method]", "Apple Pay", "Cash", "Check"]
+    var selectedPaymentMethod: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +47,23 @@ class SellFieldsViewController: UIViewController {
         paymentMethodPicker.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        postButton.isEnabled = false
+        selectedPaymentMethod = preferredPaymentMethods[0]
+    }
+    
+    func setPostButtonEnabled() {
+        // if title, authors, and price fields are not empty and payment method is valid, then enable Post button
+        postButton.isEnabled = (
+            titleLongField.text?.isEmpty == false &&
+            authorsField.text?.isEmpty == false &&
+            priceField.text?.isEmpty == false &&
+            selectedPaymentMethod != preferredPaymentMethods[0]
+        )
+    }
+    
     @IBAction func cancelTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -52,8 +72,28 @@ class SellFieldsViewController: UIViewController {
         let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            let sampleTextbook = Textbook(title: "sampletitle", titleLong: "sampletitle very very very long", authors: ["author1", "author2"], datePublished: "2/1/2019", publisher: "Puffin", language: "French", edition: "3rd", format: "sampleformat", pages: 239, binding: "hardcover")
-            self.listingToPost = Listing(seller: "vjoshi", price: 29.49, textbook: sampleTextbook, preferredPaymentMethod: "Cash")
+            /*let sampleTextbook = Textbook(title: "sampletitle", titleLong: "sampletitle very very very long", authors: ["author1", "author2"], datePublished: "2/1/2019", publisher: "Puffin", language: "French", edition: "3rd", format: "sampleformat", pages: 239, binding: "hardcover")
+            self.listingToPost = Listing(seller: "vjoshi", price: 29.49, textbook: sampleTextbook, preferredPaymentMethod: "Cash")*/
+            
+            let textbookDictionary: [String : Any] = [
+                "title" : ((self.titleShortField.text!.isEmpty == false) ? self.titleShortField.text! : self.titleLongField.text!),
+                "titleLong" : self.titleLongField.text!,
+                // TODO: "Author1, Author2" results in ["Author1", " Author2"]
+                "authors" : self.authorsField.text!.components(separatedBy: ","),
+                "datePublished": self.publishDateField.text!,
+                "publisher" : self.publisherField.text!,
+                "language" : self.languageField.text!,
+                "edition" : self.editionField.text!,
+                "format" : self.formatField.text!,
+                "pages" : ((self.pagesField.text?.isEmpty == false) ? Int(self.pagesField.text!)! : -1),
+                "binding" : self.bindingField.text!
+            ]
+            
+            let priceString = self.priceField.text!
+            let priceStringStartIndex = priceString.index(priceString.startIndex, offsetBy: 1)
+            let priceDouble = priceString[priceStringStartIndex..<priceString.endIndex]
+            
+            self.listingToPost = Listing(seller: "vjoshi", price: Double(priceDouble)!, textbook: Textbook(dict: textbookDictionary), preferredPaymentMethod: self.selectedPaymentMethod)
             
             self.addListingToFirebase(listingToAdd: self.listingToPost!.getDictionary())
         }))
@@ -61,11 +101,15 @@ class SellFieldsViewController: UIViewController {
     }
     
     @IBAction func setPriceTapped(_ sender: Any) {
+        // TODO: make sure price is in proper format (Ex. "9.9" should be changed to "9.90")
+        
+        setPostButtonEnabled()
+        
         let priceEntered = priceField.text
         if priceEntered?.isEmpty == false && priceEntered?.prefix(1) != "$" {
             priceField.text = "$" + priceEntered!
         }
-        // also make sure price is in proper format (Ex. "9.9" should be changed to "9.90")
+        
         priceField.resignFirstResponder()
     }
     
@@ -190,6 +234,8 @@ extension SellFieldsViewController: UITextFieldDelegate {
         
         return false*/
         
+        setPostButtonEnabled()
+        
         textField.resignFirstResponder()
         return true
     }
@@ -208,6 +254,11 @@ extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return preferredPaymentMethods[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedPaymentMethod = preferredPaymentMethods[row]
+        setPostButtonEnabled()
     }
     
 }

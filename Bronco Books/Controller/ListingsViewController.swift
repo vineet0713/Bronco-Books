@@ -48,7 +48,7 @@ class ListingsViewController: UIViewController {
         
         DispatchQueue.global(qos: .userInitiated).async {
             // To show the activity indicator, even when connection speed is fast!
-            sleep(1)
+            // sleep(1)
             
             let databaseReferenceListings = Database.database().reference().child("listings")
             databaseReferenceListings.observeSingleEvent(of: .value) { (snapshot) in
