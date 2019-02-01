@@ -10,7 +10,7 @@ import UIKit
 
 class ListingTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var sellerLabel: UILabel!
     

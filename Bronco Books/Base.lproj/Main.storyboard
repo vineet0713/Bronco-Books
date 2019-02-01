@@ -268,9 +268,9 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="aXc-W9-afb">
                                                     <rect key="frame" x="14" y="10.5" width="347" height="79.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Textbook Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E51-Lv-4yy">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Textbook Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E51-Lv-4yy">
                                                             <rect key="frame" x="0.0" y="0.0" width="347" height="23"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -297,9 +297,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="nameLabel" destination="E51-Lv-4yy" id="dvZ-ok-Z38"/>
                                             <outlet property="priceLabel" destination="U4K-r7-mbL" id="4W4-az-7Gv"/>
                                             <outlet property="sellerLabel" destination="Jc4-d5-APs" id="1Nw-5T-gcJ"/>
+                                            <outlet property="titleLabel" destination="E51-Lv-4yy" id="8dF-3Y-2Ie"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -26,7 +26,13 @@ class SellFieldsViewController: UIViewController {
         let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            self.updateFirebaseValues()
+            let sampleTextbook = Textbook(title: "sampletitle 2", titleLong: "sampletitle very very very long", authors: ["author1", "author2", "author3", "author4"], datePublished: "1/31/1998", publisher: "Puffin Revamped", language: "English", edition: "5th", format: "sampleformat", pages: 1590, binding: "paperback")
+            let sampleListing = Listing(seller: "vjoshi", price: 149.99, textbook: sampleTextbook)
+            
+            self.addListingToFirebase(listingToAdd: sampleListing.getDictionary())
+            
+            //self.readListingsFromFirebase()
+            
             // performs UI updates on the Main Thread
             DispatchQueue.main.async {
                 let title = "Nonexistent Feature"
@@ -75,6 +81,20 @@ class SellFieldsViewController: UIViewController {
     func removeFirebaseValue() {
         let databaseReference = Database.database().reference()
         databaseReference.child("testkey").removeValue()
+    }
+    
+    func addListingToFirebase(listingToAdd: [String : Any]) {
+        let databaseReferenceListings = Database.database().reference().child("listings")
+        databaseReferenceListings.childByAutoId().setValue(listingToAdd)
+        // databaseReferenceListings.child("LISTING NAME?").setValue(listingToAdd)
+    }
+    
+    func readListingsFromFirebase() {
+        let databaseReferenceListings = Database.database().reference().child("listings")
+        databaseReferenceListings.observeSingleEvent(of: .value) { (snapshot) in
+            let listingArray = snapshot.value as! [String : Any]
+            print(listingArray)
+        }
     }
     
 }

@@ -26,6 +26,8 @@
 		65789ED82203B47000FDF809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65789ED72203B47000FDF809 /* GoogleService-Info.plist */; };
 		65789ED92203B47000FDF809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65789ED72203B47000FDF809 /* GoogleService-Info.plist */; };
 		65789EDA2203B47000FDF809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65789ED72203B47000FDF809 /* GoogleService-Info.plist */; };
+		65B6CCAA2203CA0D005F5616 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B6CCA92203CA0D005F5616 /* Listing.swift */; };
+		65B6CCAC2203D8E3005F5616 /* Textbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B6CCAB2203D8E3005F5616 /* Textbook.swift */; };
 		713594B1B2502C2B064EAB3E /* Pods_Bronco_BooksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AE5DEF15087CE9DCC60E23 /* Pods_Bronco_BooksTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +74,8 @@
 		6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewController.swift; sourceTree = "<group>"; };
 		6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingDetailViewController.swift; sourceTree = "<group>"; };
 		65789ED72203B47000FDF809 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		65B6CCA92203CA0D005F5616 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
+		65B6CCAB2203D8E3005F5616 /* Textbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Textbook.swift; sourceTree = "<group>"; };
 		780F2D5F61896FD36E15AA31 /* Pods-Bronco Books.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco Books.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books.debug.xcconfig"; sourceTree = "<group>"; };
 		BDF164324AFE37E7B297D6E5 /* Pods-Bronco BooksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco BooksUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco BooksUITests/Pods-Bronco BooksUITests.release.xcconfig"; sourceTree = "<group>"; };
 		C6E4F9BB09A3ECA9BB2C0ED5 /* Pods-Bronco Books.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco Books.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books.release.xcconfig"; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 		65C8760921FBCD9500E9BB8F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				65B6CCA92203CA0D005F5616 /* Listing.swift */,
+				65B6CCAB2203D8E3005F5616 /* Textbook.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -449,7 +455,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6558CD4D21FA804700AF2ABF /* ListingDetailViewController.swift in Sources */,
+				65B6CCAC2203D8E3005F5616 /* Textbook.swift in Sources */,
 				6558CD4721FA6BD000AF2ABF /* LoginViewController.swift in Sources */,
+				65B6CCAA2203CA0D005F5616 /* Listing.swift in Sources */,
 				6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */,
 				6558CD4921FA7C9500AF2ABF /* ListingTableViewCell.swift in Sources */,
 				6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */,
