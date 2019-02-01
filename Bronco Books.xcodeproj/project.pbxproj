@@ -168,6 +168,15 @@
 			path = "Bronco BooksUITests";
 			sourceTree = "<group>";
 		};
+		658F06A62204ADFE0045F8D5 /* Database Objects */ = {
+			isa = PBXGroup;
+			children = (
+				65B6CCA92203CA0D005F5616 /* Listing.swift */,
+				65B6CCAB2203D8E3005F5616 /* Textbook.swift */,
+			);
+			path = "Database Objects";
+			sourceTree = "<group>";
+		};
 		65C8760721FBCD6D00E9BB8F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,8 +201,7 @@
 		65C8760921FBCD9500E9BB8F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				65B6CCA92203CA0D005F5616 /* Listing.swift */,
-				65B6CCAB2203D8E3005F5616 /* Textbook.swift */,
+				658F06A62204ADFE0045F8D5 /* Database Objects */,
 			);
 			path = Model;
 			sourceTree = "<group>";

@@ -13,23 +13,11 @@ import FirebaseDatabase
 class ListingsViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var listingsTable: UITableView!
     
     var activityIndicator: UIActivityIndicatorView!
     
-    /*let testNames = [
-        "Data Structures – A Pseudocode Approach with C, Brooks/Cole",
-        "The C Programming Language, 2nd edition",
-        "Distributed Systems: Concepts And Design, 5th edition",
-        "Thomas’ Calculus, Early Transcendentals, Multivariable, 13th Edition with MyMathLab",
-        "Linear Algebra with Applications, 7th edition"
-    ]
-    let testPrices = ["40", "50", "33.99", "49", "183.34"]
-    let testSellers = ["vjoshi", "dctaylor", "tshih", "datkinson", "aamer"]*/
-    
     var listingArray: [Listing] = []
-    
-    // var selectedBook: String?
     
     var selectedListing: Listing?
     
@@ -38,15 +26,15 @@ class ListingsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        listingsTable.dataSource = self
+        listingsTable.delegate = self
+        
         activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         
-        table.backgroundView = activityIndicator
-        table.separatorStyle = .none
-        
-        table.dataSource = self
-        table.delegate = self
+        listingsTable.backgroundView = activityIndicator
+        listingsTable.separatorStyle = .none
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,8 +65,8 @@ class ListingsViewController: UIViewController {
                 }
                 
                 DispatchQueue.main.async {
-                    self.table.separatorStyle = .singleLine
-                    self.table.reloadData()
+                    self.listingsTable.separatorStyle = .singleLine
+                    self.listingsTable.reloadData()
                     self.activityIndicator.stopAnimating()
                 }
             }
@@ -90,7 +78,7 @@ class ListingsViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! ListingDetailViewController
-        destinationVC.title = selectedListing?.textbook.title
+        destinationVC.listing = selectedListing!
     }
 
 }
@@ -102,11 +90,12 @@ extension ListingsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = table.dequeueReusableCell(withIdentifier: "listingCell") as! ListingTableViewCell
+        let cell = listingsTable.dequeueReusableCell(withIdentifier: "listingCell") as! ListingTableViewCell
+        let listing = listingArray[indexPath.row]
         
-        cell.titleLabel.text = listingArray[indexPath.row].textbook.title
-        cell.sellerLabel.text = "Price: $" + String(listingArray[indexPath.row].price)
-        cell.priceLabel.text = "Seller: " + listingArray[indexPath.row].seller
+        cell.titleLabel.text = listing.textbook.title
+        cell.sellerLabel.text = "Price: $" + String(listing.price) + " (Preferred: " + listing.preferredPaymentMethod + ")"
+        cell.priceLabel.text = "Seller: " + listing.seller
         
         return cell
     }
@@ -117,7 +106,7 @@ extension ListingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedListing = listingArray[indexPath.row]
-        table.deselectRow(at: indexPath, animated: false)
+        listingsTable.deselectRow(at: indexPath, animated: false)
         self.performSegue(withIdentifier: "listingsToDetailSegue", sender: self)
     }
     

@@ -9,6 +9,8 @@
 import UIKit
 
 class ListingDetailViewController: UIViewController {
+    
+    var listing: Listing!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +18,11 @@ class ListingDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.title = listing.textbook.title
+    }
 
     /*
     // MARK: - Navigation
