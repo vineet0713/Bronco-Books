@@ -10,14 +10,14 @@ import UIKit
 
 class ListingDetailViewController: UIViewController {
     
-    // MARK - Properties
+    // MARK: - Properties
     
     var listing: Listing!
     
-    // MARK - IBOutlets
+    // MARK: - IBOutlets
     
     
-    // MARK - Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

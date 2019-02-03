@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 class SellFieldsViewController: UIViewController {
     
-    // MARK - Properties
+    // MARK: - Properties
     
     var listingToPost: Listing?
     
@@ -20,7 +20,7 @@ class SellFieldsViewController: UIViewController {
     
     var selectedPaymentMethod: String!
     
-    // MARK - IBOutlets
+    // MARK: - IBOutlets
     
     @IBOutlet weak var titleLongField: UITextField!
     @IBOutlet weak var titleShortField: UITextField!
@@ -39,7 +39,7 @@ class SellFieldsViewController: UIViewController {
     
     @IBOutlet weak var listingPhotosCollection: UICollectionView!
     
-    // MARK - Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +58,7 @@ class SellFieldsViewController: UIViewController {
         selectedPaymentMethod = Constants.PreferredPaymentMethods[0]
     }
     
-    // MARK - Helper Functions
+    // MARK: - Helper Functions
     
     func priceIsValid() -> Bool {
         if let doublePrice = Double(self.priceField.text!) {
@@ -96,9 +96,20 @@ class SellFieldsViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    // MARK - Backend Functions
+    // MARK: - Backend Functions
     
-    func generateListingToPost(_ title: String, _ titleLong: String) {
+    func generateListingToPost() {
+        var title = titleShortField.text!
+        var titleLong = titleLongField.text!
+        if titleLong.isEmpty == false && title.isEmpty == true {
+            title = titleLong
+        } else if titleLong.isEmpty == true && title.isEmpty == false {
+            titleLong = title
+        } else if title.count > titleLong.count {
+            title = titleLongField.text!
+            titleLong = titleShortField.text!
+        }
+        
         let textbookDictionary: [String : Any] = [
             "title" : title,
             "titleLong" : titleLong,
@@ -113,8 +124,12 @@ class SellFieldsViewController: UIViewController {
             "binding" : bindingField.text!
         ]
         
-        let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
-        listingToPost = Listing(seller: userDisplayName, price: listingPrice!, textbook: Textbook(dict: textbookDictionary), preferredPaymentMethod: selectedPaymentMethod)
+        let sellerDictionary: [String : Any] = [
+            "email" : UserDefaults.standard.string(forKey: Constants.UserEmailKey)!,
+            "displayName" : UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+        ]
+        
+        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: Seller(dict: sellerDictionary), price: listingPrice!, preferredPaymentMethod: selectedPaymentMethod)
         
         addListingToFirebase(listingToAdd: listingToPost!.getDictionary())
     }
@@ -145,7 +160,7 @@ class SellFieldsViewController: UIViewController {
         }
     }
     
-    // MARK - IBActions
+    // MARK: - IBActions
     
     @IBAction func cancelTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -160,18 +175,10 @@ class SellFieldsViewController: UIViewController {
             return
         }
         
-        var title = titleShortField.text!
-        var titleLong = titleLongField.text!
-        if titleLongField.text?.isEmpty == false && titleShortField.text?.isEmpty == true {
-            title = titleLongField.text!
-        } else if titleLongField.text?.isEmpty == true && titleShortField.text?.isEmpty == false {
-            titleLong = titleShortField.text!
-        }
-        
         let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            self.generateListingToPost(title, titleLong)
+            self.generateListingToPost()
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -186,7 +193,7 @@ class SellFieldsViewController: UIViewController {
     
 }
 
-// MARK - Extension for UITextFieldDelegate
+// MARK: - Extension for UITextFieldDelegate
 
 extension SellFieldsViewController: UITextFieldDelegate {
     
@@ -197,7 +204,7 @@ extension SellFieldsViewController: UITextFieldDelegate {
     
 }
 
-// MARK - Extension for UIPickerViewDataSource, UIPickerViewDelegate
+// MARK: - Extension for UIPickerViewDataSource, UIPickerViewDelegate
 
 extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
@@ -219,7 +226,7 @@ extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate
     
 }
 
-// MARK - Extension for UICollectionViewDataSource, UICollectionViewDelegate
+// MARK: - Extension for UICollectionViewDataSource, UICollectionViewDelegate
 
 /*extension SellFieldsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     

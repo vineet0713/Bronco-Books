@@ -12,19 +12,19 @@ import FirebaseDatabase
 
 class ListingsViewController: UIViewController {
     
-    // MARK - Properties
+    // MARK: - Properties
     
     var activityIndicator: UIActivityIndicatorView!
     
     var listingArray: [Listing] = []
     var selectedListing: Listing?
     
-    // MARK - IBOutlets
+    // MARK: - IBOutlets
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var listingsTable: UITableView!
     
-    // MARK - Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +48,7 @@ class ListingsViewController: UIViewController {
         loadData()
     }
     
-    // MARK - Helper Function
+    // MARK: - Helper Function
     
     func loadData() {
         activityIndicator.startAnimating()
@@ -90,7 +90,7 @@ class ListingsViewController: UIViewController {
 
 }
 
-// MARK - Extension for UITableViewDataSource
+// MARK: - Extension for UITableViewDataSource
 
 extension ListingsViewController: UITableViewDataSource {
     
@@ -100,6 +100,7 @@ extension ListingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = listingsTable.dequeueReusableCell(withIdentifier: "listingCell") as! ListingTableViewCell
+        
         let listing = listingArray[indexPath.row]
         
         let formatter = NumberFormatter()
@@ -108,14 +109,14 @@ extension ListingsViewController: UITableViewDataSource {
         
         cell.titleLabel.text = listing.textbook.title
         cell.sellerLabel.text = "Price: \(formattedPrice) (Preferred: " + listing.preferredPaymentMethod + ")"
-        cell.priceLabel.text = "Seller: " + listing.seller
+        cell.priceLabel.text = "Seller: " + listing.seller.displayName
         
         return cell
     }
     
 }
 
-// MARK - Extension for UITableViewDelegate
+// MARK: - Extension for UITableViewDelegate
 
 extension ListingsViewController: UITableViewDelegate {
     

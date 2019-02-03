@@ -19,18 +19,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J2j-f5-6Wq" customClass="GIDSignInButton">
-                                <rect key="frame" x="87.5" y="293.5" width="200" height="100"/>
+                                <rect key="frame" x="112.5" y="268.5" width="150" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="CP5-KO-0q0"/>
-                                    <constraint firstAttribute="width" constant="200" id="NOu-U7-iiQ"/>
+                                    <constraint firstAttribute="height" constant="150" id="8pq-KZ-Vuj"/>
+                                    <constraint firstAttribute="width" constant="150" id="OuX-Hg-6lH"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="J2j-f5-6Wq" firstAttribute="centerY" secondItem="OdX-0H-nI0" secondAttribute="centerY" id="GFD-Rp-Jxn"/>
-                            <constraint firstItem="J2j-f5-6Wq" firstAttribute="centerX" secondItem="OdX-0H-nI0" secondAttribute="centerX" id="Xqw-qH-MaX"/>
+                            <constraint firstItem="J2j-f5-6Wq" firstAttribute="centerX" secondItem="OdX-0H-nI0" secondAttribute="centerX" id="PWt-Wf-qB9"/>
+                            <constraint firstItem="J2j-f5-6Wq" firstAttribute="centerY" secondItem="OdX-0H-nI0" secondAttribute="centerY" id="ybz-cr-ToB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OdX-0H-nI0"/>
                     </view>

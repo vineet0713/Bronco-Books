@@ -13,7 +13,7 @@ import GoogleSignIn
 
 class ProfileViewController: UIViewController {
     
-    // MARK - Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    // MARK - IBActions
+    // MARK: - IBActions
     
     @IBAction func logoutTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Confirm Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)

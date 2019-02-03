@@ -13,11 +13,11 @@ import GoogleSignIn
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
-    // MARK - IBOutlet
+    // MARK: - IBOutlet
     
     @IBOutlet weak var googleSignInButton: GIDSignInButton!
     
-    // MARK - Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

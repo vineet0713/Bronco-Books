@@ -12,25 +12,28 @@ class Listing {
     
     // MARK: - Stored Properties
     
-    let seller: String
-    let price: Double
     let textbook: Textbook
+    let seller: Seller
+    let price: Double
     let preferredPaymentMethod: String
     
     // MARK: - Constructors
     
-    init(seller: String, price: Double, textbook: Textbook, preferredPaymentMethod: String) {
+    init(textbook: Textbook, seller: Seller, price: Double, preferredPaymentMethod: String) {
+        self.textbook = textbook
         self.seller = seller
         self.price = price
-        self.textbook = textbook
         self.preferredPaymentMethod = preferredPaymentMethod
     }
     
     init(dict: [String : Any]) {
-        self.seller = dict["seller"] as! String
-        self.price = dict["price"] as! Double
         let textbookDict = dict["textbook"] as! [String : Any]
         self.textbook = Textbook(dict: textbookDict)
+        
+        let sellerDict = dict["seller"] as! [String : Any]
+        self.seller = Seller(dict: sellerDict)
+        
+        self.price = dict["price"] as! Double
         self.preferredPaymentMethod = dict["preferredPaymentMethod"] as! String
     }
     
@@ -38,9 +41,9 @@ class Listing {
     
     func getDictionary() -> [String : Any] {
         let dict: [String : Any] = [
-            "seller" : self.seller,
-            "price" : self.price,
             "textbook" : self.textbook.getDictionary(),
+            "seller" : self.seller.getDictionary(),
+            "price" : self.price,
             "preferredPaymentMethod" : self.preferredPaymentMethod
         ]
         
