@@ -12,14 +12,19 @@ import FirebaseDatabase
 
 class ListingsViewController: UIViewController {
     
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var listingsTable: UITableView!
+    // MARK - Properties
     
     var activityIndicator: UIActivityIndicatorView!
     
     var listingArray: [Listing] = []
-    
     var selectedListing: Listing?
+    
+    // MARK - IBOutlets
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var listingsTable: UITableView!
+    
+    // MARK - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +47,8 @@ class ListingsViewController: UIViewController {
         
         loadData()
     }
+    
+    // MARK - Helper Function
     
     func loadData() {
         activityIndicator.startAnimating()
@@ -83,6 +90,8 @@ class ListingsViewController: UIViewController {
 
 }
 
+// MARK - Extension for UITableViewDataSource
+
 extension ListingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,14 +102,20 @@ extension ListingsViewController: UITableViewDataSource {
         let cell = listingsTable.dequeueReusableCell(withIdentifier: "listingCell") as! ListingTableViewCell
         let listing = listingArray[indexPath.row]
         
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        let formattedPrice = formatter.string(from: listing.price as NSNumber)!
+        
         cell.titleLabel.text = listing.textbook.title
-        cell.sellerLabel.text = "Price: $" + String(listing.price) + " (Preferred: " + listing.preferredPaymentMethod + ")"
+        cell.sellerLabel.text = "Price: \(formattedPrice) (Preferred: " + listing.preferredPaymentMethod + ")"
         cell.priceLabel.text = "Seller: " + listing.seller
         
         return cell
     }
     
 }
+
+// MARK - Extension for UITableViewDelegate
 
 extension ListingsViewController: UITableViewDelegate {
     

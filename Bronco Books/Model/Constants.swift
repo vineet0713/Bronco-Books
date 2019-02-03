@@ -20,4 +20,7 @@ struct Constants {
     // Firebase Realtime Database
     static let ListingPathString = "listings"
     
+    // Preferred Payment Methods
+    static let PreferredPaymentMethods = ["[Preferred Payment Method]", "Apple Pay", "Cash", "Check"]
+    
 }

@@ -10,10 +10,14 @@ import Foundation
 
 class Listing {
     
+    // MARK: - Stored Properties
+    
     let seller: String
     let price: Double
     let textbook: Textbook
     let preferredPaymentMethod: String
+    
+    // MARK: - Constructors
     
     init(seller: String, price: Double, textbook: Textbook, preferredPaymentMethod: String) {
         self.seller = seller
@@ -29,6 +33,8 @@ class Listing {
         self.textbook = Textbook(dict: textbookDict)
         self.preferredPaymentMethod = dict["preferredPaymentMethod"] as! String
     }
+    
+    // MARK: - Member Function
     
     func getDictionary() -> [String : Any] {
         let dict: [String : Any] = [

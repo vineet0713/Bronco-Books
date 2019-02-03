@@ -10,6 +10,8 @@ import Foundation
 
 class Textbook {
     
+    // MARK: - Stored Properties
+    
     let title: String
     let titleLong: String
     let authors: [String]
@@ -20,6 +22,8 @@ class Textbook {
     let format: String
     let pages: Int
     let binding: String
+    
+    // MARK: - Constructors
     
     init(title: String, titleLong: String, authors: [String], datePublished: String, publisher: String, language: String, edition: String, format: String, pages: Int, binding: String) {
         self.title = title
@@ -46,6 +50,8 @@ class Textbook {
         self.pages = dict["pages"] as! Int
         self.binding = dict["binding"] as! String
     }
+    
+    // MARK: - Member Function
     
     func getDictionary() -> [String : Any] {
         let dict: [String : Any] = [
