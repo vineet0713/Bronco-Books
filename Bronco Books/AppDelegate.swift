@@ -10,27 +10,62 @@ import UIKit
 import CoreData
 
 import Firebase
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
 
-    func checkIfLoggedIn() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let identifier = (UserDefaults.standard.string(forKey: "loggedIn") == nil) ? "LoginVC" : "MainVC"
-        window?.rootViewController = storyboard.instantiateViewController(withIdentifier: identifier)
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if error != nil {
+            print(error.localizedDescription)
+            return
+        }
         
-        window?.makeKeyAndVisible()
+        guard let authentication = user.authentication else {
+            return
+        }
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+        
+        Auth.auth().signInAndRetrieveData(with: credential) { (result, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            let userEmail = result!.user.email!
+            let userDisplayName = result!.user.displayName!
+            if userEmail.hasSuffix(Constants.ValidEmailSuffix) == false {
+                GIDSignIn.sharedInstance().signOut()
+                
+                let alert = UIAlertController(title: "Invalid Email", message: "Please sign in using your SCU email.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                
+                return
+            }
+            
+            UserDefaults.standard.set(userEmail, forKey: Constants.UserEmailKey)
+            UserDefaults.standard.set(userDisplayName, forKey: Constants.UserDisplayNameKey)
+            UserDefaults.standard.synchronize()
+            
+            self.window?.rootViewController?.performSegue(withIdentifier: "loginToHomeSegue", sender: self)
+        }
     }
-
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
         
-        checkIfLoggedIn()
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
         
         return true
     }

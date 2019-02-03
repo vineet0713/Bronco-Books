@@ -8,19 +8,30 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+import Firebase
+import GoogleSignIn
 
+class LoginViewController: UIViewController, GIDSignInUIDelegate {
+    
+    @IBOutlet weak var googleSignInButton: GIDSignInButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        GIDSignIn.sharedInstance().uiDelegate = self
     }
     
-    @IBAction func loginTapped(_ sender: Any) {
-        UserDefaults.standard.set("test_username", forKey: "loggedIn")
-        UserDefaults.standard.synchronize()
+    // This is the earliest we could perform a segue!
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        self.performSegue(withIdentifier: "loginToHomeSegue", sender: self)
+        if UserDefaults.standard.string(forKey: Constants.UserEmailKey) != nil {
+            self.performSegue(withIdentifier: "loginToHomeSegue", sender: self)
+        } else {
+            googleSignInButton.isHidden = false
+        }
     }
     
     /*

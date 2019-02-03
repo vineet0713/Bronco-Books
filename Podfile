@@ -9,6 +9,8 @@ target 'Bronco Books' do
 
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Auth'
+  pod 'GoogleSignIn'
 
   target 'Bronco BooksTests' do
     inherit! :search_paths

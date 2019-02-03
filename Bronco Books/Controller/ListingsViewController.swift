@@ -50,7 +50,7 @@ class ListingsViewController: UIViewController {
             // To show the activity indicator, even when connection speed is fast!
             // sleep(1)
             
-            let databaseReferenceListings = Database.database().reference().child("listings")
+            let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
             databaseReferenceListings.observeSingleEvent(of: .value) { (snapshot) in
                 guard let listings = snapshot.value as? [String : Any] else {
                     // either there are no listings, or there is a problem in the database!

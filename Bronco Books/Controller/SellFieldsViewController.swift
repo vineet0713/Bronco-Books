@@ -12,8 +12,6 @@ import FirebaseDatabase
 
 class SellFieldsViewController: UIViewController {
     
-    @IBOutlet weak var postButton: UIButton!
-    
     @IBOutlet weak var titleLongField: UITextField!
     @IBOutlet weak var titleShortField: UITextField!
     @IBOutlet weak var authorsField: UITextField!
@@ -33,6 +31,8 @@ class SellFieldsViewController: UIViewController {
     
     var listingToPost: Listing?
     
+    var listingPrice: Double? = nil
+    
     let preferredPaymentMethods = ["[Preferred Payment Method]", "Apple Pay", "Cash", "Check"]
     var selectedPaymentMethod: String!
 
@@ -50,18 +50,43 @@ class SellFieldsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        postButton.isEnabled = false
         selectedPaymentMethod = preferredPaymentMethods[0]
     }
     
-    func setPostButtonEnabled() {
-        // if title, authors, and price fields are not empty and payment method is valid, then enable Post button
-        postButton.isEnabled = (
-            titleLongField.text?.isEmpty == false &&
-            authorsField.text?.isEmpty == false &&
-            priceField.text?.isEmpty == false &&
-            selectedPaymentMethod != preferredPaymentMethods[0]
-        )
+    func priceIsValid() -> Bool {
+        /*var priceString = self.priceField.text!
+        if priceString.prefix(1) == "$" {
+            let priceStringStartIndex = priceString.index(priceString.startIndex, offsetBy: 1)
+            priceString = String(priceString[priceStringStartIndex..<priceString.endIndex])
+        }*/
+        
+        if let doublePrice = Double(self.priceField.text!) {
+            listingPrice = doublePrice
+            return true
+        } else {
+            listingPrice = nil
+            return false
+        }
+    }
+    
+    func fieldsAreIncomplete() -> String? {
+        if titleLongField.text?.isEmpty == true && titleShortField.text?.isEmpty == true {
+            return "Please enter a title for your textbook."
+        }
+        
+        if authorsField.text?.isEmpty == true {
+            return "Please enter 1 or more authors for your textbook."
+        }
+        
+        if priceIsValid() == false {
+            return "Please enter a valid price for your listing."
+        }
+        
+        if selectedPaymentMethod == preferredPaymentMethods[0] {
+            return "Please enter a payment method for your listing."
+        }
+        
+        return nil
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -69,6 +94,22 @@ class SellFieldsViewController: UIViewController {
     }
     
     @IBAction func postTapped(_ sender: Any) {
+        // dismisses the keyboard without worrying about what is the first responder
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        
+        if let errorMessage = fieldsAreIncomplete() {
+            showAlert(title: "Incomplete Listing", message: errorMessage)
+            return
+        }
+        
+        var title = titleShortField.text!
+        var titleLong = titleLongField.text!
+        if titleLongField.text?.isEmpty == false && titleShortField.text?.isEmpty == true {
+            title = titleLongField.text!
+        } else if titleLongField.text?.isEmpty == true && titleShortField.text?.isEmpty == false {
+            titleLong = titleShortField.text!
+        }
+        
         let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
@@ -76,8 +117,8 @@ class SellFieldsViewController: UIViewController {
             self.listingToPost = Listing(seller: "vjoshi", price: 29.49, textbook: sampleTextbook, preferredPaymentMethod: "Cash")*/
             
             let textbookDictionary: [String : Any] = [
-                "title" : ((self.titleShortField.text!.isEmpty == false) ? self.titleShortField.text! : self.titleLongField.text!),
-                "titleLong" : self.titleLongField.text!,
+                "title" : title,
+                "titleLong" : titleLong,
                 // TODO: "Author1, Author2" results in ["Author1", " Author2"]
                 "authors" : self.authorsField.text!.components(separatedBy: ","),
                 "datePublished": self.publishDateField.text!,
@@ -89,11 +130,8 @@ class SellFieldsViewController: UIViewController {
                 "binding" : self.bindingField.text!
             ]
             
-            let priceString = self.priceField.text!
-            let priceStringStartIndex = priceString.index(priceString.startIndex, offsetBy: 1)
-            let priceDouble = priceString[priceStringStartIndex..<priceString.endIndex]
-            
-            self.listingToPost = Listing(seller: "vjoshi", price: Double(priceDouble)!, textbook: Textbook(dict: textbookDictionary), preferredPaymentMethod: self.selectedPaymentMethod)
+            let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+            self.listingToPost = Listing(seller: userDisplayName, price: self.listingPrice!, textbook: Textbook(dict: textbookDictionary), preferredPaymentMethod: self.selectedPaymentMethod)
             
             self.addListingToFirebase(listingToAdd: self.listingToPost!.getDictionary())
         }))
@@ -103,12 +141,10 @@ class SellFieldsViewController: UIViewController {
     @IBAction func setPriceTapped(_ sender: Any) {
         // TODO: make sure price is in proper format (Ex. "9.9" should be changed to "9.90")
         
-        setPostButtonEnabled()
-        
-        let priceEntered = priceField.text
+        /*let priceEntered = priceField.text
         if priceEntered?.isEmpty == false && priceEntered?.prefix(1) != "$" {
             priceField.text = "$" + priceEntered!
-        }
+        }*/
         
         priceField.resignFirstResponder()
     }
@@ -117,9 +153,9 @@ class SellFieldsViewController: UIViewController {
         
     }
     
-    func showAlert(title: String, message: String, action: String = "OK", actionHandler: @escaping (UIAlertAction) -> Void) {
+    func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString(action, comment: "Default action"), style: .`default`, handler: actionHandler))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -163,18 +199,19 @@ class SellFieldsViewController: UIViewController {
                 DispatchQueue.main.async {
                     let title = "Listing Posted"
                     let message = "Your listing was successfully posted!"
-                    self.showAlert(title: title, message: message, actionHandler: { (alert) in
+                    
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
                         self.dismiss(animated: true, completion: nil)
-                    })
+                    }))
+                    self.present(alert, animated: true, completion: nil)
                 }
             } else {
                 // performs UI updates on the Main Thread
                 DispatchQueue.main.async {
                     let title = "Post Failed"
                     let message = "There was an error in posting the listing. Sorry about that!"
-                    self.showAlert(title: title, message: message, actionHandler: { (alert) in
-                        // do nothing
-                    })
+                    self.showAlert(title: title, message: message)
                 }
             }
         }
@@ -234,8 +271,6 @@ extension SellFieldsViewController: UITextFieldDelegate {
         
         return false*/
         
-        setPostButtonEnabled()
-        
         textField.resignFirstResponder()
         return true
     }
@@ -258,7 +293,6 @@ extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedPaymentMethod = preferredPaymentMethods[row]
-        setPostButtonEnabled()
     }
     
 }

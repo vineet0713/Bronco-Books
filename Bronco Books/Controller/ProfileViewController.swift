@@ -8,6 +8,9 @@
 
 import UIKit
 
+import Firebase
+import GoogleSignIn
+
 class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -20,10 +23,13 @@ class ProfileViewController: UIViewController {
         let alert = UIAlertController(title: "Confirm Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            UserDefaults.standard.set(nil, forKey: "loggedIn")
+            GIDSignIn.sharedInstance().signOut()
+            
+            UserDefaults.standard.set(nil, forKey: Constants.UserEmailKey)
+            UserDefaults.standard.set(nil, forKey: Constants.UserDisplayNameKey)
             UserDefaults.standard.synchronize()
             
-            self.performSegue(withIdentifier: "profileToLoginSegue", sender: self)
+            self.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
     }
