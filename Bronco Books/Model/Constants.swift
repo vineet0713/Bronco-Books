@@ -23,4 +23,7 @@ struct Constants {
     // Preferred Payment Methods
     static let PreferredPaymentMethods = ["[Preferred Payment Method]", "Apple Pay", "Cash", "Check"]
     
+    // Publish Date Format
+    static let DateFormat = "mm-dd-yyyy"
+    
 }

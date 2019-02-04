@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 import FirebaseDatabase
 
@@ -16,9 +17,11 @@ class SellFieldsViewController: UIViewController {
     
     var listingToPost: Listing?
     
+    var publishDate: Date? = nil
     var listingPrice: Double? = nil
-    
     var selectedPaymentMethod: String!
+    
+    let dateFormatter = DateFormatter()
     
     // MARK: - IBOutlets
     
@@ -50,18 +53,36 @@ class SellFieldsViewController: UIViewController {
         
         paymentMethodPicker.dataSource = self
         paymentMethodPicker.delegate = self
+        
+        dateFormatter.dateFormat = Constants.DateFormat
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        publishDate = nil
+        listingPrice = nil
         selectedPaymentMethod = Constants.PreferredPaymentMethods[0]
     }
     
     // MARK: - Helper Functions
     
+    func publishDateIsValid() -> Bool {
+        if Int(publishDateField.text!.suffix(4)) == nil {
+            return false
+        }
+        
+        if let date = dateFormatter.date(from: publishDateField.text!) {
+            publishDate = date
+            return true
+        } else {
+            publishDate = nil
+            return false
+        }
+    }
+    
     func priceIsValid() -> Bool {
-        if let doublePrice = Double(self.priceField.text!) {
+        if let doublePrice = Double(priceField.text!) {
             listingPrice = doublePrice
             return true
         } else {
@@ -77,6 +98,10 @@ class SellFieldsViewController: UIViewController {
         
         if authorsField.text?.isEmpty == true {
             return "Please enter 1 or more authors for your textbook."
+        }
+        
+        if publishDateIsValid() == false {
+            return "Please enter a publish date in the format '\(Constants.DateFormat)' for your textbook."
         }
         
         if priceIsValid() == false {
@@ -110,12 +135,17 @@ class SellFieldsViewController: UIViewController {
             titleLong = titleShortField.text!
         }
         
+        let authorArray = authorsField.text!.components(separatedBy: ",")
+        let authorArrayTrimmed = authorArray.map { (author) -> String in
+            return author.trimmingCharacters(in: .whitespaces)
+        }
+        
         let textbookDictionary: [String : Any] = [
             "title" : title,
             "titleLong" : titleLong,
             // converts comma-separated string into array of strings, then trims whitespace of each string in array
-            "authors" : authorsField.text!.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) },
-            "datePublished": publishDateField.text!,
+            "authors" : authorArrayTrimmed,
+            "datePublished": dateFormatter.string(from: publishDate!),
             "publisher" : publisherField.text!,
             "language" : languageField.text!,
             "edition" : editionField.text!,
@@ -129,7 +159,9 @@ class SellFieldsViewController: UIViewController {
             "displayName" : UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
         ]
         
-        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: Seller(dict: sellerDictionary), price: listingPrice!, preferredPaymentMethod: selectedPaymentMethod)
+        let epochTimeSeconds = Int(NSDate().timeIntervalSince1970)
+        
+        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: Seller(dict: sellerDictionary), price: listingPrice!, preferredPaymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds)
         
         addListingToFirebase(listingToAdd: listingToPost!.getDictionary())
     }

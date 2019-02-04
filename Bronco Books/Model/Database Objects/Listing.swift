@@ -16,14 +16,16 @@ class Listing {
     let seller: Seller
     let price: Double
     let preferredPaymentMethod: String
+    let epochTimePosted: Int
     
     // MARK: - Constructors
     
-    init(textbook: Textbook, seller: Seller, price: Double, preferredPaymentMethod: String) {
+    init(textbook: Textbook, seller: Seller, price: Double, preferredPaymentMethod: String, epochTimePosted: Int) {
         self.textbook = textbook
         self.seller = seller
         self.price = price
         self.preferredPaymentMethod = preferredPaymentMethod
+        self.epochTimePosted = epochTimePosted
     }
     
     init(dict: [String : Any]) {
@@ -35,6 +37,7 @@ class Listing {
         
         self.price = dict["price"] as! Double
         self.preferredPaymentMethod = dict["preferredPaymentMethod"] as! String
+        self.epochTimePosted = dict["epochTimePosted"] as! Int
     }
     
     // MARK: - Member Function
@@ -44,7 +47,8 @@ class Listing {
             "textbook" : self.textbook.getDictionary(),
             "seller" : self.seller.getDictionary(),
             "price" : self.price,
-            "preferredPaymentMethod" : self.preferredPaymentMethod
+            "preferredPaymentMethod" : self.preferredPaymentMethod,
+            "epochTimePosted" : self.epochTimePosted
         ]
         
         return dict

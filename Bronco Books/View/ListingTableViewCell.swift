@@ -13,6 +13,7 @@ class ListingTableViewCell: UITableViewCell {
     // MARK - IBOutlets
 
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var authorsLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var sellerLabel: UILabel!
     
