@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Seller {
+class User {
     
     // MARK: - Stored Properties
     

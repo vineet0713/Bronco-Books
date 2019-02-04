@@ -161,12 +161,12 @@ class SellFieldsViewController: UIViewController {
         
         let epochTimeSeconds = Int(NSDate().timeIntervalSince1970)
         
-        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: Seller(dict: sellerDictionary), price: listingPrice!, preferredPaymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds)
+        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: User(dict: sellerDictionary), price: listingPrice!, preferredPaymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds)
         
         addListingToFirebase(listingToAdd: listingToPost!.getDictionary())
     }
     
-    func addListingToFirebase(listingToAdd: [String : Any]) {
+    func addListingToFirebase(listingToAdd: [String : Any?]) {
         let databaseReferenceListings = Database.database().reference().child("listings")
         databaseReferenceListings.childByAutoId().setValue(listingToAdd) { (error, databaseReference) in
             if error == nil {

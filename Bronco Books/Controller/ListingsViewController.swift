@@ -47,47 +47,69 @@ class ListingsViewController: UIViewController {
         
         listingsTable.backgroundView = activityIndicator
         listingsTable.separatorStyle = .none
+        
+        setupChildAddedObserver()
+        setupChildChangedObserver()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        loadData()
-    }
+    // MARK: - Firebase Setup Functions
     
-    // MARK: - Helper Function
-    
-    func loadData() {
-        activityIndicator.startAnimating()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            // To show the activity indicator, even when connection speed is fast!
-            // sleep(1)
-            
-            let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
-            databaseReferenceListings.observeSingleEvent(of: .value) { (snapshot) in
-                guard let listings = snapshot.value as? [String : Any] else {
-                    // either there are no listings, or there is a problem in the database!
-                    self.activityIndicator.stopAnimating()
-                    return
-                }
-                
-                self.listingArray.removeAll()
-                
-                for (_, value) in listings {
-                    let listingDictionary = value as! [String : Any]
-                    let listing = Listing(dict: listingDictionary)
-                    self.listingArray.append(listing)
-                }
+    func setupChildAddedObserver() {
+        let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
+        databaseReferenceListings.observe(.childAdded) { (snapshot) in
+            guard let listingDictionary = snapshot.value as? [String : Any?] else {
+                // there is a problem in the database!
+                return
+            }
+            let onSale = listingDictionary["onSale"] as! Bool
+            if onSale {
+                let listing = Listing(dict: listingDictionary)
+                listing.setId(id: snapshot.key)
+                self.listingArray.insert(listing, at: 0)
                 
                 DispatchQueue.main.async {
-                    self.listingsTable.separatorStyle = .singleLine
-                    self.listingsTable.reloadData()
-                    self.activityIndicator.stopAnimating()
+                    if self.searching {
+                        self.reloadSearchResults()
+                    } else {
+                        self.listingsTable.reloadData()
+                    }
                 }
             }
         }
     }
+    
+    func setupChildChangedObserver() {
+        let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
+        databaseReferenceListings.observe(.childChanged) { (snapshot) in
+            guard let listingDictionary = snapshot.value as? [String : Any?] else {
+                // there is a problem in the database!
+                return
+            }
+            
+            let onSale = listingDictionary["onSale"] as! Bool
+            if onSale {
+                // TODO: instead of blindly adding listing, check if it exists in listingArray first (if it does, then update it)
+                let listing = Listing(dict: listingDictionary)
+                listing.setId(id: snapshot.key)
+                self.listingArray.insert(listing, at: 0)
+            } else {
+                let idToRemove = snapshot.key
+                self.listingArray = self.listingArray.filter({ (listing) -> Bool in
+                    return (listing.id != idToRemove)
+                })
+            }
+            
+            DispatchQueue.main.async {
+                if self.searching {
+                    self.reloadSearchResults()
+                } else {
+                    self.listingsTable.reloadData()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Helper Function
     
     func reloadSearchResults() {
         let searchText = self.searchText.lowercased()
@@ -105,7 +127,6 @@ class ListingsViewController: UIViewController {
         })
         
         searching = true
-        listingsTable.separatorStyle = (filteredListings.count == 0) ? .none : .singleLine
         listingsTable.reloadData()
     }
     
@@ -167,6 +188,12 @@ extension ListingsViewController: UISearchBarDelegate {
 extension ListingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searching {
+            listingsTable.separatorStyle = (filteredListings.count == 0) ? .none : .singleLine
+        } else {
+            listingsTable.separatorStyle = (listingArray.count == 0) ? .none : .singleLine
+        }
+        
         return (searching ? filteredListings.count : listingArray.count)
     }
     
