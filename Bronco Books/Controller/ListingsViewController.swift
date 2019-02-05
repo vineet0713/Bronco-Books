@@ -46,7 +46,7 @@ class ListingsViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         
         listingsTable.backgroundView = activityIndicator
-        listingsTable.separatorStyle = .none
+        listingsTable.tableFooterView = UIView(frame: .zero)
         
         setupChildAddedObserver()
         setupChildChangedObserver()
@@ -57,8 +57,11 @@ class ListingsViewController: UIViewController {
     func setupChildAddedObserver() {
         let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
         databaseReferenceListings.observe(.childAdded) { (snapshot) in
+            self.activityIndicator.startAnimating()
+            
             guard let listingDictionary = snapshot.value as? [String : Any?] else {
                 // there is a problem in the database!
+                self.activityIndicator.stopAnimating()
                 return
             }
             let onSale = listingDictionary["onSale"] as! Bool
@@ -68,6 +71,7 @@ class ListingsViewController: UIViewController {
                 self.listingArray.insert(listing, at: 0)
                 
                 DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
                     if self.searching {
                         self.reloadSearchResults()
                     } else {
@@ -81,17 +85,32 @@ class ListingsViewController: UIViewController {
     func setupChildChangedObserver() {
         let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
         databaseReferenceListings.observe(.childChanged) { (snapshot) in
+            self.activityIndicator.startAnimating()
+            
             guard let listingDictionary = snapshot.value as? [String : Any?] else {
                 // there is a problem in the database!
+                self.activityIndicator.stopAnimating()
                 return
             }
             
             let onSale = listingDictionary["onSale"] as! Bool
             if onSale {
-                // TODO: instead of blindly adding listing, check if it exists in listingArray first (if it does, then update it)
-                let listing = Listing(dict: listingDictionary)
-                listing.setId(id: snapshot.key)
-                self.listingArray.insert(listing, at: 0)
+                let changedListing = Listing(dict: listingDictionary)
+                changedListing.setId(id: snapshot.key)
+                
+                // instead of blindly adding listing, first check if it exists in listingArray (if it does, then update it)
+                var found = false
+                for index in 0..<self.listingArray.count {
+                    if self.listingArray[index].id == changedListing.id {
+                        // if listing exists already in listingArray, then update it
+                        self.listingArray[index] = changedListing
+                        found = true
+                        break
+                    }
+                }
+                if found == false {
+                    self.listingArray.insert(changedListing, at: 0)
+                }
             } else {
                 let idToRemove = snapshot.key
                 self.listingArray = self.listingArray.filter({ (listing) -> Bool in
@@ -100,6 +119,7 @@ class ListingsViewController: UIViewController {
             }
             
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 if self.searching {
                     self.reloadSearchResults()
                 } else {
