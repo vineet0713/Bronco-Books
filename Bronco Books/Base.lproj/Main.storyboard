@@ -487,36 +487,36 @@
                                     </scopeButtonTitles>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="listingCell" rowHeight="130" id="y0L-gg-b2l" customClass="ListingTableViewCell" customModule="Bronco_Books" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="84" width="375" height="130"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="listingCell" rowHeight="160" id="y0L-gg-b2l" customClass="ListingTableViewCell" customModule="Bronco_Books" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="84" width="375" height="160"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y0L-gg-b2l" id="nkU-kJ-Of3">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="129.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="159.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="aXc-W9-afb">
-                                                    <rect key="frame" x="14" y="10.5" width="347" height="108.5"/>
+                                                    <rect key="frame" x="20" y="20" width="335" height="119.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Textbook Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E51-Lv-4yy">
-                                                            <rect key="frame" x="0.0" y="0.0" width="347" height="23.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="335" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author(s):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hj-lF-bdt">
-                                                            <rect key="frame" x="0.0" y="28.5" width="347" height="23.5"/>
+                                                            <rect key="frame" x="0.0" y="31" width="335" height="26.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U4K-r7-mbL">
-                                                            <rect key="frame" x="0.0" y="57" width="347" height="23"/>
+                                                            <rect key="frame" x="0.0" y="62.5" width="335" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seller:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jc4-d5-APs">
-                                                            <rect key="frame" x="0.0" y="85" width="347" height="23.5"/>
+                                                            <rect key="frame" x="0.0" y="93.5" width="335" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -525,10 +525,10 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="aXc-W9-afb" firstAttribute="bottom" secondItem="nkU-kJ-Of3" secondAttribute="bottomMargin" id="GTA-92-0Np"/>
-                                                <constraint firstItem="aXc-W9-afb" firstAttribute="centerX" secondItem="nkU-kJ-Of3" secondAttribute="centerX" id="MJM-59-QDv"/>
-                                                <constraint firstItem="aXc-W9-afb" firstAttribute="leading" secondItem="nkU-kJ-Of3" secondAttribute="leadingMargin" constant="-1" id="UjB-S0-tAP"/>
-                                                <constraint firstItem="aXc-W9-afb" firstAttribute="centerY" secondItem="nkU-kJ-Of3" secondAttribute="centerY" id="cyf-By-1jl"/>
+                                                <constraint firstAttribute="trailing" secondItem="aXc-W9-afb" secondAttribute="trailing" constant="20" symbolic="YES" id="KPg-bQ-V0j"/>
+                                                <constraint firstItem="aXc-W9-afb" firstAttribute="top" secondItem="nkU-kJ-Of3" secondAttribute="top" constant="20" symbolic="YES" id="XsE-q4-ZBe"/>
+                                                <constraint firstAttribute="bottom" secondItem="aXc-W9-afb" secondAttribute="bottom" constant="20" symbolic="YES" id="ZHh-J9-e3v"/>
+                                                <constraint firstItem="aXc-W9-afb" firstAttribute="leading" secondItem="nkU-kJ-Of3" secondAttribute="leading" constant="20" symbolic="YES" id="eCJ-Uo-juh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
