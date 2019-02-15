@@ -14,8 +14,6 @@ class ScanBarcodeViewController: UIViewController {
     
     // MARK: - Properties
     
-    var image: UIImage?
-    
     let captureSession = AVCaptureSession()
     var previewLayer: CALayer!
     var captureDevice: AVCaptureDevice!
@@ -153,34 +151,32 @@ class ScanBarcodeViewController: UIViewController {
 extension ScanBarcodeViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        // this is called when our capture session is running (all the time)
+        // this is called when our capture session is running (all the time!)
         
         if shouldProcessPhoto {
             shouldProcessPhoto = false
             
             if let image = getImageFromSampleBuffer(buffer: sampleBuffer) {
-                self.image = image
-                
                 // detect barcode with the image!
                 MLKit.sharedInstance().detectBarcode(from: image) { (barcode, error) in
                     if barcode != nil {
-                        print(barcode!)
+                        let alert = UIAlertController(title: "Barcode Scanned", message: barcode, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: "Default Action"), style: .default, handler: { (action) in
+                            self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
+                        }))
+                        self.present(alert, animated: true, completion: nil)
                         
                         // TODO: make GET Request to ISBNdb API
-                        
-                        self.performSegue(withIdentifier: "scanToImageSegue", sender: self)
-                    } else {
-                        print(error!)
                     }
                 }
             }
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? ImageViewController {
             destinationVC.image = self.image
         }
-    }
+    }*/
     
 }

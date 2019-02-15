@@ -54,7 +54,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ChV-ga-YDl">
                                 <rect key="frame" x="16" y="64" width="343" height="554"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Listing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mRj-Sy-gJh">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create New Listing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mRj-Sy-gJh">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="138.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <nil key="textColor"/>
@@ -129,41 +129,11 @@
                     <connections>
                         <outlet property="scanBarcodeLabel" destination="sZv-Qe-XGa" id="Ydk-hW-amh"/>
                         <segue destination="Rtc-gA-OKR" kind="show" identifier="scanToFieldsSegue" id="w4r-er-Fle"/>
-                        <segue destination="8Ft-yV-emR" kind="show" identifier="scanToImageSegue" id="Gdw-nb-PXK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xnX-1B-8Kg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3910" y="-289"/>
-        </scene>
-        <!--Image View Controller-->
-        <scene sceneID="ml1-5e-k2l">
-            <objects>
-                <viewController id="8Ft-yV-emR" customClass="ImageViewController" customModule="Bronco_Books" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ARf-NI-mno">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xvr-bW-luV">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="xvr-bW-luV" firstAttribute="bottom" secondItem="qy1-Yo-q49" secondAttribute="bottom" id="BB7-Is-tB9"/>
-                            <constraint firstItem="xvr-bW-luV" firstAttribute="top" secondItem="qy1-Yo-q49" secondAttribute="top" id="UZg-tu-eKA"/>
-                            <constraint firstItem="xvr-bW-luV" firstAttribute="trailing" secondItem="qy1-Yo-q49" secondAttribute="trailing" id="crx-vq-Fva"/>
-                            <constraint firstItem="xvr-bW-luV" firstAttribute="leading" secondItem="qy1-Yo-q49" secondAttribute="leading" id="xP4-QB-Ugf"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="qy1-Yo-q49"/>
-                    </view>
-                    <connections>
-                        <outlet property="imageView" destination="xvr-bW-luV" id="hJh-0p-Xeq"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f9l-se-vQk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4853.6000000000004" y="-289.20539730134936"/>
         </scene>
         <!--Sell Fields View Controller-->
         <scene sceneID="ODC-uV-j46">
@@ -694,6 +664,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="w4r-er-Fle"/>
+        <segue reference="7Zc-3M-rhi"/>
     </inferredMetricsTieBreakers>
 </document>
