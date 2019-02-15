@@ -6,12 +6,16 @@ target 'Bronco Books' do
   use_frameworks!
 
   # Pods for Bronco Books
-
+  
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  
   pod 'Firebase/Auth'
   pod 'GoogleSignIn'
-
+  
+  pod 'Firebase/MLVision'
+  pod 'Firebase/MLVisionBarcodeModel'
+  
   target 'Bronco BooksTests' do
     inherit! :search_paths
     # Pods for testing

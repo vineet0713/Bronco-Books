@@ -8,24 +8,26 @@
 
 import UIKit
 
+import Firebase
+
 class StartSellViewController: UIViewController {
     
     // MARK: - Life Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - IBActions
     
     @IBAction func scanTapped(_ sender: Any) {
-        showAlert(title: "Nonexistent Feature", message: "Barcode scanning is not implemented yet. Stay tuned!")
+        self.performSegue(withIdentifier: "startSellToScanSegue", sender: self)
     }
     
     @IBAction func enterManuallyTapped(_ sender: Any) {
-        self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
+        self.performSegue(withIdentifier: "startSellToFieldsSegue", sender: self)
     }
     
     // MARK: - Helper Function

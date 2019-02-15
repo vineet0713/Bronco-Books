@@ -15,6 +15,8 @@ class SellFieldsViewController: UIViewController {
     
     // MARK: - Properties
     
+    var postButton: UIBarButtonItem!
+    
     var listingToPost: Listing?
     
     var publishDate: Date? = nil
@@ -51,6 +53,11 @@ class SellFieldsViewController: UIViewController {
         
         // The delegates of all UITextFields are set in Main.storyboard!
         
+        self.title = "Confirm Listing"
+        
+        postButton = UIBarButtonItem(title: "Post", style: .done, target: self, action: #selector(post))
+        self.navigationItem.rightBarButtonItem = postButton
+        
         paymentMethodPicker.dataSource = self
         paymentMethodPicker.delegate = self
         
@@ -59,6 +66,8 @@ class SellFieldsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.tabBarController?.tabBar.isHidden = true
         
         publishDate = nil
         listingPrice = nil
@@ -194,11 +203,17 @@ class SellFieldsViewController: UIViewController {
     
     // MARK: - IBActions
     
-    @IBAction func cancelTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func setPriceTapped(_ sender: Any) {
+        priceField.resignFirstResponder()
     }
     
-    @IBAction func postTapped(_ sender: Any) {
+    @IBAction func uploadPhotosTapped(_ sender: Any) {
+        
+    }
+    
+    // MARK: - Objective-C Exposed Function
+    
+    @objc func post() {
         // dismisses the keyboard without worrying about what is the first responder
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
@@ -213,14 +228,6 @@ class SellFieldsViewController: UIViewController {
             self.generateListingToPost()
         }))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction func setPriceTapped(_ sender: Any) {
-        priceField.resignFirstResponder()
-    }
-    
-    @IBAction func uploadPhotosTapped(_ sender: Any) {
-        
     }
     
 }

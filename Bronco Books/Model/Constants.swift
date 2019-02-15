@@ -26,4 +26,7 @@ struct Constants {
     // Publish Date Format
     static let DateFormat = "mm-dd-yyyy"
     
+    // Refresh Time Interval for ML Kit
+    static let TimeInterval = 2.0
+    
 }
