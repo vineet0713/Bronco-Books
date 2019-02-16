@@ -71,6 +71,7 @@ class SellFieldsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.tabBarController?.tabBar.isHidden = true
+        self.postButton.isEnabled = true
         
         autoFillTextbookFields()
         
@@ -95,6 +96,19 @@ class SellFieldsViewController: UIViewController {
         // do not fill editionField because Google Books API doesn't provide edition!
         pagesField.text! = String(textbookFields[Constants.TextbookKeys.Pages] as! Int)
         // do not fill bindingField because Google Books API doesn't provide binding!
+    }
+    
+    func clearFields() {
+        titleField.text = ""
+        subtitleField.text = ""
+        authorsField.text = ""
+        publisherField.text = ""
+        publishedDateField.text = ""
+        languageField.text = ""
+        editionField.text = ""
+        pagesField.text = ""
+        priceField.text = ""
+        // TODO: clear listingPhotosCollection
     }
     
     func publishedDateIsValid() -> Bool {
@@ -203,18 +217,15 @@ class SellFieldsViewController: UIViewController {
             // performs UI updates on the Main Thread
             DispatchQueue.main.async {
                 if error == nil {
-                    let title = "Listing Posted"
-                    let message = "Your listing was successfully posted!"
-                    
-                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    self.clearFields()
+                    let alert = UIAlertController(title: "Listing Posted", message: "Your listing was successfully posted!", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
                         self.navigationController?.popViewController(animated: true)
                     }))
                     self.present(alert, animated: true, completion: nil)
                 } else {
-                    let title = "Post Failed"
-                    let message = "There was an error in posting the listing. Sorry about that!"
-                    self.showAlert(title: title, message: message)
+                    self.postButton.isEnabled = true
+                    self.showAlert(title: "Post Failed", message: "There was an error in posting the listing. Sorry about that!")
                 }
             }
         }
@@ -244,6 +255,7 @@ class SellFieldsViewController: UIViewController {
         let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            self.postButton.isEnabled = false
             self.generateListingToPost()
         }))
         self.present(alert, animated: true, completion: nil)

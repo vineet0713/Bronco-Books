@@ -24,6 +24,9 @@ class ScanBarcodeViewController: UIViewController {
     
     var scannedBookDictionary: [String : Any]!
     
+    var continuePressed: Bool!
+    var requestFinished: Bool!
+    
     // MARK: - IBOutlet
     
     @IBOutlet weak var scanBarcodeLabel: UILabel!
@@ -39,6 +42,9 @@ class ScanBarcodeViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
         
         shouldProcessPhoto = false
+        
+        continuePressed = false
+        requestFinished = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -144,11 +150,17 @@ class ScanBarcodeViewController: UIViewController {
                 return
             }
             
+            // starts the GET request on a background queue
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.makeGoogleBooksRequest(with: validBarcode)
+            }
+            
             self.stopTimer()
             
             let alert = UIAlertController(title: "Barcode Scanned", message: validBarcode, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: "Default Action"), style: .default, handler: { (action) in
-                self.makeGoogleBooksRequest(with: validBarcode)
+                self.continuePressed = true
+                self.checkToPerformSegue()
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -158,17 +170,25 @@ class ScanBarcodeViewController: UIViewController {
         GoogleBooksClient.sharedInstance().getBookInformation(from: isbn, completionHandler: { (result, error) in
             if let bookFields = result {
                 self.scannedBookDictionary = bookFields
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
-                }
+                self.requestFinished = true
+                self.checkToPerformSegue()
             } else {
                 let alert = UIAlertController(title: "Load Failed", message: error, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { (action) in
+                    self.continuePressed = false
                     self.startTimer()
                 }))
                 self.present(alert, animated: true, completion: nil)
             }
         })
+    }
+    
+    func checkToPerformSegue() {
+        if continuePressed && requestFinished {
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
+            }
+        }
     }
     
     func startTimer() {
