@@ -158,7 +158,7 @@
                                                     <outlet property="delegate" destination="Rtc-gA-OKR" id="X2Q-Y8-uuc"/>
                                                 </connections>
                                             </textField>
-                                            <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title (shortened)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="j6S-6G-BaP">
+                                            <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Subtitle" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="j6S-6G-BaP">
                                                 <rect key="frame" x="8" y="46" width="359" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -259,22 +259,13 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7kw-Nx-Y30">
                                                 <rect key="frame" x="8" y="122" width="359" height="30"/>
                                                 <subviews>
-                                                    <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Publish Date" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KkD-nA-9SF">
-                                                        <rect key="frame" x="0.0" y="0.0" width="177" height="30"/>
-                                                        <nil key="textColor"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="86n-xs-Ald"/>
-                                                        </connections>
-                                                    </textField>
                                                     <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Publisher" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AHz-Xb-1hV">
-                                                        <rect key="frame" x="182" y="0.0" width="177" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                                         <connections>
-                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="sv8-BJ-lkH"/>
+                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="uVx-Xn-pYh"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -285,22 +276,22 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Tjg-Pb-av9">
                                                 <rect key="frame" x="8" y="160" width="359" height="30"/>
                                                 <subviews>
-                                                    <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Language" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ngl-yH-MQ1">
+                                                    <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Published Date" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ngl-yH-MQ1">
                                                         <rect key="frame" x="0.0" y="0.0" width="177" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                                         <connections>
-                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="iUI-HM-5tv"/>
+                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="dCB-ST-8vO"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Format" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rwm-U0-gQd">
+                                                    <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Language" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rwm-U0-gQd">
                                                         <rect key="frame" x="182" y="0.0" width="177" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                         <connections>
-                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="oJ8-Fv-PT3"/>
+                                                            <outlet property="delegate" destination="Rtc-gA-OKR" id="d4l-Tq-Yuo"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -420,16 +411,15 @@
                         <outlet property="authorsField" destination="nBw-qc-huI" id="JlT-3W-F24"/>
                         <outlet property="bindingField" destination="c2n-hR-Rez" id="Ruw-6A-8bL"/>
                         <outlet property="editionField" destination="XRZ-ly-KQ1" id="hPc-8d-qmC"/>
-                        <outlet property="formatField" destination="rwm-U0-gQd" id="4xt-i6-hZm"/>
-                        <outlet property="languageField" destination="ngl-yH-MQ1" id="Qm7-tz-Ss7"/>
+                        <outlet property="languageField" destination="rwm-U0-gQd" id="j4E-x5-sQo"/>
                         <outlet property="listingPhotosCollection" destination="S6c-7n-Qfu" id="egf-SK-xIE"/>
                         <outlet property="pagesField" destination="syl-rf-OT3" id="kCm-Xf-Iil"/>
                         <outlet property="paymentMethodPicker" destination="qAH-k6-3lk" id="Wn9-4W-AAs"/>
                         <outlet property="priceField" destination="seA-Rk-fu4" id="c0T-0N-KD2"/>
-                        <outlet property="publishDateField" destination="KkD-nA-9SF" id="Br2-Ho-NaK"/>
-                        <outlet property="publisherField" destination="AHz-Xb-1hV" id="anE-Ts-feU"/>
-                        <outlet property="titleLongField" destination="XnN-84-caY" id="imk-Lf-PcD"/>
-                        <outlet property="titleShortField" destination="j6S-6G-BaP" id="aB1-9v-vOz"/>
+                        <outlet property="publishedDateField" destination="ngl-yH-MQ1" id="AlP-2b-T9n"/>
+                        <outlet property="publisherField" destination="AHz-Xb-1hV" id="K2h-Ii-dLy"/>
+                        <outlet property="subtitleField" destination="j6S-6G-BaP" id="t6g-2w-bN1"/>
+                        <outlet property="titleField" destination="XnN-84-caY" id="ikx-3T-LLg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0iR-M7-Yi4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -664,6 +654,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7Zc-3M-rhi"/>
+        <segue reference="w4r-er-Fle"/>
     </inferredMetricsTieBreakers>
 </document>

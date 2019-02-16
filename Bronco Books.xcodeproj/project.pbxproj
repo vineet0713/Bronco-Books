@@ -31,6 +31,9 @@
 		65B6CCAC2203D8E3005F5616 /* Textbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B6CCAB2203D8E3005F5616 /* Textbook.swift */; };
 		65D5DBFC2215EECD00DC7444 /* ScanBarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5DBFB2215EECD00DC7444 /* ScanBarcodeViewController.swift */; };
 		65D5DBFE2216274200DC7444 /* MLKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5DBFD2216274200DC7444 /* MLKit.swift */; };
+		65DD73EF22178EC50049EF47 /* GoogleBooksClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DD73EE22178EC50049EF47 /* GoogleBooksClient.swift */; };
+		65DD73F122178F4C0049EF47 /* GoogleBooksConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DD73F022178F4C0049EF47 /* GoogleBooksConstants.swift */; };
+		65DD73F3221790860049EF47 /* GoogleBooksConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DD73F2221790860049EF47 /* GoogleBooksConvenience.swift */; };
 		65E67D7722079F5100B751B7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E67D7622079F5100B751B7 /* User.swift */; };
 		713594B1B2502C2B064EAB3E /* Pods_Bronco_BooksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AE5DEF15087CE9DCC60E23 /* Pods_Bronco_BooksTests.framework */; };
 /* End PBXBuildFile section */
@@ -83,6 +86,9 @@
 		65B6CCAB2203D8E3005F5616 /* Textbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Textbook.swift; sourceTree = "<group>"; };
 		65D5DBFB2215EECD00DC7444 /* ScanBarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanBarcodeViewController.swift; sourceTree = "<group>"; };
 		65D5DBFD2216274200DC7444 /* MLKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLKit.swift; sourceTree = "<group>"; };
+		65DD73EE22178EC50049EF47 /* GoogleBooksClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleBooksClient.swift; sourceTree = "<group>"; };
+		65DD73F022178F4C0049EF47 /* GoogleBooksConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleBooksConstants.swift; sourceTree = "<group>"; };
+		65DD73F2221790860049EF47 /* GoogleBooksConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleBooksConvenience.swift; sourceTree = "<group>"; };
 		65E67D7622079F5100B751B7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		780F2D5F61896FD36E15AA31 /* Pods-Bronco Books.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco Books.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco Books/Pods-Bronco Books.debug.xcconfig"; sourceTree = "<group>"; };
 		BDF164324AFE37E7B297D6E5 /* Pods-Bronco BooksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bronco BooksUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bronco BooksUITests/Pods-Bronco BooksUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -211,11 +217,30 @@
 		65C8760921FBCD9500E9BB8F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				65DD73EC22178E9A0049EF47 /* Clients */,
 				65468E212206984A00E32F71 /* Constants.swift */,
 				65D5DBFD2216274200DC7444 /* MLKit.swift */,
 				658F06A62204ADFE0045F8D5 /* Database Objects */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		65DD73EC22178E9A0049EF47 /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				65DD73ED22178EAD0049EF47 /* Google Books */,
+			);
+			path = Clients;
+			sourceTree = "<group>";
+		};
+		65DD73ED22178EAD0049EF47 /* Google Books */ = {
+			isa = PBXGroup;
+			children = (
+				65DD73EE22178EC50049EF47 /* GoogleBooksClient.swift */,
+				65DD73F022178F4C0049EF47 /* GoogleBooksConstants.swift */,
+				65DD73F2221790860049EF47 /* GoogleBooksConvenience.swift */,
+			);
+			path = "Google Books";
 			sourceTree = "<group>";
 		};
 		B63773960A82824C9A1F8B06 /* Frameworks */ = {
@@ -510,13 +535,16 @@
 				65D5DBFC2215EECD00DC7444 /* ScanBarcodeViewController.swift in Sources */,
 				6558CD4721FA6BD000AF2ABF /* LoginViewController.swift in Sources */,
 				65B6CCAA2203CA0D005F5616 /* Listing.swift in Sources */,
+				65DD73F3221790860049EF47 /* GoogleBooksConvenience.swift in Sources */,
 				6558CD1E21FA6AB300AF2ABF /* Bronco_Books.xcdatamodeld in Sources */,
 				6558CD4921FA7C9500AF2ABF /* ListingTableViewCell.swift in Sources */,
 				6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */,
+				65DD73F122178F4C0049EF47 /* GoogleBooksConstants.swift in Sources */,
 				6558CD4B21FA7CAB00AF2ABF /* ListingsViewController.swift in Sources */,
 				651B773E21FB858700EDC29C /* ProfileViewController.swift in Sources */,
 				65D5DBFE2216274200DC7444 /* MLKit.swift in Sources */,
 				65E67D7722079F5100B751B7 /* User.swift in Sources */,
+				65DD73EF22178EC50049EF47 /* GoogleBooksClient.swift in Sources */,
 				6543DCE921FA8FCA00AC4A9B /* StartSellViewController.swift in Sources */,
 				6543DCEB21FA90FA00AC4A9B /* SellFieldsViewController.swift in Sources */,
 				65468E222206984A00E32F71 /* Constants.swift in Sources */,

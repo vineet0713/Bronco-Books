@@ -21,12 +21,50 @@ struct Constants {
     static let ListingPathString = "listings"
     
     // Preferred Payment Methods
-    static let PreferredPaymentMethods = ["[Preferred Payment Method]", "Apple Pay", "Cash", "Check"]
+    static let PaymentMethods = ["[Choose Payment Method]", "Apple Pay", "Cash", "Check"]
     
     // Publish Date Format
-    static let DateFormat = "mm-dd-yyyy"
+    static let LongDateFormat = "yyyy-mm-dd"
+    static let ShortDateFormat = "yyyy"
     
     // Refresh Time Interval for ML Kit
-    static let TimeInterval = 2.0
+    static let TimeInterval = 1.0
+    
+    struct ListingKeys {
+        static let Textbook = "textbook"
+        static let Seller = "seller"
+        static let Price = "price"
+        static let PaymentMethod = "paymentMethod"
+        static let EpochTimePosted = "epochTimePosted"
+        static let Buyer = "buyer"
+        static let OnSale = "onSale"
+        static let ID = "id"
+    }
+    
+    struct UserKeys {
+        static let Email = "email"
+        static let DisplayName = "displayName"
+    }
+    
+    struct TextbookKeys {
+        static let Title = "title"
+        static let Subtitle = "subtitle"
+        static let Authors = "authors"
+        static let Publisher = "publisher"
+        static let PublishedDate = "publishedDate"
+        static let Language = "language"
+        static let Edition = "edition"
+        static let Pages = "pages"
+        static let Binding = "binding"
+    }
+    
+    struct IncompleteFieldError {
+        static let Title = "Please enter a title for your textbook."
+        static let Authors = "Please enter 1 or more authors for your textbook."
+        static let PublishedDate = "Please enter a publish date in the format '\(LongDateFormat)' for your textbook."
+        static let Pages = "Please enter the number of pages in your textbook."
+        static let Price = "Please enter a valid price for your listing."
+        static let PaymentMethod = "Please enter a payment method for your listing."
+    }
     
 }

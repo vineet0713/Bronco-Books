@@ -15,7 +15,7 @@ class Listing {
     let textbook: Textbook
     let seller: User
     let price: Double
-    let preferredPaymentMethod: String
+    let paymentMethod: String
     let epochTimePosted: Int
     
     var buyer: User?
@@ -25,26 +25,26 @@ class Listing {
     
     // MARK: - Constructors
     
-    init(textbook: Textbook, seller: User, price: Double, preferredPaymentMethod: String, epochTimePosted: Int) {
+    init(textbook: Textbook, seller: User, price: Double, paymentMethod: String, epochTimePosted: Int) {
         self.textbook = textbook
         self.seller = seller
         self.price = price
-        self.preferredPaymentMethod = preferredPaymentMethod
+        self.paymentMethod = paymentMethod
         self.epochTimePosted = epochTimePosted
         
         self.onSale = true
     }
     
     init(dict: [String : Any?]) {
-        let textbookDict = dict["textbook"] as! [String : Any]
+        let textbookDict = dict[Constants.ListingKeys.Textbook] as! [String : Any]
         self.textbook = Textbook(dict: textbookDict)
         
-        let sellerDict = dict["seller"] as! [String : Any]
+        let sellerDict = dict[Constants.ListingKeys.Seller] as! [String : Any]
         self.seller = User(dict: sellerDict)
         
-        self.price = dict["price"] as! Double
-        self.preferredPaymentMethod = dict["preferredPaymentMethod"] as! String
-        self.epochTimePosted = dict["epochTimePosted"] as! Int
+        self.price = dict[Constants.ListingKeys.Price] as! Double
+        self.paymentMethod = dict[Constants.ListingKeys.PaymentMethod] as! String
+        self.epochTimePosted = dict[Constants.ListingKeys.EpochTimePosted] as! Int
         
         self.onSale = true
     }
@@ -53,14 +53,14 @@ class Listing {
     
     func getDictionary() -> [String : Any?] {
         let dict: [String : Any?] = [
-            "textbook" : self.textbook.getDictionary(),
-            "seller" : self.seller.getDictionary(),
-            "price" : self.price,
-            "preferredPaymentMethod" : self.preferredPaymentMethod,
-            "epochTimePosted" : self.epochTimePosted,
-            "buyer" : self.buyer,
-            "onSale": self.onSale,
-            "id" : self.id
+            Constants.ListingKeys.Textbook : self.textbook.getDictionary(),
+            Constants.ListingKeys.Seller : self.seller.getDictionary(),
+            Constants.ListingKeys.Price : self.price,
+            Constants.ListingKeys.PaymentMethod : self.paymentMethod,
+            Constants.ListingKeys.EpochTimePosted : self.epochTimePosted,
+            Constants.ListingKeys.Buyer : self.buyer,
+            Constants.ListingKeys.OnSale : self.onSale,
+            Constants.ListingKeys.ID : self.id
         ]
         
         return dict

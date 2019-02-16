@@ -30,6 +30,14 @@ class StartSellViewController: UIViewController {
         self.performSegue(withIdentifier: "startSellToFieldsSegue", sender: self)
     }
     
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? SellFieldsViewController {
+            destinationVC.fieldsFromBarcodeScan = nil
+        }
+    }
+    
     // MARK: - Helper Function
     
     func showAlert(title: String, message: String, action: String = "OK") {

@@ -17,23 +17,25 @@ class SellFieldsViewController: UIViewController {
     
     var postButton: UIBarButtonItem!
     
+    var fieldsFromBarcodeScan: [String : Any]?
     var listingToPost: Listing?
     
     var publishDate: Date? = nil
     var listingPrice: Double? = nil
     var selectedPaymentMethod: String!
     
-    let dateFormatter = DateFormatter()
+    let longDateFormatter = DateFormatter()
+    let shortDateFormatter = DateFormatter()
+    var longDateUsed: Bool!
     
     // MARK: - IBOutlets
     
-    @IBOutlet weak var titleLongField: UITextField!
-    @IBOutlet weak var titleShortField: UITextField!
+    @IBOutlet weak var titleField: UITextField!
+    @IBOutlet weak var subtitleField: UITextField!
     @IBOutlet weak var authorsField: UITextField!
-    @IBOutlet weak var publishDateField: UITextField!
     @IBOutlet weak var publisherField: UITextField!
+    @IBOutlet weak var publishedDateField: UITextField!
     @IBOutlet weak var languageField: UITextField!
-    @IBOutlet weak var formatField: UITextField!
     @IBOutlet weak var editionField: UITextField!
     @IBOutlet weak var pagesField: UITextField!
     @IBOutlet weak var bindingField: UITextField!
@@ -61,7 +63,8 @@ class SellFieldsViewController: UIViewController {
         paymentMethodPicker.dataSource = self
         paymentMethodPicker.delegate = self
         
-        dateFormatter.dateFormat = Constants.DateFormat
+        longDateFormatter.dateFormat = Constants.LongDateFormat
+        shortDateFormatter.dateFormat = Constants.ShortDateFormat
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,25 +72,52 @@ class SellFieldsViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = true
         
+        autoFillTextbookFields()
+        
         publishDate = nil
         listingPrice = nil
-        selectedPaymentMethod = Constants.PreferredPaymentMethods[0]
+        selectedPaymentMethod = Constants.PaymentMethods[0]
     }
     
     // MARK: - Helper Functions
     
-    func publishDateIsValid() -> Bool {
-        if Int(publishDateField.text!.suffix(4)) == nil {
+    func autoFillTextbookFields() {
+        guard let textbookFields = fieldsFromBarcodeScan else {
+            return
+        }
+        
+        titleField.text! = textbookFields[Constants.TextbookKeys.Title] as! String
+        subtitleField.text! = textbookFields[Constants.TextbookKeys.Subtitle] as! String
+        authorsField.text! = (textbookFields[Constants.TextbookKeys.Authors] as! [String]).joined(separator: ", ")
+        publisherField.text! = textbookFields[Constants.TextbookKeys.Publisher] as! String
+        publishedDateField.text! = textbookFields[Constants.TextbookKeys.PublishedDate] as! String
+        languageField.text! = textbookFields[Constants.TextbookKeys.Language] as! String
+        // do not fill editionField because Google Books API doesn't provide edition!
+        pagesField.text! = String(textbookFields[Constants.TextbookKeys.Pages] as! Int)
+        // do not fill bindingField because Google Books API doesn't provide binding!
+    }
+    
+    func publishedDateIsValid() -> Bool {
+        if Int(publishedDateField.text!.prefix(4)) == nil {
             return false
         }
         
-        if let date = dateFormatter.date(from: publishDateField.text!) {
-            publishDate = date
+        if let longDate = longDateFormatter.date(from: publishedDateField.text!) {
+            publishDate = longDate
+            longDateUsed = true
+            return true
+        } else if let shortDate = shortDateFormatter.date(from: publishedDateField.text!) {
+            publishDate = shortDate
+            longDateUsed = false
             return true
         } else {
             publishDate = nil
             return false
         }
+    }
+    
+    func pagesAreValid() -> Bool {
+        return (Int(pagesField.text!) != nil)
     }
     
     func priceIsValid() -> Bool {
@@ -101,24 +131,28 @@ class SellFieldsViewController: UIViewController {
     }
     
     func fieldsAreIncomplete() -> String? {
-        if titleLongField.text?.isEmpty == true && titleShortField.text?.isEmpty == true {
-            return "Please enter a title for your textbook."
+        if titleField.text?.isEmpty == true {
+            return Constants.IncompleteFieldError.Title
         }
         
         if authorsField.text?.isEmpty == true {
-            return "Please enter 1 or more authors for your textbook."
+            return Constants.IncompleteFieldError.Authors
         }
         
-        if publishDateIsValid() == false {
-            return "Please enter a publish date in the format '\(Constants.DateFormat)' for your textbook."
+        if publishedDateIsValid() == false {
+            return Constants.IncompleteFieldError.PublishedDate
+        }
+        
+        if pagesAreValid() == false {
+            return Constants.IncompleteFieldError.Pages
         }
         
         if priceIsValid() == false {
-            return "Please enter a valid price for your listing."
+            return Constants.IncompleteFieldError.Price
         }
         
-        if selectedPaymentMethod == Constants.PreferredPaymentMethods[0] {
-            return "Please enter a payment method for your listing."
+        if selectedPaymentMethod == Constants.PaymentMethods[0] {
+            return Constants.IncompleteFieldError.PaymentMethod
         }
         
         return nil
@@ -133,44 +167,32 @@ class SellFieldsViewController: UIViewController {
     // MARK: - Backend Functions
     
     func generateListingToPost() {
-        var title = titleShortField.text!
-        var titleLong = titleLongField.text!
-        if titleLong.isEmpty == false && title.isEmpty == true {
-            title = titleLong
-        } else if titleLong.isEmpty == true && title.isEmpty == false {
-            titleLong = title
-        } else if title.count > titleLong.count {
-            title = titleLongField.text!
-            titleLong = titleShortField.text!
-        }
-        
         let authorArray = authorsField.text!.components(separatedBy: ",")
         let authorArrayTrimmed = authorArray.map { (author) -> String in
             return author.trimmingCharacters(in: .whitespaces)
         }
         
         let textbookDictionary: [String : Any] = [
-            "title" : title,
-            "titleLong" : titleLong,
+            Constants.TextbookKeys.Title : titleField.text!,
+            Constants.TextbookKeys.Subtitle : subtitleField.text!,
             // converts comma-separated string into array of strings, then trims whitespace of each string in array
-            "authors" : authorArrayTrimmed,
-            "datePublished": dateFormatter.string(from: publishDate!),
-            "publisher" : publisherField.text!,
-            "language" : languageField.text!,
-            "edition" : editionField.text!,
-            "format" : formatField.text!,
-            "pages" : ((pagesField.text?.isEmpty == false) ? Int(pagesField.text!)! : -1),
-            "binding" : bindingField.text!
+            Constants.TextbookKeys.Authors : authorArrayTrimmed,
+            Constants.TextbookKeys.Publisher : publisherField.text!,
+            Constants.TextbookKeys.PublishedDate : (longDateUsed ? longDateFormatter : shortDateFormatter).string(from: publishDate!),
+            Constants.TextbookKeys.Language : languageField.text!,
+            Constants.TextbookKeys.Edition : editionField.text!,
+            Constants.TextbookKeys.Pages : Int(pagesField.text!)!,
+            Constants.TextbookKeys.Binding : bindingField.text!
         ]
         
         let sellerDictionary: [String : Any] = [
-            "email" : UserDefaults.standard.string(forKey: Constants.UserEmailKey)!,
-            "displayName" : UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+            Constants.UserKeys.Email : UserDefaults.standard.string(forKey: Constants.UserEmailKey)!,
+            Constants.UserKeys.DisplayName : UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
         ]
         
         let epochTimeSeconds = Int(NSDate().timeIntervalSince1970)
         
-        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: User(dict: sellerDictionary), price: listingPrice!, preferredPaymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds)
+        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: User(dict: sellerDictionary), price: listingPrice!, paymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds)
         
         addListingToFirebase(listingToAdd: listingToPost!.getDictionary())
     }
@@ -252,15 +274,15 @@ extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Constants.PreferredPaymentMethods.count
+        return Constants.PaymentMethods.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Constants.PreferredPaymentMethods[row]
+        return Constants.PaymentMethods[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedPaymentMethod = Constants.PreferredPaymentMethods[row]
+        selectedPaymentMethod = Constants.PaymentMethods[row]
     }
     
 }

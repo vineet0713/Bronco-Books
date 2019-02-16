@@ -23,16 +23,16 @@ class User {
     }
     
     init(dict: [String : Any]) {
-        self.email = dict["email"] as! String
-        self.displayName = dict["displayName"] as! String
+        self.email = dict[Constants.UserKeys.Email] as! String
+        self.displayName = dict[Constants.UserKeys.DisplayName] as! String
     }
     
     // MARK: - Member Function
     
     func getDictionary() -> [String : Any] {
         let dict: [String : Any] = [
-            "email" : self.email,
-            "displayName" : self.displayName
+            Constants.UserKeys.Email : self.email,
+            Constants.UserKeys.DisplayName : self.displayName
         ]
         
         return dict

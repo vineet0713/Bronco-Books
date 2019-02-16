@@ -22,6 +22,8 @@ class ScanBarcodeViewController: UIViewController {
     
     var timer: Timer?
     
+    var scannedBookDictionary: [String : Any]!
+    
     // MARK: - IBOutlet
     
     @IBOutlet weak var scanBarcodeLabel: UILabel!
@@ -54,10 +56,7 @@ class ScanBarcodeViewController: UIViewController {
         
         setNeedsStatusBarAppearanceUpdate()
         
-        if timer != nil {
-            timer!.invalidate()
-            timer = nil
-        }
+        stopTimer()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -66,7 +65,7 @@ class ScanBarcodeViewController: UIViewController {
         stopCaptureSession()
     }
     
-    // MARK: - Helper Functions
+    // MARK: - AVFoundation Functions
     
     func prepareCamera() {
         captureSession.sessionPreset = AVCaptureSession.Preset.photo
@@ -140,6 +139,46 @@ class ScanBarcodeViewController: UIViewController {
         return nil
     }
     
+    // MARK: - Helper Functions
+    
+    func detectBarcode(with image: UIImage) {
+        MLKit.sharedInstance().detectBarcode(from: image) { (barcode, error) in
+            guard let validBarcode = barcode else {
+                return
+            }
+            
+            self.stopTimer()
+            
+            let alert = UIAlertController(title: "Barcode Scanned", message: validBarcode, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: "Default Action"), style: .default, handler: { (action) in
+                self.makeGoogleBooksRequest(with: validBarcode)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func makeGoogleBooksRequest(with isbn: String) {
+        GoogleBooksClient.sharedInstance().getBookInformation(from: isbn, completionHandler: { (result, error) in
+            if let bookFields = result {
+                self.scannedBookDictionary = bookFields
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
+                }
+            } else {
+                let alert = UIAlertController(title: "Load Failed", message: error, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
+    
+    func stopTimer() {
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+    }
+    
     // MARK: - Objective-C Exposed Function
     
     @objc func timerFired() {
@@ -157,26 +196,15 @@ extension ScanBarcodeViewController: AVCaptureVideoDataOutputSampleBufferDelegat
             shouldProcessPhoto = false
             
             if let image = getImageFromSampleBuffer(buffer: sampleBuffer) {
-                // detect barcode with the image!
-                MLKit.sharedInstance().detectBarcode(from: image) { (barcode, error) in
-                    if barcode != nil {
-                        let alert = UIAlertController(title: "Barcode Scanned", message: barcode, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: "Default Action"), style: .default, handler: { (action) in
-                            self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
-                        }))
-                        self.present(alert, animated: true, completion: nil)
-                        
-                        // TODO: make GET Request to ISBNdb API
-                    }
-                }
+                detectBarcode(with: image)
             }
         }
     }
     
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? ImageViewController {
-            destinationVC.image = self.image
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? SellFieldsViewController {
+            destinationVC.fieldsFromBarcodeScan = scannedBookDictionary
         }
-    }*/
+    }
     
 }

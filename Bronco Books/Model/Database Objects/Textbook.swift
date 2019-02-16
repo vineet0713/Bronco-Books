@@ -13,58 +13,54 @@ class Textbook {
     // MARK: - Stored Properties
     
     let title: String
-    let titleLong: String
+    let subtitle: String
     let authors: [String]
-    let datePublished: String
     let publisher: String
+    let publishedDate: String
     let language: String
     let edition: String
-    let format: String
     let pages: Int
     let binding: String
     
     // MARK: - Constructors
     
-    init(title: String, titleLong: String, authors: [String], datePublished: String, publisher: String, language: String, edition: String, format: String, pages: Int, binding: String) {
+    init(title: String, subtitle: String, authors: [String], publisher: String, publishedDate: String, language: String, edition: String, pages: Int, binding: String) {
         self.title = title
-        self.titleLong = titleLong
+        self.subtitle = subtitle
         self.authors = authors
-        self.datePublished = datePublished
         self.publisher = publisher
+        self.publishedDate = publishedDate
         self.language = language
         self.edition = edition
-        self.format = format
         self.pages = pages
         self.binding = binding
     }
     
     init(dict: [String : Any]) {
-        self.title = dict["title"] as! String
-        self.titleLong = dict["titleLong"] as! String
-        self.authors = dict["authors"] as! [String]
-        self.datePublished = dict["datePublished"] as! String
-        self.publisher = dict["publisher"] as! String
-        self.language = dict["language"] as! String
-        self.edition = dict["edition"] as! String
-        self.format = dict["format"] as! String
-        self.pages = dict["pages"] as! Int
-        self.binding = dict["binding"] as! String
+        self.title = dict[Constants.TextbookKeys.Title] as! String
+        self.subtitle = dict[Constants.TextbookKeys.Subtitle] as! String
+        self.authors = dict[Constants.TextbookKeys.Authors] as! [String]
+        self.publisher = dict[Constants.TextbookKeys.Publisher] as! String
+        self.publishedDate = dict[Constants.TextbookKeys.PublishedDate] as! String
+        self.language = dict[Constants.TextbookKeys.Language] as! String
+        self.edition = dict[Constants.TextbookKeys.Edition] as! String
+        self.pages = dict[Constants.TextbookKeys.Pages] as! Int
+        self.binding = dict[Constants.TextbookKeys.Binding] as! String
     }
     
     // MARK: - Member Function
     
     func getDictionary() -> [String : Any] {
         let dict: [String : Any] = [
-            "title" : self.title,
-            "titleLong" : self.titleLong,
-            "authors" : self.authors,
-            "datePublished": self.datePublished,
-            "publisher" : self.publisher,
-            "language" : self.language,
-            "edition" : self.edition,
-            "format" : self.format,
-            "pages" : self.pages,
-            "binding" : self.binding
+            Constants.TextbookKeys.Title : self.title,
+            Constants.TextbookKeys.Subtitle : self.subtitle,
+            Constants.TextbookKeys.Authors : self.authors,
+            Constants.TextbookKeys.Publisher : self.publisher,
+            Constants.TextbookKeys.PublishedDate : self.publishedDate,
+            Constants.TextbookKeys.Language : self.language,
+            Constants.TextbookKeys.Edition : self.edition,
+            Constants.TextbookKeys.Pages : self.pages,
+            Constants.TextbookKeys.Binding : self.binding
         ]
         
         return dict

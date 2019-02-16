@@ -64,7 +64,7 @@ class ListingsViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
                 return
             }
-            let onSale = listingDictionary["onSale"] as! Bool
+            let onSale = listingDictionary[Constants.ListingKeys.OnSale] as! Bool
             if onSale {
                 let listing = Listing(dict: listingDictionary)
                 listing.setId(id: snapshot.key)
@@ -93,7 +93,7 @@ class ListingsViewController: UIViewController {
                 return
             }
             
-            let onSale = listingDictionary["onSale"] as! Bool
+            let onSale = listingDictionary[Constants.ListingKeys.OnSale] as! Bool
             if onSale {
                 let changedListing = Listing(dict: listingDictionary)
                 changedListing.setId(id: snapshot.key)
@@ -236,7 +236,7 @@ extension ListingsViewController: UITableViewDataSource {
         
         cell.titleLabel.text = listing.textbook.title
         cell.authorsLabel.text = authorsText
-        cell.priceLabel.text = "Price: \(formattedPrice) (Preferred: " + listing.preferredPaymentMethod + ")"
+        cell.priceLabel.text = "Price: \(formattedPrice) (Preferred: " + listing.paymentMethod + ")"
         cell.sellerLabel.text = "Seller: " + listing.seller.displayName
         
         return cell
