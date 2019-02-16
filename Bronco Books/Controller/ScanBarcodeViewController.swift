@@ -39,10 +39,6 @@ class ScanBarcodeViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
         
         shouldProcessPhoto = false
-        
-        if timer == nil {
-            timer = Timer.scheduledTimer(timeInterval: Constants.TimeInterval, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,6 +72,7 @@ class ScanBarcodeViewController: UIViewController {
         if captureDevice != nil {
             scanBarcodeLabel.isHidden = false
             beginCaptureSession()
+            startTimer()
         } else {
             let alert = UIAlertController(title: "Unavailable Capture Device", message: "A capture device cannot be found.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
@@ -166,10 +163,18 @@ class ScanBarcodeViewController: UIViewController {
                 }
             } else {
                 let alert = UIAlertController(title: "Load Failed", message: error, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { (action) in
+                    self.startTimer()
+                }))
                 self.present(alert, animated: true, completion: nil)
             }
         })
+    }
+    
+    func startTimer() {
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: Constants.TimeInterval, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
+        }
     }
     
     func stopTimer() {

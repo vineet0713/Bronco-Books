@@ -167,6 +167,7 @@ class SellFieldsViewController: UIViewController {
     // MARK: - Backend Functions
     
     func generateListingToPost() {
+        // converts comma-separated string into array of strings, then trims whitespace of each string in array
         let authorArray = authorsField.text!.components(separatedBy: ",")
         let authorArrayTrimmed = authorArray.map { (author) -> String in
             return author.trimmingCharacters(in: .whitespaces)
@@ -175,7 +176,6 @@ class SellFieldsViewController: UIViewController {
         let textbookDictionary: [String : Any] = [
             Constants.TextbookKeys.Title : titleField.text!,
             Constants.TextbookKeys.Subtitle : subtitleField.text!,
-            // converts comma-separated string into array of strings, then trims whitespace of each string in array
             Constants.TextbookKeys.Authors : authorArrayTrimmed,
             Constants.TextbookKeys.Publisher : publisherField.text!,
             Constants.TextbookKeys.PublishedDate : (longDateUsed ? longDateFormatter : shortDateFormatter).string(from: publishDate!),
@@ -200,9 +200,9 @@ class SellFieldsViewController: UIViewController {
     func addListingToFirebase(listingToAdd: [String : Any?]) {
         let databaseReferenceListings = Database.database().reference().child("listings")
         databaseReferenceListings.childByAutoId().setValue(listingToAdd) { (error, databaseReference) in
-            if error == nil {
-                // performs UI updates on the Main Thread
-                DispatchQueue.main.async {
+            // performs UI updates on the Main Thread
+            DispatchQueue.main.async {
+                if error == nil {
                     let title = "Listing Posted"
                     let message = "Your listing was successfully posted!"
                     
@@ -211,10 +211,7 @@ class SellFieldsViewController: UIViewController {
                         self.navigationController?.popViewController(animated: true)
                     }))
                     self.present(alert, animated: true, completion: nil)
-                }
-            } else {
-                // performs UI updates on the Main Thread
-                DispatchQueue.main.async {
+                } else {
                     let title = "Post Failed"
                     let message = "There was an error in posting the listing. Sorry about that!"
                     self.showAlert(title: title, message: message)
@@ -230,7 +227,7 @@ class SellFieldsViewController: UIViewController {
     }
     
     @IBAction func uploadPhotosTapped(_ sender: Any) {
-        
+        // TODO: Add functionality for taking photos and uploading them to Firebase
     }
     
     // MARK: - Objective-C Exposed Function

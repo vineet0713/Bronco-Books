@@ -12,6 +12,12 @@ import Firebase
 
 class MLKit {
     
+    // MARK: - Vision Property
+    
+    lazy var vision = Vision.vision()
+    
+    // MARK: - Shared Instance
+    
     class func sharedInstance() -> MLKit {
         struct Singleton {
             static var sharedInstance = MLKit()
@@ -19,7 +25,7 @@ class MLKit {
         return Singleton.sharedInstance
     }
     
-    lazy var vision = Vision.vision()
+    // MARK: - ML Kit Function
     
     func detectBarcode(from image: UIImage, completionHandler: @escaping (_ barcode: String?, _ errorDescription: String?) -> Void) {
         let format = VisionBarcodeFormat.EAN13
@@ -48,16 +54,6 @@ class MLKit {
                 return
             }
             
-            /*let resultsText = features.map({ (feature) -> String in
-                let displayValue = "DisplayValue: \(feature.displayValue ?? "")"
-                let rawValue = "RawValue: " + "\(feature.rawValue ?? "")"
-                let frame = "Frame: \(feature.frame)"
-                
-                return (displayValue + ", " + rawValue + ", " + frame)
-            })
-            
-            print(resultsText)*/
-            
             // gets the barcode from the first element in 'features'
             guard let barcodeRawValue = features[0].rawValue else {
                 completionHandler(nil, "barcode raw value is nil")
@@ -67,6 +63,8 @@ class MLKit {
             completionHandler(barcodeRawValue, nil)
         }
     }
+    
+    // MARK - Helper Function
     
     private func visionImageOrientation(from imageOrientation: UIImage.Orientation) -> VisionDetectorImageOrientation {
         switch imageOrientation {

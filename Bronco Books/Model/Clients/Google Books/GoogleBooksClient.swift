@@ -11,6 +11,7 @@ import Foundation
 class GoogleBooksClient: NSObject {
     
     // MARK: - Shared Session
+    
     var session = URLSession.shared
     
     // MARK: - Initializers
