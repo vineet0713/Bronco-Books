@@ -240,29 +240,29 @@
                                                     <constraint firstAttribute="height" constant="261" id="6kf-gh-COC"/>
                                                 </constraints>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="5" id="zVI-qQ-bLs">
-                                                    <size key="itemSize" width="100" height="100"/>
+                                                    <size key="itemSize" width="150" height="150"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                    <inset key="sectionInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                                    <inset key="sectionInset" minX="25" minY="0.0" maxX="25" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="listingPhotoCell" id="oAw-EY-Hlg" customClass="UploadedPhotoCollectionViewCell" customModule="Bronco_Books" customModuleProvider="target">
-                                                        <rect key="frame" x="15" y="0.0" width="100" height="100"/>
+                                                        <rect key="frame" x="25" y="0.0" width="150" height="150"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7yx-rs-Y2c">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7yx-rs-Y2c">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                                 </imageView>
                                                             </subviews>
                                                         </view>
                                                         <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="7yx-rs-Y2c" secondAttribute="trailing" id="Cb0-ol-bBB"/>
-                                                            <constraint firstItem="7yx-rs-Y2c" firstAttribute="top" secondItem="oAw-EY-Hlg" secondAttribute="top" id="GfJ-9t-bhA"/>
-                                                            <constraint firstAttribute="bottom" secondItem="7yx-rs-Y2c" secondAttribute="bottom" id="Pxv-zq-HtX"/>
-                                                            <constraint firstItem="7yx-rs-Y2c" firstAttribute="leading" secondItem="oAw-EY-Hlg" secondAttribute="leading" id="flS-N4-N6r"/>
+                                                            <constraint firstAttribute="bottom" secondItem="7yx-rs-Y2c" secondAttribute="bottom" id="170-hZ-cyq"/>
+                                                            <constraint firstItem="7yx-rs-Y2c" firstAttribute="top" secondItem="oAw-EY-Hlg" secondAttribute="top" id="CcS-Kp-w0D"/>
+                                                            <constraint firstItem="7yx-rs-Y2c" firstAttribute="leading" secondItem="oAw-EY-Hlg" secondAttribute="leading" id="Wpv-Lp-Wf8"/>
+                                                            <constraint firstAttribute="trailing" secondItem="7yx-rs-Y2c" secondAttribute="trailing" id="mR9-d7-N4P"/>
                                                         </constraints>
                                                         <connections>
                                                             <outlet property="imageView" destination="7yx-rs-Y2c" id="do1-dn-sl9"/>

@@ -134,7 +134,7 @@ class SellFieldsViewController: UIViewController {
         editionField.text = ""
         pagesField.text = ""
         priceField.text = ""
-        // TODO: clear listingPhotosCollection
+        uploadedImages.removeAll()
     }
     
     func publishedDateIsValid() -> Bool {
@@ -251,7 +251,7 @@ class SellFieldsViewController: UIViewController {
     }
     
     func addPhotosToFirebase(listingKey: String, photoIndex: Int, successfulUploads: Int) {
-        let imageData = uploadedImages[photoIndex].jpegData(compressionQuality: 0.1)
+        let imageData = uploadedImages[photoIndex].jpegData(compressionQuality: CGFloat(Constants.UploadCompressionQuality))
         let fileName = "\(listingKey)_\(photoIndex).jpeg"
         
         let imageReference = storageReferenceImages.child(fileName)
@@ -295,6 +295,11 @@ class SellFieldsViewController: UIViewController {
     }
     
     @IBAction func uploadPhotosTapped(_ sender: Any) {
+        guard uploadedImages.count < Constants.MaximumPhotoUpload else {
+            showAlert(title: "Upload Limit Exceeded", message: "You can upload a maximum of \(Constants.MaximumPhotoUpload) images.")
+            return
+        }
+        
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             showAlert(title: "Camera Unavailable", message: "Unable to detect a camera for this device.")
             return

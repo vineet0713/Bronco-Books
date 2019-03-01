@@ -30,6 +30,12 @@ struct Constants {
     // Refresh Time Interval for ML Kit
     static let TimeInterval = 1.0
     
+    // Compression Quality for Stored Images to Firebase
+    static let UploadCompressionQuality = 0.1
+    
+    // Maximum Number of Uploadable Photos
+    static let MaximumPhotoUpload = 4
+    
     struct ListingKeys {
         static let Textbook = "textbook"
         static let Seller = "seller"
