@@ -10,10 +10,16 @@ import UIKit
 import Foundation
 
 import FirebaseDatabase
+import FirebaseStorage
 
 class SellFieldsViewController: UIViewController {
     
     // MARK: - Properties
+    
+    var databaseReferenceListings: DatabaseReference!
+    var storageReferenceImages: StorageReference!
+    
+    var previousViewController: String?
     
     var postButton: UIBarButtonItem!
     
@@ -27,6 +33,9 @@ class SellFieldsViewController: UIViewController {
     let longDateFormatter = DateFormatter()
     let shortDateFormatter = DateFormatter()
     var longDateUsed: Bool!
+    
+    var uploadedImages: [UIImage] = []
+    var imageController: UIImagePickerController!
     
     // MARK: - IBOutlets
     
@@ -53,12 +62,24 @@ class SellFieldsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        databaseReferenceListings = Database.database().reference().child("listings")
+        storageReferenceImages = Storage.storage().reference().child("images")
+        
         // The delegates of all UITextFields are set in Main.storyboard!
+        
+        listingPhotosCollection.dataSource = self
+        
+        // This is for UICollectionViewDelegateFlowLayout (which inherits from UICollectionViewDelegate!)
+        listingPhotosCollection.delegate = self
         
         self.title = "Confirm Listing"
         
         postButton = UIBarButtonItem(title: "Post", style: .done, target: self, action: #selector(post))
         self.navigationItem.rightBarButtonItem = postButton
+        
+        imageController = UIImagePickerController()
+        imageController.delegate = self
+        imageController.sourceType = UIImagePickerController.SourceType.camera
         
         paymentMethodPicker.dataSource = self
         paymentMethodPicker.delegate = self
@@ -70,14 +91,19 @@ class SellFieldsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.tabBar.isHidden = true
-        self.postButton.isEnabled = true
-        
-        autoFillTextbookFields()
-        
-        publishDate = nil
-        listingPrice = nil
-        selectedPaymentMethod = Constants.PaymentMethods[0]
+        // this is to prevent code from being called when the UIImagePickerController dismisses!
+        if previousViewController != nil {
+            self.tabBarController?.tabBar.isHidden = true
+            self.postButton.isEnabled = true
+            
+            autoFillTextbookFields()
+            
+            publishDate = nil
+            listingPrice = nil
+            selectedPaymentMethod = Constants.PaymentMethods[0]
+            
+            previousViewController = nil
+        }
     }
     
     // MARK: - Helper Functions
@@ -212,22 +238,53 @@ class SellFieldsViewController: UIViewController {
     }
     
     func addListingToFirebase(listingToAdd: [String : Any?]) {
-        let databaseReferenceListings = Database.database().reference().child("listings")
         databaseReferenceListings.childByAutoId().setValue(listingToAdd) { (error, databaseReference) in
-            // performs UI updates on the Main Thread
-            DispatchQueue.main.async {
-                if error == nil {
-                    self.clearFields()
-                    let alert = UIAlertController(title: "Listing Posted", message: "Your listing was successfully posted!", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
-                        self.navigationController?.popViewController(animated: true)
-                    }))
-                    self.present(alert, animated: true, completion: nil)
-                } else {
+            if error == nil {
+                self.addPhotosToFirebase(listingKey: databaseReference.key!, photoIndex: 0, successfulUploads: 0)
+            } else {
+                DispatchQueue.main.async {
                     self.postButton.isEnabled = true
                     self.showAlert(title: "Post Failed", message: "There was an error in posting the listing. Sorry about that!")
                 }
             }
+        }
+    }
+    
+    func addPhotosToFirebase(listingKey: String, photoIndex: Int, successfulUploads: Int) {
+        let imageData = uploadedImages[photoIndex].jpegData(compressionQuality: 0.1)
+        let fileName = "\(listingKey)_\(photoIndex).jpeg"
+        
+        let imageReference = storageReferenceImages.child(fileName)
+        let uploadTask = imageReference.putData(imageData!, metadata: nil) { (metadata, error) in
+            let newPhotoIndex = photoIndex + 1
+            let newSuccessfulUploads = (metadata != nil) ? (successfulUploads + 1) : (successfulUploads)
+            
+            if newPhotoIndex == self.uploadedImages.count {
+                // all photos have attempted to upload
+                self.uploadCompleted(with: newSuccessfulUploads)
+            } else {
+                // there are still photos to be uploaded
+                self.addPhotosToFirebase(listingKey: listingKey, photoIndex: newPhotoIndex, successfulUploads: newSuccessfulUploads)
+            }
+        }
+        
+        uploadTask.resume()
+    }
+    
+    func uploadCompleted(with successfulUploads: Int) {
+        var postedMessage = "Your listing was successfully posted"
+        if successfulUploads < uploadedImages.count {
+            postedMessage += ", but the images failed to upload"
+        }
+        postedMessage += "."
+        
+        DispatchQueue.main.async {
+            self.clearFields()
+            let alert = UIAlertController(title: "Listing Posted", message: postedMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -238,7 +295,11 @@ class SellFieldsViewController: UIViewController {
     }
     
     @IBAction func uploadPhotosTapped(_ sender: Any) {
-        // TODO: Add functionality for taking photos and uploading them to Firebase
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            showAlert(title: "Camera Unavailable", message: "Unable to detect a camera for this device.")
+            return
+        }
+        self.present(imageController, animated: true, completion: nil)
     }
     
     // MARK: - Objective-C Exposed Function
@@ -296,16 +357,51 @@ extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate
     
 }
 
-// MARK: - Extension for UICollectionViewDataSource, UICollectionViewDelegate
+// MARK: - Extension for UINavigationControllerDelegate, UIImagePickerControllerDelegate
 
-/*extension SellFieldsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension SellFieldsViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        uploadedImages.append(image)
+        listingPhotosCollection.reloadData()
+        imageController.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        imageController.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+
+// MARK: - Extension for UICollectionViewDataSource
+
+extension SellFieldsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        <#code#>
+        return uploadedImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listingPhotoCell", for: indexPath) as! UploadedPhotoCollectionViewCell
+        
+        cell.imageView.image = uploadedImages[indexPath.row]
+        
+        return cell
     }
  
-}*/
+}
+
+// MARK: - Extension for UICollectionViewDelegateFlowLayout
+
+extension SellFieldsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = UIScreen.main.bounds.width
+        let cellsPerRow: CGFloat = 2
+        
+        return CGSize(width: (width - 10) / (cellsPerRow + 1), height: (width - 10) / (cellsPerRow + 1))
+    }
+    
+}

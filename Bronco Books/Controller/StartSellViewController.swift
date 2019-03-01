@@ -34,6 +34,7 @@ class StartSellViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? SellFieldsViewController {
+            destinationVC.previousViewController = "StartSellViewController"
             destinationVC.fieldsFromBarcodeScan = nil
         }
     }

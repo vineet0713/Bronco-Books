@@ -16,6 +16,8 @@ target 'Bronco Books' do
   pod 'Firebase/MLVision'
   pod 'Firebase/MLVisionBarcodeModel'
   
+  pod 'Firebase/Storage'
+  
   target 'Bronco BooksTests' do
     inherit! :search_paths
     # Pods for testing
