@@ -53,7 +53,7 @@ class SellFieldsViewController: UIViewController {
     
     @IBOutlet weak var paymentMethodPicker: UIPickerView!
     
-    @IBOutlet weak var listingPhotosCollection: UICollectionView!
+    @IBOutlet weak var postListingPhotosCollection: UICollectionView!
     
     // MARK: - Life Cycle
 
@@ -67,10 +67,10 @@ class SellFieldsViewController: UIViewController {
         
         // The delegates of all UITextFields are set in Main.storyboard!
         
-        listingPhotosCollection.dataSource = self
+        postListingPhotosCollection.dataSource = self
         
         // This is for UICollectionViewDelegateFlowLayout (which inherits from UICollectionViewDelegate!)
-        listingPhotosCollection.delegate = self
+        postListingPhotosCollection.delegate = self
         
         self.title = "Confirm Listing"
         
@@ -369,7 +369,7 @@ extension SellFieldsViewController: UINavigationControllerDelegate, UIImagePicke
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         uploadedImages.append(image)
-        listingPhotosCollection.reloadData()
+        postListingPhotosCollection.reloadData()
         imageController.dismiss(animated: true, completion: nil)
     }
     
@@ -389,7 +389,7 @@ extension SellFieldsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listingPhotoCell", for: indexPath) as! UploadedPhotoCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "postListingPhotoCell", for: indexPath) as! UploadedPhotoCollectionViewCell
         
         cell.imageView.image = uploadedImages[indexPath.row]
         
