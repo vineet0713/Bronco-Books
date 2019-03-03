@@ -13,6 +13,7 @@
 		65398BD02229AF2D005EB74C /* UploadedPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65398BCF2229AF2D005EB74C /* UploadedPhotoCollectionViewCell.swift */; };
 		6543DCE921FA8FCA00AC4A9B /* StartSellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */; };
 		6543DCEB21FA90FA00AC4A9B /* SellFieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */; };
+		6545D660222B3E3E00C26C0D /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6545D65F222B3E3E00C26C0D /* ImageDetailViewController.swift */; };
 		65468E222206984A00E32F71 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65468E212206984A00E32F71 /* Constants.swift */; };
 		6558CD1621FA6AB300AF2ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */; };
 		6558CD1B21FA6AB300AF2ABF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558CD1921FA6AB300AF2ABF /* Main.storyboard */; };
@@ -66,6 +67,7 @@
 		65398BCF2229AF2D005EB74C /* UploadedPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSellViewController.swift; sourceTree = "<group>"; };
 		6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellFieldsViewController.swift; sourceTree = "<group>"; };
+		6545D65F222B3E3E00C26C0D /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		65468E212206984A00E32F71 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6558CD1221FA6AB300AF2ABF /* Bronco Books.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bronco Books.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558CD1521FA6AB300AF2ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				6558CD4621FA6BD000AF2ABF /* LoginViewController.swift */,
 				6558CD4A21FA7CAB00AF2ABF /* ListingsViewController.swift */,
 				6558CD4C21FA804700AF2ABF /* ListingDetailViewController.swift */,
+				6545D65F222B3E3E00C26C0D /* ImageDetailViewController.swift */,
 				6543DCE821FA8FCA00AC4A9B /* StartSellViewController.swift */,
 				65D5DBFB2215EECD00DC7444 /* ScanBarcodeViewController.swift */,
 				6543DCEA21FA90FA00AC4A9B /* SellFieldsViewController.swift */,
@@ -552,6 +555,7 @@
 				651B773E21FB858700EDC29C /* ProfileViewController.swift in Sources */,
 				65D5DBFE2216274200DC7444 /* MLKit.swift in Sources */,
 				65E67D7722079F5100B751B7 /* User.swift in Sources */,
+				6545D660222B3E3E00C26C0D /* ImageDetailViewController.swift in Sources */,
 				65DD73EF22178EC50049EF47 /* GoogleBooksClient.swift in Sources */,
 				6543DCE921FA8FCA00AC4A9B /* StartSellViewController.swift in Sources */,
 				6543DCEB21FA90FA00AC4A9B /* SellFieldsViewController.swift in Sources */,

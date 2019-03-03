@@ -36,6 +36,9 @@ struct Constants {
     // Maximum Number of Uploadable Photos
     static let MaximumPhotoUpload = 4
     
+    // Maximum File Size to Download (currently set to 1 MB)
+    static let MaximumFileSize = 1 * 1024 * 1024;
+    
     struct ListingKeys {
         static let Textbook = "textbook"
         static let Seller = "seller"

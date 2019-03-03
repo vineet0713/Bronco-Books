@@ -294,7 +294,7 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="177" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                                         <connections>
                                                             <outlet property="delegate" destination="Rtc-gA-OKR" id="dCB-ST-8vO"/>
                                                         </connections>
@@ -432,8 +432,10 @@
                         <outlet property="priceField" destination="seA-Rk-fu4" id="c0T-0N-KD2"/>
                         <outlet property="publishedDateField" destination="ngl-yH-MQ1" id="AlP-2b-T9n"/>
                         <outlet property="publisherField" destination="AHz-Xb-1hV" id="K2h-Ii-dLy"/>
+                        <outlet property="setPriceButton" destination="DHq-lw-VqS" id="d9p-Xc-Ncd"/>
                         <outlet property="subtitleField" destination="j6S-6G-BaP" id="t6g-2w-bN1"/>
                         <outlet property="titleField" destination="XnN-84-caY" id="ikx-3T-LLg"/>
+                        <outlet property="uploadPhotosButton" destination="xUx-8s-aal" id="NRo-vf-yff"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0iR-M7-Yi4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -603,7 +605,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3iI-Cc-VcV">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3iI-Cc-VcV">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                 </imageView>
                                             </subviews>
@@ -623,9 +625,9 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="eok-dh-KPO">
                                 <rect key="frame" x="16" y="64" width="343" height="361"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMO-Of-lqS">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMO-Of-lqS">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="41"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -762,11 +764,41 @@
                         <outlet property="publisherLabel" destination="894-Aw-c1D" id="jBO-AR-P8w"/>
                         <outlet property="subtitleLabel" destination="qDq-ae-8KQ" id="Kdw-eO-JMf"/>
                         <outlet property="titleLabel" destination="yMO-Of-lqS" id="y7R-dg-YhB"/>
+                        <segue destination="TUA-wE-3vm" kind="show" identifier="listingDetailToImageSegue" id="Emh-fj-jWE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ul-hk-cgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3909.5999999999999" y="-1147.3763118440781"/>
+        </scene>
+        <!--Image Detail View Controller-->
+        <scene sceneID="gvI-AI-LUy">
+            <objects>
+                <viewController id="TUA-wE-3vm" customClass="ImageDetailViewController" customModule="Bronco_Books" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xpL-PR-hVL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rp2-OO-uIh">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="rp2-OO-uIh" firstAttribute="top" secondItem="e1V-0e-7eQ" secondAttribute="top" id="AXg-U8-G1p"/>
+                            <constraint firstItem="rp2-OO-uIh" firstAttribute="trailing" secondItem="e1V-0e-7eQ" secondAttribute="trailing" id="Qsr-2Z-klJ"/>
+                            <constraint firstItem="rp2-OO-uIh" firstAttribute="leading" secondItem="e1V-0e-7eQ" secondAttribute="leading" id="mTi-4i-NNa"/>
+                            <constraint firstItem="rp2-OO-uIh" firstAttribute="bottom" secondItem="e1V-0e-7eQ" secondAttribute="bottom" id="tCY-xW-nyM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="e1V-0e-7eQ"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="rp2-OO-uIh" id="9gm-Pf-Dkb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="im5-Q8-gY5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4853.6000000000004" y="-1147.3763118440781"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xgH-ek-hb5">

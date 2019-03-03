@@ -37,6 +37,8 @@ class SellFieldsViewController: UIViewController {
     var uploadedImages: [UIImage] = []
     var imageController: UIImagePickerController!
     
+    var uploadProgressView: UIProgressView!
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var titleField: UITextField!
@@ -50,9 +52,11 @@ class SellFieldsViewController: UIViewController {
     @IBOutlet weak var bindingField: UITextField!
     
     @IBOutlet weak var priceField: UITextField!
+    @IBOutlet weak var setPriceButton: UIButton!
     
     @IBOutlet weak var paymentMethodPicker: UIPickerView!
     
+    @IBOutlet weak var uploadPhotosButton: UIButton!
     @IBOutlet weak var postListingPhotosCollection: UICollectionView!
     
     // MARK: - Life Cycle
@@ -79,13 +83,14 @@ class SellFieldsViewController: UIViewController {
         
         imageController = UIImagePickerController()
         imageController.delegate = self
-        imageController.sourceType = UIImagePickerController.SourceType.camera
         
         paymentMethodPicker.dataSource = self
         paymentMethodPicker.delegate = self
         
         longDateFormatter.dateFormat = Constants.LongDateFormat
         shortDateFormatter.dateFormat = Constants.ShortDateFormat
+        
+        setupProgressBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,6 +113,16 @@ class SellFieldsViewController: UIViewController {
     
     // MARK: - Helper Functions
     
+    func setupProgressBar() {
+        uploadProgressView = UIProgressView(progressViewStyle: .bar)
+        uploadProgressView.center = self.view.center
+        uploadProgressView.trackTintColor = UIColor.lightGray
+        uploadProgressView.tintColor = UIColor.blue
+        uploadProgressView.isHidden = true
+        uploadProgressView.transform = uploadProgressView.transform.scaledBy(x: 2.25, y: 10)
+        self.view.addSubview(uploadProgressView)
+    }
+    
     func autoFillTextbookFields() {
         guard let textbookFields = fieldsFromBarcodeScan else {
             return
@@ -124,6 +139,27 @@ class SellFieldsViewController: UIViewController {
         // do not fill bindingField because Google Books API doesn't provide binding!
     }
     
+    func setUIComponents(enabled: Bool) {
+        navigationItem.hidesBackButton = !enabled
+        postButton.isEnabled = enabled
+        setPriceButton.isEnabled = enabled
+        uploadPhotosButton.isEnabled = enabled
+        
+        titleField.isEnabled = enabled
+        subtitleField.isEnabled = enabled
+        authorsField.isEnabled = enabled
+        publisherField.isEnabled = enabled
+        publishedDateField.isEnabled = enabled
+        languageField.isEnabled = enabled
+        editionField.isEnabled = enabled
+        pagesField.isEnabled = enabled
+        bindingField.isEnabled = enabled
+        priceField.isEnabled = enabled
+        
+        paymentMethodPicker.isUserInteractionEnabled = enabled
+        postListingPhotosCollection.isUserInteractionEnabled = enabled
+    }
+    
     func clearFields() {
         titleField.text = ""
         subtitleField.text = ""
@@ -133,6 +169,7 @@ class SellFieldsViewController: UIViewController {
         languageField.text = ""
         editionField.text = ""
         pagesField.text = ""
+        bindingField.text = ""
         priceField.text = ""
         uploadedImages.removeAll()
     }
@@ -240,10 +277,21 @@ class SellFieldsViewController: UIViewController {
     func addListingToFirebase(listingToAdd: [String : Any?]) {
         databaseReferenceListings.childByAutoId().setValue(listingToAdd) { (error, databaseReference) in
             if error == nil {
-                self.addPhotosToFirebase(listingKey: databaseReference.key!, photoIndex: 0, successfulUploads: 0)
+                if self.uploadedImages.count > 0 {
+                    DispatchQueue.main.async {
+                        self.uploadProgressView.setProgress(Float(1) / Float(self.uploadedImages.count + 1), animated: true)
+                    }
+                    self.addPhotosToFirebase(listingKey: databaseReference.key!, photoIndex: 0, successfulUploads: 0)
+                } else {
+                    DispatchQueue.main.async {
+                        self.uploadProgressView.setProgress(1, animated: true)
+                    }
+                    self.uploadCompleted(with: 0)
+                }
             } else {
                 DispatchQueue.main.async {
-                    self.postButton.isEnabled = true
+                    self.uploadProgressView.isHidden = true
+                    self.setUIComponents(enabled: true)
                     self.showAlert(title: "Post Failed", message: "There was an error in posting the listing. Sorry about that!")
                 }
             }
@@ -258,6 +306,10 @@ class SellFieldsViewController: UIViewController {
         let uploadTask = imageReference.putData(imageData!, metadata: nil) { (metadata, error) in
             let newPhotoIndex = photoIndex + 1
             let newSuccessfulUploads = (metadata != nil) ? (successfulUploads + 1) : (successfulUploads)
+            
+            DispatchQueue.main.async {
+                self.uploadProgressView.setProgress(Float(newPhotoIndex + 1) / Float(self.uploadedImages.count + 1), animated: true)
+            }
             
             if newPhotoIndex == self.uploadedImages.count {
                 // all photos have attempted to upload
@@ -279,7 +331,9 @@ class SellFieldsViewController: UIViewController {
         postedMessage += "."
         
         DispatchQueue.main.async {
+            self.uploadProgressView.isHidden = true
             self.clearFields()
+            self.setUIComponents(enabled: true)
             let alert = UIAlertController(title: "Listing Posted", message: postedMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
                 self.navigationController?.popViewController(animated: true)
@@ -304,6 +358,8 @@ class SellFieldsViewController: UIViewController {
             showAlert(title: "Camera Unavailable", message: "Unable to detect a camera for this device.")
             return
         }
+        
+        imageController.sourceType = UIImagePickerController.SourceType.camera
         self.present(imageController, animated: true, completion: nil)
     }
     
@@ -321,7 +377,9 @@ class SellFieldsViewController: UIViewController {
         let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            self.postButton.isEnabled = false
+            self.setUIComponents(enabled: false)
+            self.uploadProgressView.setProgress(0, animated: true)
+            self.uploadProgressView.isHidden = false
             self.generateListingToPost()
         }))
         self.present(alert, animated: true, completion: nil)

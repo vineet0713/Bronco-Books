@@ -20,6 +20,11 @@ class ListingDetailViewController: UIViewController {
     var userPostedListing: Bool!
     
     var retrievedImages: [UIImage] = []
+    var selectedImageIndex: Int!
+    
+    var previousViewController: String?
+    
+    // var noImagesLabel: UILabel!
     
     // MARK: - IBOutlets
     
@@ -54,20 +59,48 @@ class ListingDetailViewController: UIViewController {
         
         // This is for UICollectionViewDelegateFlowLayout (which inherits from UICollectionViewDelegate!)
         displayListingPhotosCollection.delegate = self
+        
+        // TODO: Try to show a Label on top of CollectionView if this Listing doesn't have any associated images
+        // setupNoImagesLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
-        let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
-        userPostedListing = (userEmail == displayListing.seller.email) && (userDisplayName == displayListing.seller.displayName)
-        
-        setupLabelsAndButtons()
-        retrieveImagesFromFirebase()
+        // this is to prevent code from being called when the ImageDetailViewController pops back!
+        if previousViewController != nil {
+            let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
+            let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+            userPostedListing = (userEmail == displayListing.seller.email) && (userDisplayName == displayListing.seller.displayName)
+            
+            setupLabelsAndButtons()
+            retrieveImagesFromFirebase(counter: 0)
+            
+            previousViewController = nil
+        }
+    }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? ImageDetailViewController {
+            destinationVC.photos = retrievedImages
+            destinationVC.selectedIndex = selectedImageIndex
+        }
     }
     
     // MARK: - Helper Functions
+    
+    /*func setupNoImagesLabel() {
+        noImagesLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+        noImagesLabel.center = displayListingPhotosCollection.center
+        noImagesLabel.textAlignment = .center
+        noImagesLabel.text = "No Images"
+        noImagesLabel.isHidden = false
+        self.view.addSubview(noImagesLabel)
+        self.view.bringSubviewToFront(noImagesLabel)
+    }*/
     
     func setupLabelsAndButtons() {
         titleLabel.text = displayListing.textbook.title
@@ -116,15 +149,33 @@ class ListingDetailViewController: UIViewController {
     
     // MARK: - Backend Functions
     
-    func retrieveImagesFromFirebase() {
-        // TODO
+    func retrieveImagesFromFirebase(counter: Int) {
+        let fileName = displayListing.id! + "_\(counter).jpeg"
+        let fileReference = storageReferenceImages.child(fileName)
+        fileReference.getData(maxSize: Int64(Constants.MaximumFileSize)) { (data, error) in
+            guard let imageData = data else {
+                // no more images for this listing
+                /*if counter == 0 {
+                    DispatchQueue.main.async {
+                        self.noImagesLabel.isHidden = false
+                    }
+                }*/
+                return
+            }
+            self.retrievedImages.append(UIImage(data: imageData)!)
+            DispatchQueue.main.async {
+                // self.noImagesLabel.isHidden = true
+                self.displayListingPhotosCollection.reloadData()
+            }
+            self.retrieveImagesFromFirebase(counter: counter + 1)
+        }
     }
     
     // MARK: - IBActions
     
     @IBAction func buyOrRemoveTapped(_ sender: Any) {
         if userPostedListing {
-            // TODO: Remove the listing from Firebase and go back to ListingsViewController
+            // TODO: Remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
         } else {
             // TODO: Buy the listing!
         }
@@ -154,6 +205,17 @@ extension ListingDetailViewController: UICollectionViewDataSource {
         cell.imageView.image = retrievedImages[indexPath.row]
         
         return cell
+    }
+    
+}
+
+// MARK: - Extension for UICollectionViewDelegate
+
+extension ListingDetailViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedImageIndex = indexPath.row
+        self.performSegue(withIdentifier: "listingDetailToImageSegue", sender: self)
     }
     
 }
