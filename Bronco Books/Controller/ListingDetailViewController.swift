@@ -24,8 +24,6 @@ class ListingDetailViewController: UIViewController {
     
     var previousViewController: String?
     
-    // var noImagesLabel: UILabel!
-    
     // MARK: - IBOutlets
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -59,9 +57,6 @@ class ListingDetailViewController: UIViewController {
         
         // This is for UICollectionViewDelegateFlowLayout (which inherits from UICollectionViewDelegate!)
         displayListingPhotosCollection.delegate = self
-        
-        // TODO: Try to show a Label on top of CollectionView if this Listing doesn't have any associated images
-        // setupNoImagesLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,16 +86,6 @@ class ListingDetailViewController: UIViewController {
     }
     
     // MARK: - Helper Functions
-    
-    /*func setupNoImagesLabel() {
-        noImagesLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-        noImagesLabel.center = displayListingPhotosCollection.center
-        noImagesLabel.textAlignment = .center
-        noImagesLabel.text = "No Images"
-        noImagesLabel.isHidden = false
-        self.view.addSubview(noImagesLabel)
-        self.view.bringSubviewToFront(noImagesLabel)
-    }*/
     
     func setupLabelsAndButtons() {
         titleLabel.text = displayListing.textbook.title
@@ -155,11 +140,6 @@ class ListingDetailViewController: UIViewController {
         fileReference.getData(maxSize: Int64(Constants.MaximumFileSize)) { (data, error) in
             guard let imageData = data else {
                 // no more images for this listing
-                /*if counter == 0 {
-                    DispatchQueue.main.async {
-                        self.noImagesLabel.isHidden = false
-                    }
-                }*/
                 return
             }
             self.retrievedImages.append(UIImage(data: imageData)!)
