@@ -9,11 +9,13 @@
 import UIKit
 
 import FirebaseStorage
+import FirebaseDatabase
 
 class ListingDetailViewController: UIViewController {
     
     // MARK: - Properties
     
+    var databaseReferenceListings: DatabaseReference!
     var storageReferenceImages: StorageReference!
     
     var displayListing: Listing!
@@ -51,6 +53,7 @@ class ListingDetailViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
+        databaseReferenceListings = Database.database().reference().child("listings")
         storageReferenceImages = Storage.storage().reference().child("images")
         
         displayListingPhotosCollection.dataSource = self
@@ -151,11 +154,39 @@ class ListingDetailViewController: UIViewController {
         }
     }
     
+    func removeListingFromSale() {
+        let databaseReferenceOnSale = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.OnSale)
+        databaseReferenceOnSale.setValue(false) { (error, databaseReference) in
+            var title = "Update Failed"
+            var message = "There was an error in updating the listing. Sorry about that!"
+            var handler: ((UIAlertAction) -> Void)? = nil
+            if error == nil {
+                title = "Listing Removed"
+                message = "This listing is no longer up for sale."
+                handler = { (action) in
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: handler))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     // MARK: - IBActions
     
     @IBAction func buyOrRemoveTapped(_ sender: Any) {
         if userPostedListing {
-            // TODO: Remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
+            // remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
+            let alert = UIAlertController(title: "Confirm Removal", message: "Are you sure that you want to remove this listing from sale?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                self.removeListingFromSale()
+            }))
+            self.present(alert, animated: true, completion: nil)
         } else {
             // TODO: Buy the listing!
         }
@@ -164,6 +195,7 @@ class ListingDetailViewController: UIViewController {
     @IBAction func contactOrEditTapped(_ sender: Any) {
         if userPostedListing {
             // TODO: Edit the listing by going to SellFieldsViewController
+            
         } else {
             // TODO: Contact the seller by composing a new message in Mail app
         }
