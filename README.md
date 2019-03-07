@@ -2,8 +2,8 @@
 This application provides a centralized e-commerce platform for college students to buy and sell their textbooks.
 
 ## Features
-* authenticates users with SCU Login
-* integrates barcode scanning (so students can use smartphone camera to scan textbook barcode and auto-fill listing fields)
+* authenticates students with SCU Login
+* utilizes barcode scanning (so a student can use his/her smartphone camera to scan the textbook barcode, which auto-fills the listing fields)
 * view all listings for sale posted by other students
 * integrates Apple Pay for direct, easy payments
 
