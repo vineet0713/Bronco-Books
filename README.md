@@ -3,7 +3,7 @@ This application provides a centralized e-commerce platform for college students
 
 ## Features
 * authenticates users with SCU Login
-* integrates barcode scanning (so students can use smartphone camera to scan barcode and auto-fill listing fields)
+* integrates barcode scanning (so students can use smartphone camera to scan textbook barcode and auto-fill listing fields)
 * view all listings for sale posted by other students
 * integrates Apple Pay for direct, easy payments
 
