@@ -71,6 +71,7 @@ class ListingDetailViewController: UIViewController {
             let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
             userPostedListing = (userEmail == displayListing.seller.email) && (userDisplayName == displayListing.seller.displayName)
             
+            setUIComponents(enabled: true)
             setupLabelsAndButtons()
             retrieveImagesFromFirebase(counter: 0)
             
@@ -89,6 +90,27 @@ class ListingDetailViewController: UIViewController {
     }
     
     // MARK: - Helper Functions
+    
+    func setUIComponents(enabled: Bool) {
+        navigationItem.hidesBackButton = !enabled
+        buyOrRemoveButton.isEnabled = enabled
+        contactOrEditButton.isEnabled = enabled
+        
+        titleLabel.isEnabled = enabled
+        subtitleLabel.isEnabled = enabled
+        authorsLabel.isEnabled = enabled
+        publisherLabel.isEnabled = enabled
+        publishedDateLabel.isEnabled = enabled
+        languageLabel.isEnabled = enabled
+        editionLabel.isEnabled = enabled
+        pagesLabel.isEnabled = enabled
+        bindingLabel.isEnabled = enabled
+        paymentMethodLabel.isEnabled = enabled
+        priceLabel.isEnabled = enabled
+        listingPostedDateLabel.isEnabled = enabled
+        
+        displayListingPhotosCollection.isUserInteractionEnabled = enabled
+    }
     
     func setupLabelsAndButtons() {
         titleLabel.text = displayListing.textbook.title
@@ -169,6 +191,9 @@ class ListingDetailViewController: UIViewController {
             }
             
             DispatchQueue.main.async {
+                if (error != nil) {
+                    self.setUIComponents(enabled: true)
+                }
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: handler))
                 self.present(alert, animated: true, completion: nil)
@@ -184,6 +209,7 @@ class ListingDetailViewController: UIViewController {
             let alert = UIAlertController(title: "Confirm Removal", message: "Are you sure that you want to remove this listing from sale?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                self.setUIComponents(enabled: false)
                 self.removeListingFromSale()
             }))
             self.present(alert, animated: true, completion: nil)

@@ -99,7 +99,7 @@ class SellFieldsViewController: UIViewController {
         // this is to prevent code from being called when the UIImagePickerController dismisses!
         if previousViewController != nil {
             self.tabBarController?.tabBar.isHidden = true
-            self.postButton.isEnabled = true
+            setUIComponents(enabled: true)
             
             autoFillTextbookFields()
             
@@ -333,7 +333,6 @@ class SellFieldsViewController: UIViewController {
         DispatchQueue.main.async {
             self.uploadProgressView.isHidden = true
             self.clearFields()
-            self.setUIComponents(enabled: true)
             let alert = UIAlertController(title: "Listing Posted", message: postedMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
                 self.navigationController?.popViewController(animated: true)
