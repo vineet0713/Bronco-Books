@@ -303,7 +303,11 @@ class SellFieldsViewController: UIViewController {
         let fileName = "\(listingKey)_\(photoIndex).jpeg"
         
         let imageReference = storageReferenceImages.child(fileName)
-        let uploadTask = imageReference.putData(imageData!, metadata: nil) { (metadata, error) in
+        
+        let imageMetadata = StorageMetadata()
+        imageMetadata.contentType = "image/jpeg"
+        
+        let uploadTask = imageReference.putData(imageData!, metadata: imageMetadata) { (metadata, error) in
             let newPhotoIndex = photoIndex + 1
             let newSuccessfulUploads = (metadata != nil) ? (successfulUploads + 1) : (successfulUploads)
             

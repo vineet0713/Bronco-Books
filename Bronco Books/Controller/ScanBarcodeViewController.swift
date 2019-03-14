@@ -27,6 +27,8 @@ class ScanBarcodeViewController: UIViewController {
     var continuePressed: Bool!
     var requestFinished: Bool!
     
+    var loadErrorMessage: String?
+    
     // MARK: - IBOutlet
     
     @IBOutlet weak var scanBarcodeLabel: UILabel!
@@ -170,23 +172,26 @@ class ScanBarcodeViewController: UIViewController {
         GoogleBooksClient.sharedInstance().getBookInformation(from: isbn, completionHandler: { (result, error) in
             if let bookFields = result {
                 self.scannedBookDictionary = bookFields
-                self.requestFinished = true
-                self.checkToPerformSegue()
-            } else {
-                let alert = UIAlertController(title: "Load Failed", message: error, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { (action) in
-                    self.continuePressed = false
-                    self.startTimer()
-                }))
-                self.present(alert, animated: true, completion: nil)
             }
+            self.loadErrorMessage = error   // error is Optional!
+            self.requestFinished = true
+            self.checkToPerformSegue()
         })
     }
     
     func checkToPerformSegue() {
         if continuePressed && requestFinished {
             DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
+                if let message = self.loadErrorMessage {
+                    let alert = UIAlertController(title: "Load Failed", message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { (action) in
+                        self.continuePressed = false
+                        self.startTimer()
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
+                }
             }
         }
     }

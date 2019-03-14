@@ -14,7 +14,11 @@ extension GoogleBooksClient {
         let methodParameters: [String : Any] = [
             GoogleBooksParameterKeys.Query : GoogleBooksParameterValues.ISBN + barcode
         ]
-        let request = URLRequest(url: googlebooksURLFromParameters(methodParameters))
+        
+        let url = googlebooksURLFromParameters(methodParameters)
+        print("About to make a GET request on this url: \(url)")
+        
+        let request = URLRequest(url: url)
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
