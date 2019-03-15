@@ -169,7 +169,6 @@ class ListingDetailViewController: UIViewController {
             }
             self.retrievedImages.append(UIImage(data: imageData)!)
             DispatchQueue.main.async {
-                // self.noImagesLabel.isHidden = true
                 self.displayListingPhotosCollection.reloadData()
             }
             self.retrieveImagesFromFirebase(counter: counter + 1)
@@ -221,7 +220,6 @@ class ListingDetailViewController: UIViewController {
     @IBAction func contactOrEditTapped(_ sender: Any) {
         if userPostedListing {
             // TODO: Edit the listing by going to SellFieldsViewController
-            
         } else {
             // TODO: Contact the seller by composing a new message in Mail app
         }
