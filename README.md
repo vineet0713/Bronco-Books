@@ -9,4 +9,4 @@ This application provides a centralized e-commerce platform for college students
 
 ## Requirements
 * iOS 10.3+
-* Xcode 10.1
+* Xcode 10.2 (Swift 5)
