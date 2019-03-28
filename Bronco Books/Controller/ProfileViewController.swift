@@ -6,6 +6,9 @@
 //  Copyright © 2019 Vineet Joshi. All rights reserved.
 //
 
+// Credit for icon image used in this tab bar item:
+// Icons made by https://www.freepik.com/ from https://www.flaticon.com/ is licensed by http://creativecommons.org/licenses/by/3.0/
+
 import UIKit
 
 import Firebase

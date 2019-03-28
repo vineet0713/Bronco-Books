@@ -84,6 +84,8 @@ class MLKit {
             return .leftTop
         case .rightMirrored:
             return .rightBottom
+        @unknown default:
+            return .topLeft
         }
     }
     
