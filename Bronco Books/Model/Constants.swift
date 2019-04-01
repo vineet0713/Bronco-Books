@@ -39,6 +39,18 @@ struct Constants {
     // Maximum File Size to Download (currently set to 1 MB)
     static let MaximumFileSize = 1 * 1024 * 1024;
     
+    // Contacting Seller
+    static let EmailGreeting = "Hello"
+    static let EmailClosing = "Thanks"
+    static let ContactSellerOptions = ["More Images", "Discuss Price", "Change Payment Method", "Custom"]
+    static let ContactSellerEmailBodies = [
+        ContactSellerOptions[0] : "Can you please post more images of the textbook? I would like to get a better idea of the textbook's condition.",
+        ContactSellerOptions[1] : "Is it possible to sell this textbook at a price of $ ?",
+        ContactSellerOptions[2] : "Is it possible to change the payment method for this textbook to ?",
+        ContactSellerOptions[3] : ""
+    ]
+    
+    // contains all field names for Listing object
     struct ListingKeys {
         static let Textbook = "textbook"
         static let Seller = "seller"
@@ -50,11 +62,13 @@ struct Constants {
         static let ID = "id"
     }
     
+    // contains all field names for User object
     struct UserKeys {
         static let Email = "email"
         static let DisplayName = "displayName"
     }
     
+    // contains all field names for Textbook object
     struct TextbookKeys {
         static let Title = "title"
         static let Subtitle = "subtitle"
@@ -67,6 +81,7 @@ struct Constants {
         static let Binding = "binding"
     }
     
+    // contains all error messages for posting an incomplete Listing
     struct IncompleteFieldError {
         static let Title = "Please enter a title for your textbook."
         static let Authors = "Please enter 1 or more authors for your textbook."

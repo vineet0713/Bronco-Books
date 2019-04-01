@@ -11,6 +11,8 @@ import UIKit
 import FirebaseStorage
 import FirebaseDatabase
 
+import MessageUI
+
 class ListingDetailViewController: UIViewController {
     
     // MARK: - Properties
@@ -157,6 +159,61 @@ class ListingDetailViewController: UIViewController {
         contactOrEditButton.setTitle(userPostedListing ? "Edit Listing" : "Contact", for: .normal)
     }
     
+    func getFirstName(from fullName: String) -> String {
+        var firstName = ""
+        
+        for char in fullName {
+            if char == " " {
+                break
+            }
+            firstName.append(char)
+        }
+        
+        return firstName
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func contactSeller() {
+        let actionSheet = UIAlertController(title: "Choose Message Type", message: "Select from the following templates:", preferredStyle: .actionSheet)
+        
+        for option in Constants.ContactSellerOptions {
+            actionSheet.addAction(UIAlertAction(title: option, style: .default, handler: { (action) in
+                self.composeEmail(with: option)
+            }))
+        }
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func composeEmail(with contactOption: String) {
+        guard MFMailComposeViewController.canSendMail() else {
+            showAlert(title: "Mail Not Available", message: "This device does not support functionality for sending an email.")
+            return
+        }
+        
+        let mail = MFMailComposeViewController()
+        mail.mailComposeDelegate = self
+        mail.setSubject("Question About Listing on Bronco Books.")
+        mail.setToRecipients([displayListing.seller.email])
+        
+        let sellerName = getFirstName(from: displayListing.seller.displayName)
+        let emailBody = Constants.ContactSellerEmailBodies[contactOption]!
+        let userName = getFirstName(from: UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!)
+        mail.setMessageBody("\(Constants.EmailGreeting) \(sellerName),\n\n\(emailBody)\n\n\(Constants.EmailClosing),\n\(userName)", isHTML: false)
+        
+        if #available(iOS 11.0, *) {
+            mail.setPreferredSendingEmailAddress(UserDefaults.standard.string(forKey: Constants.UserEmailKey)!)
+        }
+        
+        present(mail, animated: true)
+    }
+    
     // MARK: - Backend Functions
     
     func retrieveImagesFromFirebase(counter: Int) {
@@ -214,14 +271,16 @@ class ListingDetailViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         } else {
             // TODO: Buy the listing!
+            showAlert(title: "Nonexistent Feature", message: "The functionality to buy a listing has not been implemented yet. Stay tuned!")
         }
     }
     
     @IBAction func contactOrEditTapped(_ sender: Any) {
         if userPostedListing {
             // TODO: Edit the listing by going to SellFieldsViewController
+            showAlert(title: "Nonexistent Feature", message: "The functionality to edit a listing has not been implemented yet. Stay tuned!")
         } else {
-            // TODO: Contact the seller by composing a new message in Mail app
+            contactSeller()
         }
     }
     
@@ -265,6 +324,16 @@ extension ListingDetailViewController: UICollectionViewDelegateFlowLayout {
         let cellsPerRow: CGFloat = 2
         
         return CGSize(width: (width - 10) / (cellsPerRow + 1), height: (width - 10) / (cellsPerRow + 1))
+    }
+    
+}
+
+// MARK: - Extension for MFMailComposeViewControllerDelegate
+
+extension ListingDetailViewController: MFMailComposeViewControllerDelegate {
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
     
 }
