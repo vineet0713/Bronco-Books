@@ -21,6 +21,7 @@ class SellFieldsViewController: UIViewController {
     
     var previousViewController: String?
     
+    var cancelButton: UIBarButtonItem!
     var postButton: UIBarButtonItem!
     
     var fieldsFromBarcodeScan: [String : Any]?
@@ -34,10 +35,23 @@ class SellFieldsViewController: UIViewController {
     let shortDateFormatter = DateFormatter()
     var longDateUsed: Bool!
     
-    var uploadedImages: [UIImage] = []
+    var imagesToUpload: [UIImage] = []
     var imageController: UIImagePickerController!
     
     var uploadProgressView: UIProgressView!
+    
+    var listingToEdit: Listing!
+    
+    var confirmAlertTitle: String!
+    var confirmAlertMessage: String!
+    
+    var imagesIndicesToRemove = Set<Int>()
+    var photosWereRemoved: Bool!
+    var imageStartIndex: Int!
+    
+    var editingMode: Bool!
+    
+    var uploadedImages: [UIImage] = []
     
     // MARK: - IBOutlets
     
@@ -76,7 +90,7 @@ class SellFieldsViewController: UIViewController {
         // This is for UICollectionViewDelegateFlowLayout (which inherits from UICollectionViewDelegate!)
         postListingPhotosCollection.delegate = self
         
-        self.title = "Confirm Listing"
+        cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel))
         
         postButton = UIBarButtonItem(title: "Post", style: .done, target: self, action: #selector(post))
         self.navigationItem.rightBarButtonItem = postButton
@@ -97,18 +111,29 @@ class SellFieldsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // this is to prevent code from being called when the UIImagePickerController dismisses!
-        if previousViewController != nil {
-            self.tabBarController?.tabBar.isHidden = true
-            setUIComponents(enabled: true)
-            
-            autoFillTextbookFields()
-            
-            publishDate = nil
-            listingPrice = nil
-            selectedPaymentMethod = Constants.PaymentMethods[0]
-            
-            previousViewController = nil
+        guard let presentingViewController = previousViewController else {
+            return
         }
+        
+        self.tabBarController?.tabBar.isHidden = true
+        setUIComponents(enabled: true)
+        
+        imagesIndicesToRemove.removeAll()
+        photosWereRemoved = false
+        imageStartIndex = imagesToUpload.count
+        
+        editingMode = (presentingViewController == "ListingDetailViewController")
+        if editingMode {
+            fillFieldsOfListingToEdit()
+        } else {
+            autoFillTextbookFields()
+        }
+        setPostUpdateUI()
+        
+        publishDate = nil
+        listingPrice = nil
+        
+        previousViewController = nil
     }
     
     // MARK: - Helper Functions
@@ -119,7 +144,8 @@ class SellFieldsViewController: UIViewController {
         uploadProgressView.trackTintColor = UIColor.lightGray
         uploadProgressView.tintColor = UIColor.blue
         uploadProgressView.isHidden = true
-        uploadProgressView.transform = uploadProgressView.transform.scaledBy(x: 2.25, y: 10)
+        // uploadProgressView.transform = uploadProgressView.transform.scaledBy(x: 2.25, y: 10)
+        uploadProgressView.transform = uploadProgressView.transform.scaledBy(x: 1.5, y: 10)
         self.view.addSubview(uploadProgressView)
     }
     
@@ -137,6 +163,19 @@ class SellFieldsViewController: UIViewController {
         // do not fill editionField because Google Books API doesn't provide edition!
         pagesField.text! = String(textbookFields[Constants.TextbookKeys.Pages] as! Int)
         // do not fill bindingField because Google Books API doesn't provide binding!
+    }
+    
+    func fillFieldsOfListingToEdit() {
+        titleField.text! = listingToEdit.textbook.title
+        subtitleField.text! = listingToEdit.textbook.subtitle
+        authorsField.text! = (listingToEdit.textbook.authors).joined(separator: ", ")
+        publisherField.text! = listingToEdit.textbook.publisher
+        publishedDateField.text! = listingToEdit.textbook.publishedDate
+        languageField.text! = listingToEdit.textbook.language
+        editionField.text! = listingToEdit.textbook.edition
+        pagesField.text! = String(listingToEdit.textbook.pages)
+        bindingField.text! = listingToEdit.textbook.binding
+        priceField.text! = String(listingToEdit.price)
     }
     
     func setUIComponents(enabled: Bool) {
@@ -160,6 +199,32 @@ class SellFieldsViewController: UIViewController {
         postListingPhotosCollection.isUserInteractionEnabled = enabled
     }
     
+    func setPostUpdateUI() {
+        if editingMode {
+            self.title = "Edit Listing"
+            postButton.title = "Update"
+            self.navigationItem.hidesBackButton = true
+            self.navigationItem.leftBarButtonItem = cancelButton
+            
+            confirmAlertTitle = "Confirm Update"
+            confirmAlertMessage = "Do you want to update this listing with your changes?"
+            
+            selectedPaymentMethod = listingToEdit.paymentMethod
+            let selectedIndex = Constants.PaymentMethods.firstIndex(of: selectedPaymentMethod)!
+            paymentMethodPicker.selectRow(selectedIndex, inComponent: 0, animated: false)
+        } else {
+            self.title = "Confirm Listing"
+            postButton.title = "Post"
+            self.navigationItem.hidesBackButton = false
+            self.navigationItem.leftBarButtonItem = nil
+            
+            confirmAlertTitle = "Confirm Listing"
+            confirmAlertMessage = "Do you want to post this listing for sale?"
+            
+            selectedPaymentMethod = Constants.PaymentMethods[0]
+        }
+    }
+    
     func clearFields() {
         titleField.text = ""
         subtitleField.text = ""
@@ -171,7 +236,7 @@ class SellFieldsViewController: UIViewController {
         pagesField.text = ""
         bindingField.text = ""
         priceField.text = ""
-        uploadedImages.removeAll()
+        imagesToUpload.removeAll()
     }
     
     func publishedDateIsValid() -> Bool {
@@ -235,6 +300,18 @@ class SellFieldsViewController: UIViewController {
         return nil
     }
     
+    func removeSelectedPhotos() {
+        var imagesRemoved = 0
+        for indexToRemove in imagesIndicesToRemove.sorted() {
+            imagesToUpload.remove(at: (indexToRemove - imagesRemoved))
+            imagesRemoved += 1
+        }
+        imagesIndicesToRemove.removeAll()
+        photosWereRemoved = true
+        uploadPhotosButton.setTitle("Upload Photos", for: .normal)
+        postListingPhotosCollection.reloadData()
+    }
+    
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
@@ -275,13 +352,39 @@ class SellFieldsViewController: UIViewController {
     }
     
     func addListingToFirebase(listingToAdd: [String : Any?]) {
-        databaseReferenceListings.childByAutoId().setValue(listingToAdd) { (error, databaseReference) in
+        let listingReference = editingMode ? databaseReferenceListings.child(listingToEdit.id!) : databaseReferenceListings.childByAutoId()
+        listingReference.setValue(listingToAdd) { (error, databaseReference) in
             if error == nil {
-                if self.uploadedImages.count > 0 {
-                    DispatchQueue.main.async {
-                        self.uploadProgressView.setProgress(Float(1) / Float(self.uploadedImages.count + 1), animated: true)
+                let key = databaseReference.key!
+                if self.imagesToUpload.count > 0 {
+                    // Cases to deal with:
+                    //      1. The user removed images (and may have added images), so call remove
+                    //      2. The user didn't add or remove any images, so don't call delete or add
+                    //      3. The user only added images (and did not remove any images), so only call add
+                    if self.photosWereRemoved {
+                        // Case 1
+                        DispatchQueue.main.async {
+                            self.uploadProgressView.setProgress(Float(1) / Float(self.imagesToUpload.count + 2), animated: true)
+                        }
+                        self.deletePhotosFromFirebase(listingKey: key, photoIndex: 0)
+                    } else if self.imageStartIndex == self.imagesToUpload.count {
+                        // Case 2
+                        DispatchQueue.main.async {
+                            self.uploadProgressView.setProgress(1, animated: true)
+                        }
+                        self.uploadCompleted(with: self.imagesToUpload.count)
+                    } else {
+                        // Case 3
+                        DispatchQueue.main.async {
+                            self.uploadProgressView.setProgress(Float(1) / Float(self.imagesToUpload.count + 1), animated: true)
+                        }
+                        self.addPhotosToFirebase(listingKey: key, photoIndex: self.imageStartIndex, successfulUploads: self.imageStartIndex)
                     }
-                    self.addPhotosToFirebase(listingKey: databaseReference.key!, photoIndex: 0, successfulUploads: 0)
+                } else if self.photosWereRemoved {
+                    DispatchQueue.main.async {
+                        self.uploadProgressView.setProgress(Float(1) / Float(2), animated: true)
+                    }
+                    self.deletePhotosFromFirebase(listingKey: key, photoIndex: 0)
                 } else {
                     DispatchQueue.main.async {
                         self.uploadProgressView.setProgress(1, animated: true)
@@ -298,11 +401,31 @@ class SellFieldsViewController: UIViewController {
         }
     }
     
-    func addPhotosToFirebase(listingKey: String, photoIndex: Int, successfulUploads: Int) {
-        let imageData = uploadedImages[photoIndex].jpegData(compressionQuality: CGFloat(Constants.UploadCompressionQuality))
+    func deletePhotosFromFirebase(listingKey: String, photoIndex: Int) {
         let fileName = "\(listingKey)_\(photoIndex).jpeg"
-        
         let imageReference = storageReferenceImages.child(fileName)
+        
+        imageReference.delete { (error) in
+            if error == nil && photoIndex + 1 < Constants.MaximumPhotoUpload {
+                self.deletePhotosFromFirebase(listingKey: listingKey, photoIndex: photoIndex + 1)
+            } else {
+                DispatchQueue.main.async {
+                    self.uploadProgressView.setProgress(Float(2) / Float(self.imagesToUpload.count + 2), animated: true)
+                }
+                if self.imagesToUpload.count > 0 {
+                    self.addPhotosToFirebase(listingKey: listingKey, photoIndex: 0, successfulUploads: 0)
+                } else {
+                    self.uploadCompleted(with: 0)
+                }
+            }
+        }
+    }
+    
+    func addPhotosToFirebase(listingKey: String, photoIndex: Int, successfulUploads: Int) {
+        let fileName = "\(listingKey)_\(photoIndex).jpeg"
+        let imageReference = storageReferenceImages.child(fileName)
+        
+        let imageData = imagesToUpload[photoIndex].jpegData(compressionQuality: CGFloat(Constants.UploadCompressionQuality))
         
         let imageMetadata = StorageMetadata()
         imageMetadata.contentType = "image/jpeg"
@@ -312,14 +435,12 @@ class SellFieldsViewController: UIViewController {
             let newSuccessfulUploads = (metadata != nil) ? (successfulUploads + 1) : (successfulUploads)
             
             DispatchQueue.main.async {
-                self.uploadProgressView.setProgress(Float(newPhotoIndex + 1) / Float(self.uploadedImages.count + 1), animated: true)
+                self.uploadProgressView.setProgress(Float(newPhotoIndex + 1) / Float(self.imagesToUpload.count + 1), animated: true)
             }
             
-            if newPhotoIndex == self.uploadedImages.count {
-                // all photos have attempted to upload
+            if newPhotoIndex == self.imagesToUpload.count {
                 self.uploadCompleted(with: newSuccessfulUploads)
             } else {
-                // there are still photos to be uploaded
                 self.addPhotosToFirebase(listingKey: listingKey, photoIndex: newPhotoIndex, successfulUploads: newSuccessfulUploads)
             }
         }
@@ -328,18 +449,27 @@ class SellFieldsViewController: UIViewController {
     }
     
     func uploadCompleted(with successfulUploads: Int) {
-        var postedMessage = "Your listing was successfully posted"
-        if successfulUploads < uploadedImages.count {
+        let postedTitle = editingMode ? "Listing Updated" : "Listing Posted"
+        
+        var postedMessage = "Your listing was successfully "
+        postedMessage += (editingMode ? "updated" : "posted")
+        if successfulUploads < imagesToUpload.count {
             postedMessage += ", but the images failed to upload"
         }
         postedMessage += "."
         
         DispatchQueue.main.async {
             self.uploadProgressView.isHidden = true
+            self.uploadedImages = self.imagesToUpload
             self.clearFields()
-            let alert = UIAlertController(title: "Listing Posted", message: postedMessage, preferredStyle: .alert)
+            let alert = UIAlertController(title: postedTitle, message: postedMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default Action"), style: .default, handler: { (action) in
-                self.navigationController?.popViewController(animated: true)
+                if self.editingMode {
+                    self.listingToPost!.setId(id: self.listingToEdit.id!)
+                    self.performSegue(withIdentifier: "unwindToListingDetail", sender: self)
+                } else {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -352,7 +482,18 @@ class SellFieldsViewController: UIViewController {
     }
     
     @IBAction func uploadPhotosTapped(_ sender: Any) {
-        guard uploadedImages.count < Constants.MaximumPhotoUpload else {
+        if imagesIndicesToRemove.count > 0 {
+            let alert = UIAlertController(title: "Remove Selected Photos", message: "Are you sure you want to remove the selected photos?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                self.removeSelectedPhotos()
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        guard imagesToUpload.count < Constants.MaximumPhotoUpload else {
             showAlert(title: "Upload Limit Exceeded", message: "You can upload a maximum of \(Constants.MaximumPhotoUpload) images.")
             return
         }
@@ -366,7 +507,16 @@ class SellFieldsViewController: UIViewController {
         self.present(imageController, animated: true, completion: nil)
     }
     
-    // MARK: - Objective-C Exposed Function
+    // MARK: - Objective-C Exposed Functions
+    
+    @objc func cancel() {
+        let alert = UIAlertController(title: "Cancel Editing", message: "Are you sure you want to cancel editing? Your changes will not be saved.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     @objc func post() {
         // dismisses the keyboard without worrying about what is the first responder
@@ -377,7 +527,7 @@ class SellFieldsViewController: UIViewController {
             return
         }
         
-        let alert = UIAlertController(title: "Confirm Post", message: "Do you want to post this listing for sale?", preferredStyle: .alert)
+        let alert = UIAlertController(title: confirmAlertTitle, message: confirmAlertMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             self.setUIComponents(enabled: false)
@@ -429,7 +579,7 @@ extension SellFieldsViewController: UINavigationControllerDelegate, UIImagePicke
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        uploadedImages.append(image)
+        imagesToUpload.append(image)
         postListingPhotosCollection.reloadData()
         imageController.dismiss(animated: true, completion: nil)
     }
@@ -446,17 +596,45 @@ extension SellFieldsViewController: UINavigationControllerDelegate, UIImagePicke
 extension SellFieldsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return uploadedImages.count
+        return imagesToUpload.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "postListingPhotoCell", for: indexPath) as! UploadedPhotoCollectionViewCell
         
-        cell.imageView.image = uploadedImages[indexPath.row]
+        cell.imageView.image = imagesToUpload[indexPath.row]
+        
+        // decides whether to blur the photo (if the user has tapped the photo)
+        if imagesIndicesToRemove.contains(indexPath.row) {
+            cell.visualEffectView.isHidden = false
+            cell.visualEffectView.effect = UIBlurEffect(style: .prominent)
+        } else {
+            cell.visualEffectView.isHidden = true
+            cell.visualEffectView.effect = nil
+        }
         
         return cell
     }
  
+}
+
+// MARK: - Extension for UICollectionViewDelegate
+
+extension SellFieldsViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedIndex = indexPath.row
+        if imagesIndicesToRemove.contains(selectedIndex) {
+            imagesIndicesToRemove.remove(selectedIndex)
+        } else {
+            imagesIndicesToRemove.insert(selectedIndex)
+        }
+        
+        let buttonTitle = (imagesIndicesToRemove.isEmpty) ? "Upload Photos" : "Remove Selected"
+        uploadPhotosButton.setTitle(buttonTitle, for: .normal)
+        postListingPhotosCollection.reloadItems(at: [indexPath])
+    }
+    
 }
 
 // MARK: - Extension for UICollectionViewDelegateFlowLayout

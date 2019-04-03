@@ -256,16 +256,29 @@
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7yx-rs-Y2c">
                                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                                 </imageView>
+                                                                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zi7-Oj-87x">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="AY0-wq-UJV">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    </view>
+                                                                    <blurEffect style="light"/>
+                                                                </visualEffectView>
                                                             </subviews>
                                                         </view>
                                                         <constraints>
                                                             <constraint firstAttribute="bottom" secondItem="7yx-rs-Y2c" secondAttribute="bottom" id="170-hZ-cyq"/>
+                                                            <constraint firstAttribute="bottom" secondItem="Zi7-Oj-87x" secondAttribute="bottom" id="Aby-sw-ZES"/>
                                                             <constraint firstItem="7yx-rs-Y2c" firstAttribute="top" secondItem="oAw-EY-Hlg" secondAttribute="top" id="CcS-Kp-w0D"/>
                                                             <constraint firstItem="7yx-rs-Y2c" firstAttribute="leading" secondItem="oAw-EY-Hlg" secondAttribute="leading" id="Wpv-Lp-Wf8"/>
+                                                            <constraint firstItem="Zi7-Oj-87x" firstAttribute="leading" secondItem="oAw-EY-Hlg" secondAttribute="leading" id="gAD-6a-Pzt"/>
+                                                            <constraint firstAttribute="trailing" secondItem="Zi7-Oj-87x" secondAttribute="trailing" id="gJg-G5-T84"/>
                                                             <constraint firstAttribute="trailing" secondItem="7yx-rs-Y2c" secondAttribute="trailing" id="mR9-d7-N4P"/>
+                                                            <constraint firstItem="Zi7-Oj-87x" firstAttribute="top" secondItem="oAw-EY-Hlg" secondAttribute="top" id="rgb-YS-3Ib"/>
                                                         </constraints>
                                                         <connections>
                                                             <outlet property="imageView" destination="7yx-rs-Y2c" id="do1-dn-sl9"/>
+                                                            <outlet property="visualEffectView" destination="Zi7-Oj-87x" id="nzx-OB-Y8V"/>
                                                         </connections>
                                                     </collectionViewCell>
                                                 </cells>
@@ -436,9 +449,11 @@
                         <outlet property="subtitleField" destination="j6S-6G-BaP" id="t6g-2w-bN1"/>
                         <outlet property="titleField" destination="XnN-84-caY" id="ikx-3T-LLg"/>
                         <outlet property="uploadPhotosButton" destination="xUx-8s-aal" id="NRo-vf-yff"/>
+                        <segue destination="g0f-ZY-U8l" kind="unwind" identifier="unwindToListingDetail" unwindAction="unwindFromSellFields:" id="jRA-Af-xdb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0iR-M7-Yi4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="g0f-ZY-U8l" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4853.6000000000004" y="657.57121439280365"/>
         </scene>
@@ -765,6 +780,7 @@
                         <outlet property="subtitleLabel" destination="qDq-ae-8KQ" id="Kdw-eO-JMf"/>
                         <outlet property="titleLabel" destination="yMO-Of-lqS" id="y7R-dg-YhB"/>
                         <segue destination="TUA-wE-3vm" kind="show" identifier="listingDetailToImageSegue" id="Emh-fj-jWE"/>
+                        <segue destination="Rtc-gA-OKR" kind="show" identifier="listingDetailToFieldsSegue" id="vFh-r4-nCL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ul-hk-cgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -883,6 +899,6 @@
         <image name="shopping-cart" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="w4r-er-Fle"/>
+        <segue reference="vFh-r4-nCL"/>
     </inferredMetricsTieBreakers>
 </document>

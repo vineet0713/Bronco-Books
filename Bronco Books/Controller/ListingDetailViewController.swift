@@ -28,6 +28,8 @@ class ListingDetailViewController: UIViewController {
     
     var previousViewController: String?
     
+    var imageDownloadFinished: Bool!
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -67,6 +69,8 @@ class ListingDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.tabBarController?.tabBar.isHidden = false
+        
         // this is to prevent code from being called when the ImageDetailViewController pops back!
         if previousViewController != nil {
             let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
@@ -75,6 +79,7 @@ class ListingDetailViewController: UIViewController {
             
             setUIComponents(enabled: true)
             setupLabelsAndButtons()
+            finishImagesDownload(finished: false)
             retrieveImagesFromFirebase(counter: 0)
             
             previousViewController = nil
@@ -88,6 +93,10 @@ class ListingDetailViewController: UIViewController {
         if let destinationVC = segue.destination as? ImageDetailViewController {
             destinationVC.photos = retrievedImages
             destinationVC.selectedIndex = selectedImageIndex
+        } else if let destinationVC = segue.destination as? SellFieldsViewController {
+            destinationVC.previousViewController = "ListingDetailViewController"
+            destinationVC.listingToEdit = displayListing
+            destinationVC.imagesToUpload = retrievedImages
         }
     }
     
@@ -214,6 +223,13 @@ class ListingDetailViewController: UIViewController {
         present(mail, animated: true)
     }
     
+    func finishImagesDownload(finished: Bool) {
+        imageDownloadFinished = finished
+        if userPostedListing {
+            contactOrEditButton.isEnabled = finished
+        }
+    }
+    
     // MARK: - Backend Functions
     
     func retrieveImagesFromFirebase(counter: Int) {
@@ -222,13 +238,20 @@ class ListingDetailViewController: UIViewController {
         fileReference.getData(maxSize: Int64(Constants.MaximumFileSize)) { (data, error) in
             guard let imageData = data else {
                 // no more images for this listing
+                self.finishImagesDownload(finished: true)
                 return
             }
+            
             self.retrievedImages.append(UIImage(data: imageData)!)
             DispatchQueue.main.async {
                 self.displayListingPhotosCollection.reloadData()
             }
-            self.retrieveImagesFromFirebase(counter: counter + 1)
+            
+            if counter + 1 == Constants.MaximumPhotoUpload {
+                self.finishImagesDownload(finished: true)
+            } else {
+                self.retrieveImagesFromFirebase(counter: counter + 1)
+            }
         }
     }
     
@@ -277,10 +300,24 @@ class ListingDetailViewController: UIViewController {
     
     @IBAction func contactOrEditTapped(_ sender: Any) {
         if userPostedListing {
-            // TODO: Edit the listing by going to SellFieldsViewController
-            showAlert(title: "Nonexistent Feature", message: "The functionality to edit a listing has not been implemented yet. Stay tuned!")
+            self.performSegue(withIdentifier: "listingDetailToFieldsSegue", sender: self)
         } else {
             contactSeller()
+        }
+    }
+    
+    // Unwind Segue (to let SellFieldsViewController pass the updated Listing/images to this ViewController after editing)
+    @IBAction func unwindFromSellFields(_ sender: UIStoryboardSegue) {
+        guard let sourceVC = sender.source as? SellFieldsViewController else {
+            return
+        }
+        
+        displayListing = sourceVC.listingToPost
+        setupLabelsAndButtons()
+        
+        retrievedImages = sourceVC.uploadedImages
+        DispatchQueue.main.async {
+            self.displayListingPhotosCollection.reloadData()
         }
     }
     
@@ -309,6 +346,9 @@ extension ListingDetailViewController: UICollectionViewDataSource {
 extension ListingDetailViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard imageDownloadFinished else {
+            return
+        }
         selectedImageIndex = indexPath.row
         self.performSegue(withIdentifier: "listingDetailToImageSegue", sender: self)
     }
