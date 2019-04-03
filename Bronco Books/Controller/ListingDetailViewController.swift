@@ -164,7 +164,7 @@ class ListingDetailViewController: UIViewController {
         dateFormatter.dateStyle = .short
         listingPostedDateLabel.text = "Posted: " + dateFormatter.string(from: date)
         
-        buyOrRemoveButton.setTitle(userPostedListing ? "Remove" : "Buy", for: .normal)
+        buyOrRemoveButton.setTitle(userPostedListing ? (displayListing.onSale ? "Remove" : "Sell") : "Buy", for: .normal)
         contactOrEditButton.setTitle(userPostedListing ? "Edit Listing" : "Contact", for: .normal)
     }
     
@@ -255,15 +255,15 @@ class ListingDetailViewController: UIViewController {
         }
     }
     
-    func removeListingFromSale() {
+    func removeListingFromSale(newOnSaleValue: Bool, _ successTitle: String, _ successMessage: String) {
         let databaseReferenceOnSale = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.OnSale)
-        databaseReferenceOnSale.setValue(false) { (error, databaseReference) in
+        databaseReferenceOnSale.setValue(newOnSaleValue) { (error, databaseReference) in
             var title = "Update Failed"
             var message = "There was an error in updating the listing. Sorry about that!"
             var handler: ((UIAlertAction) -> Void)? = nil
             if error == nil {
-                title = "Listing Removed"
-                message = "This listing is no longer up for sale."
+                title = successTitle
+                message = successMessage
                 handler = { (action) in
                     self.navigationController?.popViewController(animated: true)
                 }
@@ -284,12 +284,21 @@ class ListingDetailViewController: UIViewController {
     
     @IBAction func buyOrRemoveTapped(_ sender: Any) {
         if userPostedListing {
+            let alertTitle = displayListing.onSale ? "Confirm Removal" : "Confirm Sell"
+            var alertMessage = "Are you sure that you want to "
+            alertMessage += (displayListing.onSale ? "remove this listing from sale?" : "post this listing back for sale?")
+            
             // remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
-            let alert = UIAlertController(title: "Confirm Removal", message: "Are you sure that you want to remove this listing from sale?", preferredStyle: .alert)
+            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 self.setUIComponents(enabled: false)
-                self.removeListingFromSale()
+                
+                let successTitle = self.displayListing.onSale ? "Listing Removed" : "Listing On Sale"
+                var successMessage = "This listing is "
+                successMessage += (self.displayListing.onSale ? "no longer up for sale." : "back up for sale!")
+                
+                self.removeListingFromSale(newOnSaleValue: !(self.displayListing.onSale), successTitle, successMessage)
             }))
             self.present(alert, animated: true, completion: nil)
         } else {

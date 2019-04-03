@@ -10,6 +10,8 @@ import UIKit
 
 class RetrievedPhotoCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - IBOutlet
+    
     @IBOutlet weak var imageView: UIImageView!
     
 }

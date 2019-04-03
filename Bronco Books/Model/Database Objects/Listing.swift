@@ -25,14 +25,13 @@ class Listing {
     
     // MARK: - Constructors
     
-    init(textbook: Textbook, seller: User, price: Double, paymentMethod: String, epochTimePosted: Int) {
+    init(textbook: Textbook, seller: User, price: Double, paymentMethod: String, epochTimePosted: Int, onSale: Bool) {
         self.textbook = textbook
         self.seller = seller
         self.price = price
         self.paymentMethod = paymentMethod
         self.epochTimePosted = epochTimePosted
-        
-        self.onSale = true
+        self.onSale = onSale
     }
     
     init(dict: [String : Any?]) {
@@ -46,7 +45,7 @@ class Listing {
         self.paymentMethod = dict[Constants.ListingKeys.PaymentMethod] as! String
         self.epochTimePosted = dict[Constants.ListingKeys.EpochTimePosted] as! Int
         
-        self.onSale = true
+        self.onSale = dict[Constants.ListingKeys.OnSale] as! Bool
     }
     
     // MARK: - Member Functions

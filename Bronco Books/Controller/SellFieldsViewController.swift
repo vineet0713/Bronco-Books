@@ -237,6 +237,7 @@ class SellFieldsViewController: UIViewController {
         bindingField.text = ""
         priceField.text = ""
         imagesToUpload.removeAll()
+        postListingPhotosCollection.reloadData()
     }
     
     func publishedDateIsValid() -> Bool {
@@ -346,7 +347,12 @@ class SellFieldsViewController: UIViewController {
         
         let epochTimeSeconds = Int(NSDate().timeIntervalSince1970)
         
-        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: User(dict: sellerDictionary), price: listingPrice!, paymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds)
+        var onSale = true
+        if editingMode {
+            onSale = listingToEdit.onSale
+        }
+        
+        listingToPost = Listing(textbook: Textbook(dict: textbookDictionary), seller: User(dict: sellerDictionary), price: listingPrice!, paymentMethod: selectedPaymentMethod, epochTimePosted: epochTimeSeconds, onSale: onSale)
         
         addListingToFirebase(listingToAdd: listingToPost!.getDictionary())
     }
