@@ -134,7 +134,7 @@ class ListingDetailViewController: UIViewController {
             authorsLabel.text = "Authors: " + authors.joined(separator: ", ")
         }
         
-        publisherLabel.text = "Publisher: " + displayListing.textbook.publisher
+        publisherLabel.text = (displayListing.textbook.publisher == "") ? ("") : ("Publisher: " + displayListing.textbook.publisher)
         publishedDateLabel.text = displayListing.textbook.publishedDate
         languageLabel.text = displayListing.textbook.language
         

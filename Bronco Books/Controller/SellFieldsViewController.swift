@@ -155,13 +155,17 @@ class SellFieldsViewController: UIViewController {
         }
         
         titleField.text! = textbookFields[Constants.TextbookKeys.Title] as! String
-        subtitleField.text! = textbookFields[Constants.TextbookKeys.Subtitle] as! String
+        subtitleField.text = textbookFields[Constants.TextbookKeys.Subtitle] as? String
         authorsField.text! = (textbookFields[Constants.TextbookKeys.Authors] as! [String]).joined(separator: ", ")
-        publisherField.text! = textbookFields[Constants.TextbookKeys.Publisher] as! String
-        publishedDateField.text! = textbookFields[Constants.TextbookKeys.PublishedDate] as! String
-        languageField.text! = textbookFields[Constants.TextbookKeys.Language] as! String
+        publisherField.text = textbookFields[Constants.TextbookKeys.Publisher] as? String
+        publishedDateField.text = textbookFields[Constants.TextbookKeys.PublishedDate] as? String
+        languageField.text = textbookFields[Constants.TextbookKeys.Language] as? String
         // do not fill editionField because Google Books API doesn't provide edition!
-        pagesField.text! = String(textbookFields[Constants.TextbookKeys.Pages] as! Int)
+        if let pagesInt = textbookFields[Constants.TextbookKeys.Pages] as? Int {
+            pagesField.text = String(pagesInt)
+        } else {
+            pagesField.text = nil
+        }
         // do not fill bindingField because Google Books API doesn't provide binding!
     }
     
@@ -500,7 +504,7 @@ class SellFieldsViewController: UIViewController {
         }
         
         guard imagesToUpload.count < Constants.MaximumPhotoUpload else {
-            showAlert(title: "Upload Limit Exceeded", message: "You can upload a maximum of \(Constants.MaximumPhotoUpload) images.")
+            showAlert(title: "Upload Limit Reached", message: "You can upload a maximum of \(Constants.MaximumPhotoUpload) images.")
             return
         }
         

@@ -63,49 +63,41 @@ extension GoogleBooksClient {
             
             var textbookDictionary: [String : Any] = [:]
             
+            // title is a required field for a Listing
             guard let title = volume[GoogleBooksResponseKeys.Title] as? String else {
                 completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.Title).")
                 return
             }
             textbookDictionary[Constants.TextbookKeys.Title] = title
             
-            guard let subtitle = volume[GoogleBooksResponseKeys.Subtitle] as? String else {
-                completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.Subtitle).")
-                return
+            if let subtitle = volume[GoogleBooksResponseKeys.Subtitle] as? String {
+                textbookDictionary[Constants.TextbookKeys.Subtitle] = subtitle
             }
-            textbookDictionary[Constants.TextbookKeys.Subtitle] = subtitle
             
+            // authors is a required field for a Listing
             guard let authors = volume[GoogleBooksResponseKeys.Authors] as? [String] else {
                 completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.Authors).")
                 return
             }
             textbookDictionary[Constants.TextbookKeys.Authors] = authors
             
-            guard let publisher = volume[GoogleBooksResponseKeys.Publisher] as? String else {
-                completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.Publisher).")
-                return
+            if let publisher = volume[GoogleBooksResponseKeys.Publisher] as? String {
+                textbookDictionary[Constants.TextbookKeys.Publisher] = publisher
             }
-            textbookDictionary[Constants.TextbookKeys.Publisher] = publisher
             
-            guard let publishedDate = volume[GoogleBooksResponseKeys.PublishedDate] as? String else {
-                completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.PublishedDate).")
-                return
+            if let publishedDate = volume[GoogleBooksResponseKeys.PublishedDate] as? String {
+                textbookDictionary[Constants.TextbookKeys.PublishedDate] = publishedDate
             }
-            textbookDictionary[Constants.TextbookKeys.PublishedDate] = publishedDate
             
-            guard let languageId = volume[GoogleBooksResponseKeys.Language] as? String else {
-                completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.Language).")
-                return
+            if let languageId = volume[GoogleBooksResponseKeys.Language] as? String {
+                let locale = NSLocale(localeIdentifier: languageId)
+                let language = locale.displayName(forKey: NSLocale.Key.identifier, value: languageId)
+                textbookDictionary[Constants.TextbookKeys.Language] = language
             }
-            let locale = NSLocale(localeIdentifier: languageId)
-            let language = locale.displayName(forKey: NSLocale.Key.identifier, value: languageId)
-            textbookDictionary[Constants.TextbookKeys.Language] = language
             
-            guard let pages = volume[GoogleBooksResponseKeys.Pages] as? Int else {
-                completionHandler(nil, "Could not find the key \(GoogleBooksResponseKeys.Pages).")
-                return
+            if let pages = volume[GoogleBooksResponseKeys.Pages] as? Int {
+                textbookDictionary[Constants.TextbookKeys.Pages] = pages
             }
-            textbookDictionary[Constants.TextbookKeys.Pages] = pages
             
             completionHandler(textbookDictionary, nil)
         }
