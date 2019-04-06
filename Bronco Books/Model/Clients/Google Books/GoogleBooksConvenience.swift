@@ -15,8 +15,8 @@ extension GoogleBooksClient {
             GoogleBooksParameterKeys.Query : GoogleBooksParameterValues.ISBN + barcode
         ]
         
+        // Sample URL: https://www.googleapis.com/books/v1/volumes?q=isbn:BARCODE
         let url = googlebooksURLFromParameters(methodParameters)
-        print("About to make a GET request on this url: \(url)")
         
         let request = URLRequest(url: url)
         

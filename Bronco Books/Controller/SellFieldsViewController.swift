@@ -214,7 +214,7 @@ class SellFieldsViewController: UIViewController {
             confirmAlertMessage = "Do you want to update this listing with your changes?"
             
             selectedPaymentMethod = listingToEdit.paymentMethod
-            let selectedIndex = Constants.PaymentMethods.firstIndex(of: selectedPaymentMethod)!
+            let selectedIndex = Constants.PaymentMethods.List.firstIndex(of: selectedPaymentMethod)!
             paymentMethodPicker.selectRow(selectedIndex, inComponent: 0, animated: false)
         } else {
             self.title = "Confirm Listing"
@@ -225,7 +225,7 @@ class SellFieldsViewController: UIViewController {
             confirmAlertTitle = "Confirm Listing"
             confirmAlertMessage = "Do you want to post this listing for sale?"
             
-            selectedPaymentMethod = Constants.PaymentMethods[0]
+            selectedPaymentMethod = Constants.PaymentMethods.Dummy
         }
     }
     
@@ -298,7 +298,7 @@ class SellFieldsViewController: UIViewController {
             return Constants.IncompleteFieldError.Price
         }
         
-        if selectedPaymentMethod == Constants.PaymentMethods[0] {
+        if selectedPaymentMethod == Constants.PaymentMethods.Dummy {
             return Constants.IncompleteFieldError.PaymentMethod
         }
         
@@ -570,15 +570,15 @@ extension SellFieldsViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Constants.PaymentMethods.count
+        return Constants.PaymentMethods.List.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Constants.PaymentMethods[row]
+        return Constants.PaymentMethods.List[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedPaymentMethod = Constants.PaymentMethods[row]
+        selectedPaymentMethod = Constants.PaymentMethods.List[row]
     }
     
 }

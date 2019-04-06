@@ -167,18 +167,24 @@ extension ProfileViewController: UITableViewDataSource {
         dateFormatter.dateStyle = .short
         
         let listingStatus: String
+        let statusColor: UIColor
+        
         if listing.onSale {
             listingStatus = "On Sale"
+            statusColor = .blue
         } else if let listingBuyer = listing.buyer {
-            listingStatus = "Bought by " + listingBuyer.displayName
+            listingStatus = (listing.purchaseConfirmed ? "Bought by " : "Purchase Requested from ") + listingBuyer.displayName
+            statusColor = listing.purchaseConfirmed ? .green : .orange
         } else {
             listingStatus = "Removed From Sale"
+            statusColor = .red
         }
         
         cell.titleLabel.text = listing.textbook.title
         cell.priceLabel.text = "Price: \(formattedPrice) (Preferred: " + listing.paymentMethod + ")"
         cell.datePostedLabel.text = "Posted: " + dateFormatter.string(from: date)
-        cell.statusLabel.text = "Status: " + listingStatus
+        cell.statusLabel.text = listingStatus
+        cell.statusLabel.textColor = statusColor
         
         return cell
     }

@@ -613,7 +613,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author(s):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hj-lF-bdt">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author(s):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4hj-lF-bdt">
                                                             <rect key="frame" x="0.0" y="31" width="335" height="26.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -987,7 +987,7 @@
         <image name="shopping-cart" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MrK-S1-Jhe"/>
+        <segue reference="QR0-MZ-WMP"/>
         <segue reference="vFh-r4-nCL"/>
     </inferredMetricsTieBreakers>
 </document>

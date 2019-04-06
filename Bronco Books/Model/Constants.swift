@@ -21,7 +21,14 @@ struct Constants {
     static let ListingPathString = "listings"
     
     // Preferred Payment Methods
-    static let PaymentMethods = ["[Choose Payment Method]", "Apple Pay", "Cash", "Check"]
+    struct PaymentMethods {
+        static let Dummy = "[Choose Payment Method]"
+        static let ApplePay = "Apple Pay"
+        static let GooglePay = "Google Pay"
+        static let Cash = "Cash"
+        static let Check = "Check"
+        static let List = [Dummy, ApplePay, Cash, Check]
+    }
     
     // Publish Date Format
     static let LongDateFormat = "yyyy-mm-dd"
@@ -39,15 +46,26 @@ struct Constants {
     // Maximum File Size to Download (currently set to 1 MB)
     static let MaximumFileSize = 1 * 1024 * 1024;
     
-    // Contacting Seller
+    // Email Template
     static let EmailGreeting = "Hello"
     static let EmailClosing = "Thanks"
+    
+    // Contacting Seller
     static let ContactSellerOptions = ["More Images", "Discuss Price", "Change Payment Method", "Custom"]
     static let ContactSellerEmailBodies = [
         ContactSellerOptions[0] : "Can you please post more images of the textbook? I would like to get a better idea of the textbook's condition.",
-        ContactSellerOptions[1] : "Is it possible to sell this textbook at a price of $ ?",
-        ContactSellerOptions[2] : "Is it possible to change the payment method for this textbook to ?",
+        ContactSellerOptions[1] : "Would you be willing to sell this textbook at a price of $ ?",
+        ContactSellerOptions[2] : "Would you be willing to accept the payment for this textbook through ?",
         ContactSellerOptions[3] : ""
+    ]
+    
+    // Contacting Buyer
+    static let ContactBuyerOptions = ["Option1", "Option2", "Option3", "Custom"]
+    static let ContactBuyerEmailBodies = [
+        ContactBuyerOptions[0] : "Body1",
+        ContactBuyerOptions[1] : "Body2",
+        ContactBuyerOptions[2] : "Body3",
+        ContactBuyerOptions[3] : ""
     ]
     
     // contains all field names for Listing object
@@ -59,6 +77,7 @@ struct Constants {
         static let EpochTimePosted = "epochTimePosted"
         static let Buyer = "buyer"
         static let OnSale = "onSale"
+        static let PurchaseConfirmed = "purchaseConfirmed"
         static let ID = "id"
     }
     

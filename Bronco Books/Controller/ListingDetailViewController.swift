@@ -64,6 +64,11 @@ class ListingDetailViewController: UIViewController {
         
         // This is for UICollectionViewDelegateFlowLayout (which inherits from UICollectionViewDelegate!)
         displayListingPhotosCollection.delegate = self
+        
+        // allows these Labels to expand to 2 lines (only for very long text)
+        titleLabel.numberOfLines = 2
+        subtitleLabel.numberOfLines = 2
+        authorsLabel.numberOfLines = 2
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,9 +159,7 @@ class ListingDetailViewController: UIViewController {
         
         paymentMethodLabel.text = displayListing.paymentMethod
         
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        priceLabel.text = formatter.string(from: displayListing.price as NSNumber)!
+        priceLabel.text = getFormattedPrice(from: displayListing.price)
         
         let date = Date(timeIntervalSince1970: TimeInterval(exactly: displayListing.epochTimePosted)!)
         let dateFormatter = DateFormatter()
@@ -164,8 +167,17 @@ class ListingDetailViewController: UIViewController {
         dateFormatter.dateStyle = .short
         listingPostedDateLabel.text = "Posted: " + dateFormatter.string(from: date)
         
-        buyOrRemoveButton.setTitle(userPostedListing ? (displayListing.onSale ? "Remove" : "Sell") : "Buy", for: .normal)
-        contactOrEditButton.setTitle(userPostedListing ? "Edit Listing" : "Contact", for: .normal)
+        let buyerExists = (displayListing.buyer != nil)
+        let listingNotPurchased = (displayListing.purchaseConfirmed == false)
+        buyOrRemoveButton.setTitle(buyerExists ? "Confirm" : (userPostedListing ? (displayListing.onSale ? "Remove" : "Sell") : "Buy"), for: .normal)
+        buyOrRemoveButton.isEnabled = (buyerExists == false || listingNotPurchased)
+        contactOrEditButton.setTitle((userPostedListing && buyerExists == false && listingNotPurchased) ? "Edit Listing" : "Contact", for: .normal)
+    }
+    
+    func getFormattedPrice(from price: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter.string(from: price as NSNumber)!
     }
     
     func getFirstName(from fullName: String) -> String {
@@ -187,12 +199,12 @@ class ListingDetailViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func contactSeller() {
+    func contact(seller: Bool) {
         let actionSheet = UIAlertController(title: "Choose Message Type", message: "Select from the following templates:", preferredStyle: .actionSheet)
         
-        for option in Constants.ContactSellerOptions {
+        for option in (seller ? Constants.ContactSellerOptions : Constants.ContactBuyerOptions) {
             actionSheet.addAction(UIAlertAction(title: option, style: .default, handler: { (action) in
-                self.composeEmail(with: option)
+                self.composeEmail(with: option, seller)
             }))
         }
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -200,7 +212,7 @@ class ListingDetailViewController: UIViewController {
         self.present(actionSheet, animated: true, completion: nil)
     }
     
-    func composeEmail(with contactOption: String) {
+    func composeEmail(with contactOption: String, _ seller: Bool) {
         guard MFMailComposeViewController.canSendMail() else {
             showAlert(title: "Mail Not Available", message: "This device does not support functionality for sending an email.")
             return
@@ -209,12 +221,16 @@ class ListingDetailViewController: UIViewController {
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self
         mail.setSubject("Question About Listing on Bronco Books.")
-        mail.setToRecipients([displayListing.seller.email])
         
-        let sellerName = getFirstName(from: displayListing.seller.displayName)
-        let emailBody = Constants.ContactSellerEmailBodies[contactOption]!
-        let userName = getFirstName(from: UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!)
-        mail.setMessageBody("\(Constants.EmailGreeting) \(sellerName),\n\n\(emailBody)\n\n\(Constants.EmailClosing),\n\(userName)", isHTML: false)
+        let recipient = seller ? displayListing.seller : displayListing.buyer!
+        let recipientEmail = recipient.email
+        let recipientName = getFirstName(from: recipient.displayName)
+        
+        let emailBody = seller ? Constants.ContactSellerEmailBodies[contactOption]! : Constants.ContactBuyerEmailBodies[contactOption]!
+        let senderName = getFirstName(from: UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!)
+        
+        mail.setToRecipients([recipientEmail])
+        mail.setMessageBody("\(Constants.EmailGreeting) \(recipientName),\n\n\(emailBody)\n\n\(Constants.EmailClosing),\n\(senderName)", isHTML: false)
         
         if #available(iOS 11.0, *) {
             mail.setPreferredSendingEmailAddress(UserDefaults.standard.string(forKey: Constants.UserEmailKey)!)
@@ -255,9 +271,64 @@ class ListingDetailViewController: UIViewController {
         }
     }
     
-    func removeListingFromSale(newOnSaleValue: Bool, _ successTitle: String, _ successMessage: String) {
+    func promptRemoveListing() {
+        let alertTitle = displayListing.onSale ? "Confirm Removal" : "Confirm Sell"
+        var alertMessage = "Are you sure that you want to "
+        alertMessage += (displayListing.onSale ? "remove this listing from sale?" : "post this listing back for sale?")
+        
+        // remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            self.setUIComponents(enabled: false)
+            
+            let successTitle = self.displayListing.onSale ? "Listing Removed" : "Listing On Sale"
+            var successMessage = "This listing is "
+            successMessage += (self.displayListing.onSale ? "no longer up for sale." : "back up for sale!")
+            
+            self.removeListingFromSale(newOnSaleValue: !(self.displayListing.onSale), setBuyer: false, successTitle, successMessage)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // this function is used either to remove a listing from sale, or to put a listing back up for sale
+    func removeListingFromSale(newOnSaleValue: Bool, setBuyer: Bool, _ successTitle: String, _ successMessage: String) {
         let databaseReferenceOnSale = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.OnSale)
         databaseReferenceOnSale.setValue(newOnSaleValue) { (error, databaseReference) in
+            var title = "Update Failed"
+            var message = "There was an error in updating the listing. Sorry about that!"
+            var handler: ((UIAlertAction) -> Void)? = nil
+            if error == nil {
+                title = successTitle
+                message = successMessage
+                handler = { (action) in
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                if error != nil {
+                    self.setUIComponents(enabled: true)
+                }
+                
+                if setBuyer && error == nil {
+                    self.setBuyer(successTitle, successMessage)
+                } else {
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: handler))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    func setBuyer(_ successTitle: String, _ successMessage: String) {
+        let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+        let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
+        let buyerDict = User(email: userEmail, displayName: userDisplayName).getDictionary()
+        
+        let databaseReferenceBuyer = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.Buyer)
+        databaseReferenceBuyer.setValue(buyerDict) { (error, databaseReference) in
             var title = "Update Failed"
             var message = "There was an error in updating the listing. Sorry about that!"
             var handler: ((UIAlertAction) -> Void)? = nil
@@ -280,38 +351,92 @@ class ListingDetailViewController: UIViewController {
         }
     }
     
+    func setPurchaseConfirmed() {
+        let databaseReferenceBuyer = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.PurchaseConfirmed)
+        databaseReferenceBuyer.setValue(true) { (error, databaseReference) in
+            var title = "Update Failed"
+            var message = "There was an error in updating the listing. Sorry about that!"
+            var handler: ((UIAlertAction) -> Void)? = nil
+            if error == nil {
+                title = "Purchase Completed"
+                message = "This listing has now been purchased!"
+                handler = { (action) in
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                if (error != nil) {
+                    self.setUIComponents(enabled: true)
+                }
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: handler))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func promptBuyListing() {
+        switch displayListing.paymentMethod {
+        case Constants.PaymentMethods.GooglePay:
+            let alertTitle = "Incompatible Payment Method"
+            let alertMessage = "Google Pay is incompatible with this device. Please contact the seller to request to change the payment method."
+            showAlert(title: alertTitle, message: alertMessage)
+        case Constants.PaymentMethods.ApplePay:
+            // TODO: Buy the listing with Apple Pay!
+            showAlert(title: "Nonexistent Feature", message: "The functionality to use Apple Pay has not been implemented yet. Stay tuned!")
+        default:
+            // Cash or Check
+            let paymentMethod = displayListing.paymentMethod.lowercased()
+            let seller = displayListing.seller.displayName
+            
+            let promptTitle = "Confirm Purchase"
+            let promptMessage = "Do you want to buy this listing with \(paymentMethod)? The purchase will be pending until the seller (\(seller)) confirms the sale."
+            
+            let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                let successTitle = "Sale Pending"
+                let successMessage = "This sale is now pending. The seller will have to confirm the purchase."
+                self.removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func promptConfirmPurchase(with buyerToPurchase: User) {
+        let buyer = buyerToPurchase.displayName
+        let method = displayListing.paymentMethod.lowercased()
+        let amount = getFormattedPrice(from: displayListing.price)
+        let message = "Do you want to confirm this purchase? This will confirm that \(buyer) has already used \(method) to pay you \(amount)."
+        
+        let alert = UIAlertController(title: "Confirm Purchase", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            self.setPurchaseConfirmed()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - IBActions
     
     @IBAction func buyOrRemoveTapped(_ sender: Any) {
-        if userPostedListing {
-            let alertTitle = displayListing.onSale ? "Confirm Removal" : "Confirm Sell"
-            var alertMessage = "Are you sure that you want to "
-            alertMessage += (displayListing.onSale ? "remove this listing from sale?" : "post this listing back for sale?")
-            
-            // remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
-            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                self.setUIComponents(enabled: false)
-                
-                let successTitle = self.displayListing.onSale ? "Listing Removed" : "Listing On Sale"
-                var successMessage = "This listing is "
-                successMessage += (self.displayListing.onSale ? "no longer up for sale." : "back up for sale!")
-                
-                self.removeListingFromSale(newOnSaleValue: !(self.displayListing.onSale), successTitle, successMessage)
-            }))
-            self.present(alert, animated: true, completion: nil)
+        if let validBuyer = displayListing.buyer {
+            promptConfirmPurchase(with: validBuyer)
+        } else if userPostedListing {
+            promptRemoveListing()
         } else {
-            // TODO: Buy the listing!
-            showAlert(title: "Nonexistent Feature", message: "The functionality to buy a listing has not been implemented yet. Stay tuned!")
+            promptBuyListing()
         }
     }
     
     @IBAction func contactOrEditTapped(_ sender: Any) {
-        if userPostedListing {
+        if displayListing.buyer != nil {
+            contact(seller: false)
+        } else if userPostedListing {
             self.performSegue(withIdentifier: "listingDetailToFieldsSegue", sender: self)
         } else {
-            contactSeller()
+            contact(seller: true)
         }
     }
     

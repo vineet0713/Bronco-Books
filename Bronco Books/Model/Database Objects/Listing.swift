@@ -20,6 +20,7 @@ class Listing {
     
     var buyer: User?
     var onSale: Bool
+    var purchaseConfirmed: Bool
     
     var id: String?
     
@@ -32,6 +33,8 @@ class Listing {
         self.paymentMethod = paymentMethod
         self.epochTimePosted = epochTimePosted
         self.onSale = onSale
+        
+        self.purchaseConfirmed = false
     }
     
     init(dict: [String : Any?]) {
@@ -45,7 +48,12 @@ class Listing {
         self.paymentMethod = dict[Constants.ListingKeys.PaymentMethod] as! String
         self.epochTimePosted = dict[Constants.ListingKeys.EpochTimePosted] as! Int
         
+        if let buyerDict = dict[Constants.ListingKeys.Buyer] as? [String : Any] {
+            self.buyer = User(dict: buyerDict)
+        }
+        
         self.onSale = dict[Constants.ListingKeys.OnSale] as! Bool
+        self.purchaseConfirmed = dict[Constants.ListingKeys.PurchaseConfirmed] as! Bool
     }
     
     // MARK: - Member Functions
@@ -57,8 +65,9 @@ class Listing {
             Constants.ListingKeys.Price : self.price,
             Constants.ListingKeys.PaymentMethod : self.paymentMethod,
             Constants.ListingKeys.EpochTimePosted : self.epochTimePosted,
-            Constants.ListingKeys.Buyer : self.buyer,
+            Constants.ListingKeys.Buyer : self.buyer?.getDictionary(),
             Constants.ListingKeys.OnSale : self.onSale,
+            Constants.ListingKeys.PurchaseConfirmed : self.purchaseConfirmed,
             Constants.ListingKeys.ID : self.id
         ]
         
@@ -68,14 +77,6 @@ class Listing {
     func setBuyer(buyer: User) {
         self.buyer = buyer
         self.onSale = false
-    }
-    
-    func removeFromSale() {
-        self.onSale = false
-    }
-    
-    func setOnSale() {
-        self.onSale = true
     }
     
     func setId(id: String) {
