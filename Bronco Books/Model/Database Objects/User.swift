@@ -14,17 +14,20 @@ class User {
     
     let email: String
     let displayName: String
+    let phoneNumber: String
     
     // MARK: - Constructors
     
-    init(email: String, displayName: String) {
+    init(email: String, displayName: String, phoneNumber: String) {
         self.email = email
         self.displayName = displayName
+        self.phoneNumber = phoneNumber
     }
     
     init(dict: [String : Any]) {
         self.email = dict[Constants.UserKeys.Email] as! String
         self.displayName = dict[Constants.UserKeys.DisplayName] as! String
+        self.phoneNumber = dict[Constants.UserKeys.PhoneNumber] as! String
     }
     
     // MARK: - Member Function
@@ -32,7 +35,8 @@ class User {
     func getDictionary() -> [String : Any] {
         let dict: [String : Any] = [
             Constants.UserKeys.Email : self.email,
-            Constants.UserKeys.DisplayName : self.displayName
+            Constants.UserKeys.DisplayName : self.displayName,
+            Constants.UserKeys.PhoneNumber : self.phoneNumber
         ]
         
         return dict

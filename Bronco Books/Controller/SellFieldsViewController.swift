@@ -346,7 +346,8 @@ class SellFieldsViewController: UIViewController {
         
         let sellerDictionary: [String : Any] = [
             Constants.UserKeys.Email : UserDefaults.standard.string(forKey: Constants.UserEmailKey)!,
-            Constants.UserKeys.DisplayName : UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+            Constants.UserKeys.DisplayName : UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!,
+            Constants.UserKeys.PhoneNumber : UserDefaults.standard.string(forKey: Constants.UserPhoneNumberKey)!
         ]
         
         let epochTimeSeconds = Int(NSDate().timeIntervalSince1970)

@@ -37,7 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             
             let userEmail = result!.user.email!
             let userDisplayName = result!.user.displayName!
-            if userEmail.hasSuffix(Constants.ValidEmailSuffix) == false {
+            
+            guard userEmail.hasSuffix(Constants.ValidEmailSuffix) else {
                 GIDSignIn.sharedInstance().signOut()
                 
                 let alert = UIAlertController(title: "Invalid Email", message: "Please sign in using your SCU email.", preferredStyle: .alert)
@@ -51,8 +52,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             UserDefaults.standard.set(userDisplayName, forKey: Constants.UserDisplayNameKey)
             UserDefaults.standard.synchronize()
             
-            self.window?.rootViewController?.performSegue(withIdentifier: "loginToHomeSegue", sender: self)
+            if UserDefaults.standard.string(forKey: Constants.UserPhoneNumberKey) == nil {
+                self.getPhoneNumber(alertTitle: "Enter Phone Number", alertMessage: "Please enter your phone number.")
+            } else {
+                self.window?.rootViewController?.performSegue(withIdentifier: "loginToHomeSegue", sender: self)
+            }
         }
+    }
+    
+    func getPhoneNumber(alertTitle: String, alertMessage: String) {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage + " It won't be displayed publicly.", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.keyboardType = .phonePad
+        }
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { [weak alert] (_) in
+            let phoneNumber = alert!.textFields![0].text!
+            guard self.isValidPhoneNumber(phoneNumber) else {
+                self.getPhoneNumber(alertTitle: "Invalid Phone Number", alertMessage: "Please enter a valid phone number.")
+                return
+            }
+            UserDefaults.standard.set(phoneNumber, forKey: Constants.UserPhoneNumberKey)
+            UserDefaults.standard.synchronize()
+            self.window?.rootViewController?.performSegue(withIdentifier: "loginToHomeSegue", sender: self)
+        }))
+        
+        self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    func isValidPhoneNumber(_ phoneNumber: String) -> Bool {
+        return (phoneNumber.count == 10)
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {

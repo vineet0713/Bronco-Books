@@ -77,18 +77,20 @@ class ListingDetailViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
         
         // this is to prevent code from being called when the ImageDetailViewController pops back!
-        if previousViewController != nil {
-            let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
-            let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
-            userPostedListing = (userEmail == displayListing.seller.email) && (userDisplayName == displayListing.seller.displayName)
-            
-            setUIComponents(enabled: true)
-            setupLabelsAndButtons()
-            finishImagesDownload(finished: false)
-            retrieveImagesFromFirebase(counter: 0)
-            
-            previousViewController = nil
+        guard previousViewController != nil else {
+            return
         }
+        
+        let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
+        let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
+        userPostedListing = (userEmail == displayListing.seller.email) && (userDisplayName == displayListing.seller.displayName)
+        
+        setUIComponents(enabled: true)
+        setupLabelsAndButtons()
+        finishImagesDownload(finished: false)
+        retrieveImagesFromFirebase(counter: 0)
+        
+        previousViewController = nil
     }
     
     // MARK: - Navigation
@@ -200,6 +202,21 @@ class ListingDetailViewController: UIViewController {
     }
     
     func contact(seller: Bool) {
+        let actionSheet = UIAlertController(title: "Choose Contact Type", message: "Select from the following contact methods:", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: Constants.ContactEmail, style: .default, handler: { (action) in
+            self.contactWithEmail(seller: seller)
+        }))
+        actionSheet.addAction(UIAlertAction(title: Constants.ContactPhoneNumber, style: .default, handler: { (action) in
+            self.composeTextMessage(seller)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func contactWithEmail(seller: Bool) {
         let actionSheet = UIAlertController(title: "Choose Message Type", message: "Select from the following templates:", preferredStyle: .actionSheet)
         
         for option in (seller ? Constants.ContactSellerOptions : Constants.ContactBuyerOptions) {
@@ -237,6 +254,21 @@ class ListingDetailViewController: UIViewController {
         }
         
         present(mail, animated: true)
+    }
+    
+    func composeTextMessage(_ seller: Bool) {
+        guard MFMessageComposeViewController.canSendText() else {
+            showAlert(title: "Messaging Not Available", message: "This device does not support functionality for sending a text message.")
+            return
+        }
+        
+        let message = MFMessageComposeViewController()
+        message.messageComposeDelegate = self
+        
+        let recipient = seller ? displayListing.seller : displayListing.buyer!
+        message.recipients = [recipient.phoneNumber]
+        
+        present(message, animated: true)
     }
     
     func finishImagesDownload(finished: Bool) {
@@ -325,7 +357,8 @@ class ListingDetailViewController: UIViewController {
     func setBuyer(_ successTitle: String, _ successMessage: String) {
         let userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
         let userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
-        let buyerDict = User(email: userEmail, displayName: userDisplayName).getDictionary()
+        let userPhoneNumber = UserDefaults.standard.string(forKey: Constants.UserPhoneNumberKey)!
+        let buyerDict = User(email: userEmail, displayName: userDisplayName, phoneNumber: userPhoneNumber).getDictionary()
         
         let databaseReferenceBuyer = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.Buyer)
         databaseReferenceBuyer.setValue(buyerDict) { (error, databaseReference) in
@@ -352,8 +385,8 @@ class ListingDetailViewController: UIViewController {
     }
     
     func setPurchaseConfirmed() {
-        let databaseReferenceBuyer = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.PurchaseConfirmed)
-        databaseReferenceBuyer.setValue(true) { (error, databaseReference) in
+        let databaseReferencePurchaseConfirmed = databaseReferenceListings.child(displayListing.id!).child(Constants.ListingKeys.PurchaseConfirmed)
+        databaseReferencePurchaseConfirmed.setValue(true) { (error, databaseReference) in
             var title = "Update Failed"
             var message = "There was an error in updating the listing. Sorry about that!"
             var handler: ((UIAlertAction) -> Void)? = nil
@@ -507,6 +540,16 @@ extension ListingDetailViewController: UICollectionViewDelegateFlowLayout {
 extension ListingDetailViewController: MFMailComposeViewControllerDelegate {
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
+}
+
+// MARK: - Extension for MFMessageComposeViewControllerDelegate
+
+extension ListingDetailViewController: MFMessageComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         controller.dismiss(animated: true)
     }
     

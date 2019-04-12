@@ -16,6 +16,7 @@ struct Constants {
     // UserDefaults
     static let UserEmailKey = "email"
     static let UserDisplayNameKey = "displayName"
+    static let UserPhoneNumberKey = "phoneNumber"
     
     // Firebase Realtime Database
     static let ListingPathString = "listings"
@@ -60,13 +61,17 @@ struct Constants {
     ]
     
     // Contacting Buyer
-    static let ContactBuyerOptions = ["Option1", "Option2", "Option3", "Custom"]
+    static let ContactBuyerOptions = ["Discuss Exchange Location", "Option2", "Option3", "Custom"]
     static let ContactBuyerEmailBodies = [
-        ContactBuyerOptions[0] : "Body1",
+        ContactBuyerOptions[0] : "Where do you want to meet to exchange this textbook and complete the purchase?",
         ContactBuyerOptions[1] : "Body2",
         ContactBuyerOptions[2] : "Body3",
         ContactBuyerOptions[3] : ""
     ]
+    
+    // Contacting Options
+    static let ContactEmail = "Email"
+    static let ContactPhoneNumber = "Text Message"
     
     // contains all field names for Listing object
     struct ListingKeys {
@@ -85,6 +90,7 @@ struct Constants {
     struct UserKeys {
         static let Email = "email"
         static let DisplayName = "displayName"
+        static let PhoneNumber = "phoneNumber"
     }
     
     // contains all field names for Textbook object
