@@ -25,7 +25,6 @@ struct Constants {
     struct PaymentMethods {
         static let Dummy = "[Choose Payment Method]"
         static let ApplePay = "Apple Pay"
-        static let GooglePay = "Google Pay"
         static let Cash = "Cash"
         static let Check = "Check"
         static let List = [Dummy, ApplePay, Cash, Check]

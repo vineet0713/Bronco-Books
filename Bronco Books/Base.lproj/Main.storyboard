@@ -466,33 +466,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Pze-Yk-cuh">
-                                <rect key="frame" x="16" y="64" width="343" height="75"/>
+                                <rect key="frame" x="16" y="64" width="343" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JdD-r8-nba">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="37.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="33.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SfZ-qJ-mmT">
-                                        <rect key="frame" x="0.0" y="37.5" width="343" height="37.5"/>
+                                        <rect key="frame" x="0.0" y="33.5" width="343" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSt-Yd-QKl">
+                                        <rect key="frame" x="0.0" y="66.5" width="343" height="33.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="75" id="N1i-rJ-HD1"/>
+                                    <constraint firstAttribute="height" constant="100" id="N1i-rJ-HD1"/>
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Listings:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCS-gH-Ks8">
-                                <rect key="frame" x="110" y="147" width="155" height="36"/>
+                                <rect key="frame" x="110" y="172" width="155" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="j0q-Qi-6S3">
-                                <rect key="frame" x="0.0" y="191" width="375" height="427"/>
+                                <rect key="frame" x="0.0" y="216" width="375" height="402"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="profileListingCell" rowHeight="160" id="Vt1-ha-Xfz" customClass="ProfileListingTableViewCell" customModule="Bronco_Books" customModuleProvider="target">
@@ -567,6 +573,7 @@
                     <connections>
                         <outlet property="emailLabel" destination="SfZ-qJ-mmT" id="rPk-Kl-Ges"/>
                         <outlet property="nameLabel" destination="JdD-r8-nba" id="Tb9-tR-nQs"/>
+                        <outlet property="phoneNumberLabel" destination="XSt-Yd-QKl" id="uUy-kj-4ZU"/>
                         <outlet property="profileListingsTable" destination="j0q-Qi-6S3" id="0gD-kj-Z17"/>
                         <segue destination="zT7-Qr-YSj" kind="show" identifier="profileToListingDetailSegue" id="MrK-S1-Jhe"/>
                     </connections>
@@ -987,7 +994,7 @@
         <image name="shopping-cart" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QR0-MZ-WMP"/>
+        <segue reference="MrK-S1-Jhe"/>
         <segue reference="vFh-r4-nCL"/>
     </inferredMetricsTieBreakers>
 </document>

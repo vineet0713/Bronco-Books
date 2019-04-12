@@ -30,6 +30,8 @@ class ListingDetailViewController: UIViewController {
     
     var imageDownloadFinished: Bool!
     
+    var applePayUsed = false
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -202,7 +204,7 @@ class ListingDetailViewController: UIViewController {
     }
     
     func contact(seller: Bool) {
-        let actionSheet = UIAlertController(title: "Choose Contact Type", message: "Select from the following contact methods:", preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: "Choose Contact Method", message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: Constants.ContactEmail, style: .default, handler: { (action) in
             self.contactWithEmail(seller: seller)
@@ -210,14 +212,13 @@ class ListingDetailViewController: UIViewController {
         actionSheet.addAction(UIAlertAction(title: Constants.ContactPhoneNumber, style: .default, handler: { (action) in
             self.composeTextMessage(seller)
         }))
-        
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         self.present(actionSheet, animated: true, completion: nil)
     }
     
     func contactWithEmail(seller: Bool) {
-        let actionSheet = UIAlertController(title: "Choose Message Type", message: "Select from the following templates:", preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: "Choose Email Template", message: nil, preferredStyle: .actionSheet)
         
         for option in (seller ? Constants.ContactSellerOptions : Constants.ContactBuyerOptions) {
             actionSheet.addAction(UIAlertAction(title: option, style: .default, handler: { (action) in
@@ -410,15 +411,23 @@ class ListingDetailViewController: UIViewController {
     }
     
     func promptBuyListing() {
-        switch displayListing.paymentMethod {
-        case Constants.PaymentMethods.GooglePay:
-            let alertTitle = "Incompatible Payment Method"
-            let alertMessage = "Google Pay is incompatible with this device. Please contact the seller to request to change the payment method."
-            showAlert(title: alertTitle, message: alertMessage)
+        let payment = displayListing.paymentMethod
+        switch payment {
         case Constants.PaymentMethods.ApplePay:
-            // TODO: Buy the listing with Apple Pay!
-            showAlert(title: "Nonexistent Feature", message: "The functionality to use Apple Pay has not been implemented yet. Stay tuned!")
-        default:
+            let seller = displayListing.seller.displayName
+            
+            let promptTitle = "Confirm Purchase"
+            let promptMessage = "Do you want to buy this listing with Apple Pay? You will be redirected to the Messages app to send the payment to the seller (\(seller)) using Apple Pay Cash."
+            
+            let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                self.applePayUsed = true
+                self.composeTextMessage(true)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        case Constants.PaymentMethods.Cash,
+             Constants.PaymentMethods.Check:
             // Cash or Check
             let paymentMethod = displayListing.paymentMethod.lowercased()
             let seller = displayListing.seller.displayName
@@ -434,6 +443,11 @@ class ListingDetailViewController: UIViewController {
                 self.removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
             }))
             self.present(alert, animated: true, completion: nil)
+        default:
+            // Google Pay or an invalid value (which would be a database issue)
+            let alertTitle = "Incompatible Payment Method"
+            let alertMessage = "\(payment) is incompatible with this device. Please contact the seller to request to change the payment method."
+            showAlert(title: alertTitle, message: alertMessage)
         }
     }
     
@@ -551,6 +565,12 @@ extension ListingDetailViewController: MFMessageComposeViewControllerDelegate {
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         controller.dismiss(animated: true)
+        if applePayUsed && result == .sent {
+            let successTitle = "Sale Pending"
+            let successMessage = "This sale is now pending. The seller will have to confirm the purchase."
+            removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
+        }
+        applePayUsed = false
     }
     
 }

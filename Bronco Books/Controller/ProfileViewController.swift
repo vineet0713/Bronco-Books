@@ -27,11 +27,13 @@ class ProfileViewController: UIViewController {
     
     var userDisplayName: String!
     var userEmail: String!
+    var userPhoneNumber: String!
     
     // MARK - IBOutlets
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var phoneNumberLabel: UILabel!
     
     @IBOutlet weak var profileListingsTable: UITableView!
     
@@ -61,6 +63,7 @@ class ProfileViewController: UIViewController {
         
         userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
         userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
+        userPhoneNumber = UserDefaults.standard.string(forKey: Constants.UserPhoneNumberKey)!
         
         setProfileLabels()
         loadListingData()
@@ -110,11 +113,25 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    // MARK: - Helper Function
+    // MARK: - Helper Functions
     
     func setProfileLabels() {
         nameLabel.text = "Name: " + userDisplayName
         emailLabel.text = "Email: " + userEmail
+        phoneNumberLabel.text = "Phone Number: " + getFormattedNumber(from: userPhoneNumber)
+    }
+    
+    func getFormattedNumber(from numberString: String) -> String {
+        var formattedNumber = "("
+        for digit in numberString {
+            formattedNumber.append(digit)
+            if formattedNumber.count == 4 {
+                formattedNumber.append(")-")
+            } else if formattedNumber.count == 9 {
+                formattedNumber.append("-")
+            }
+        }
+        return formattedNumber
     }
     
     // MARK: - Objective-C Exposed Function
