@@ -51,6 +51,7 @@ class ListingsViewController: UIViewController {
         listingsTable.backgroundView = activityIndicator
         listingsTable.tableFooterView = UIView(frame: .zero)
         
+        startActivityIndicator()
         setupChildAddedObserver()
         setupChildChangedObserver()
     }
@@ -60,13 +61,14 @@ class ListingsViewController: UIViewController {
     func setupChildAddedObserver() {
         let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
         databaseReferenceListings.observe(.childAdded) { (snapshot) in
-            self.activityIndicator.startAnimating()
+            self.startActivityIndicator()
             
             guard let listingDictionary = snapshot.value as? [String : Any?] else {
                 // there is a problem in the database!
-                self.activityIndicator.stopAnimating()
+                self.stopActivityIndicator()
                 return
             }
+            
             let onSale = listingDictionary[Constants.ListingKeys.OnSale] as! Bool
             if onSale {
                 let listing = Listing(dict: listingDictionary)
@@ -74,7 +76,6 @@ class ListingsViewController: UIViewController {
                 self.listingArray.insert(listing, at: 0)
                 
                 DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
                     if self.searching {
                         self.reloadSearchResults()
                     } else {
@@ -82,17 +83,19 @@ class ListingsViewController: UIViewController {
                     }
                 }
             }
+            
+            self.stopActivityIndicator()
         }
     }
     
     func setupChildChangedObserver() {
         let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
         databaseReferenceListings.observe(.childChanged) { (snapshot) in
-            self.activityIndicator.startAnimating()
+            self.startActivityIndicator()
             
             guard let listingDictionary = snapshot.value as? [String : Any?] else {
                 // there is a problem in the database!
-                self.activityIndicator.stopAnimating()
+                self.stopActivityIndicator()
                 return
             }
             
@@ -122,17 +125,30 @@ class ListingsViewController: UIViewController {
             }
             
             DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
                 if self.searching {
                     self.reloadSearchResults()
                 } else {
                     self.listingsTable.reloadData()
                 }
             }
+            
+            self.stopActivityIndicator()
         }
     }
     
     // MARK: - Helper Function
+    
+    func startActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+    }
+    
+    func stopActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+        }
+    }
     
     func reloadSearchResults() {
         let searchText = self.searchText.lowercased()

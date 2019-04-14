@@ -29,6 +29,8 @@ class ProfileViewController: UIViewController {
     var userEmail: String!
     var userPhoneNumber: String!
     
+    let normalGreen = UIColor(red: 0, green: 0.75, blue: 0, alpha: 1)
+    
     // MARK - IBOutlets
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -56,64 +58,97 @@ class ProfileViewController: UIViewController {
         
         profileListingsTable.backgroundView = activityIndicator
         profileListingsTable.tableFooterView = UIView(frame: .zero)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
         userDisplayName = UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!
         userEmail = UserDefaults.standard.string(forKey: Constants.UserEmailKey)!
         userPhoneNumber = UserDefaults.standard.string(forKey: Constants.UserPhoneNumberKey)!
         
         setProfileLabels()
-        loadListingData()
+        
+        setupChildAddedObserver()
+        setupChildChangedObserver()
     }
     
-    // MARK: - Backend Function
-    
-    func loadListingData() {
-        activityIndicator.startAnimating()
+    func setupChildAddedObserver() {
+        let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            // To show the activity indicator, even when connection speed is fast!
-            // sleep(1)
+        let emailKey = Constants.ListingKeys.Seller + "/" + Constants.UserKeys.Email
+        let referenceEmailQuery = databaseReferenceListings.queryOrdered(byChild: emailKey).queryEqual(toValue: self.userEmail)
+        
+        referenceEmailQuery.observe(.childAdded) { (snapshot) in
+            self.startActivityIndicator()
             
-            let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
+            guard let listingDictionary = snapshot.value as? [String : Any?] else {
+                // there is a problem in the database!
+                self.stopActivityIndicator()
+                return
+            }
             
-            let emailKey = Constants.ListingKeys.Seller + "/" + Constants.UserKeys.Email
-            let referenceEmailQuery = databaseReferenceListings.queryOrdered(byChild: emailKey).queryEqual(toValue: self.userEmail)
+            let listing = Listing(dict: listingDictionary)
+            listing.setId(id: snapshot.key)
+            self.profileListingArray.insert(listing, at: 0)
             
-            referenceEmailQuery.observeSingleEvent(of: .value) { (snapshot) in
-                guard let listings = snapshot.value as? [String : Any] else {
-                    // either there are no listings, or there is a problem in the database!
-                    self.activityIndicator.stopAnimating()
-                    return
-                }
-                
-                self.profileListingArray.removeAll()
-                
-                for (key, value) in listings {
-                    let listingDictionary = value as! [String : Any]
-                    let listing = Listing(dict: listingDictionary)
-                    listing.setId(id: key)
-                    self.profileListingArray.append(listing)
-                }
-                
-                // sort the Listings based on epochTimePosted (most recently posted at the top)
-                self.profileListingArray.sort(by: { (firstListing, secondListing) -> Bool in
-                    return (firstListing.epochTimePosted > secondListing.epochTimePosted)
-                })
-                
-                DispatchQueue.main.async {
-                    self.profileListingsTable.separatorStyle = .singleLine
-                    self.profileListingsTable.reloadData()
-                    self.activityIndicator.stopAnimating()
+            DispatchQueue.main.async {
+                self.profileListingsTable.reloadData()
+            }
+            
+            self.stopActivityIndicator()
+        }
+    }
+    
+    func setupChildChangedObserver() {
+        let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
+        
+        let emailKey = Constants.ListingKeys.Seller + "/" + Constants.UserKeys.Email
+        let referenceEmailQuery = databaseReferenceListings.queryOrdered(byChild: emailKey).queryEqual(toValue: self.userEmail)
+        
+        referenceEmailQuery.observe(.childChanged) { (snapshot) in
+            self.startActivityIndicator()
+            
+            guard let listingDictionary = snapshot.value as? [String : Any?] else {
+                // there is a problem in the database!
+                self.stopActivityIndicator()
+                return
+            }
+            
+            let changedListing = Listing(dict: listingDictionary)
+            changedListing.setId(id: snapshot.key)
+            
+            // instead of blindly adding listing, first check if it exists in listingArray (if it does, then update it)
+            var found = false
+            for index in 0..<self.profileListingArray.count {
+                if self.profileListingArray[index].id == changedListing.id {
+                    // if listing exists already in listingArray, then update it
+                    self.profileListingArray[index] = changedListing
+                    found = true
+                    break
                 }
             }
+            if found == false {
+                self.profileListingArray.insert(changedListing, at: 0)
+            }
+            
+            DispatchQueue.main.async {
+                self.profileListingsTable.reloadData()
+            }
+            
+            self.stopActivityIndicator()
         }
     }
     
     // MARK: - Helper Functions
+    
+    func startActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+    }
+    
+    func stopActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+        }
+    }
     
     func setProfileLabels() {
         nameLabel.text = "Name: " + userDisplayName
@@ -191,7 +226,7 @@ extension ProfileViewController: UITableViewDataSource {
             statusColor = .blue
         } else if let listingBuyer = listing.buyer {
             listingStatus = (listing.purchaseConfirmed ? "Bought by " : "Purchase Requested from ") + listingBuyer.displayName
-            statusColor = listing.purchaseConfirmed ? .green : .orange
+            statusColor = listing.purchaseConfirmed ? normalGreen : .orange
         } else {
             listingStatus = "Removed From Sale"
             statusColor = .red
