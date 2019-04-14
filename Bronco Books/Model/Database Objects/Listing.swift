@@ -74,11 +74,6 @@ class Listing {
         return dict
     }
     
-    func setBuyer(buyer: User) {
-        self.buyer = buyer
-        self.onSale = false
-    }
-    
     func setId(id: String) {
         self.id = id
     }
