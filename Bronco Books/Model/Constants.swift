@@ -18,6 +18,10 @@ struct Constants {
     static let UserDisplayNameKey = "displayName"
     static let UserPhoneNumberKey = "phoneNumber"
     
+    // ASCII Values for Zero/Nine Digits
+    static let AsciiForDigitZero: UInt8 = 48
+    static let AsciiForDigitNine: UInt8 = 57
+    
     // Firebase Realtime Database
     static let ListingPathString = "listings"
     

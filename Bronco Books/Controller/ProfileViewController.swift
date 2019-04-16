@@ -179,6 +179,7 @@ class ProfileViewController: UIViewController {
             
             UserDefaults.standard.set(nil, forKey: Constants.UserEmailKey)
             UserDefaults.standard.set(nil, forKey: Constants.UserDisplayNameKey)
+            UserDefaults.standard.set(nil, forKey: Constants.UserPhoneNumberKey)
             UserDefaults.standard.synchronize()
             
             self.dismiss(animated: true, completion: nil)

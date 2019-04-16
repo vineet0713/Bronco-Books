@@ -63,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func getPhoneNumber(alertTitle: String, alertMessage: String) {
         let alert = UIAlertController(title: alertTitle, message: alertMessage + " It won't be displayed publicly.", preferredStyle: .alert)
         alert.addTextField { (textField) in
+            textField.placeholder = "Example: 4081234567"
             textField.keyboardType = .phonePad
         }
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { [weak alert] (_) in
@@ -80,7 +81,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     func isValidPhoneNumber(_ phoneNumber: String) -> Bool {
-        return (phoneNumber.count == 10)
+        guard phoneNumber.count == 10 else {
+            return false
+        }
+        
+        for character in phoneNumber {
+            guard let ascii = character.asciiValue else {
+                // invalid character
+                return false
+            }
+            guard ascii >= Constants.AsciiForDigitZero && ascii <= Constants.AsciiForDigitNine else {
+                // character is not a digit
+                return false
+            }
+        }
+        
+        return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
