@@ -30,8 +30,6 @@ class ListingDetailViewController: UIViewController {
     
     var imageDownloadFinished: Bool!
     
-    var applePayUsed = false
-    
     // MARK: - IBOutlets
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -210,7 +208,7 @@ class ListingDetailViewController: UIViewController {
             self.contactWithEmail(seller: seller)
         }))
         actionSheet.addAction(UIAlertAction(title: Constants.ContactPhoneNumber, style: .default, handler: { (action) in
-            self.composeTextMessage(seller)
+            self.composeTextMessage(seller, shouldRemoveListing: false)
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -220,7 +218,7 @@ class ListingDetailViewController: UIViewController {
     func contactWithEmail(seller: Bool) {
         let actionSheet = UIAlertController(title: "Choose Email Template", message: nil, preferredStyle: .actionSheet)
         
-        for option in (seller ? Constants.ContactSellerOptions : Constants.ContactBuyerOptions) {
+        for option in (seller ? Constants.EmailSellerOptions : Constants.EmailBuyerOptions) {
             actionSheet.addAction(UIAlertAction(title: option, style: .default, handler: { (action) in
                 self.composeEmail(with: option, seller)
             }))
@@ -244,7 +242,7 @@ class ListingDetailViewController: UIViewController {
         let recipientEmail = recipient.email
         let recipientName = getFirstName(from: recipient.displayName)
         
-        let emailBody = seller ? Constants.ContactSellerEmailBodies[contactOption]! : Constants.ContactBuyerEmailBodies[contactOption]!
+        let emailBody = seller ? Constants.SellerEmailBodies[contactOption]! : Constants.BuyerEmailBodies[contactOption]!
         let senderName = getFirstName(from: UserDefaults.standard.string(forKey: Constants.UserDisplayNameKey)!)
         
         mail.setToRecipients([recipientEmail])
@@ -257,19 +255,27 @@ class ListingDetailViewController: UIViewController {
         present(mail, animated: true)
     }
     
-    func composeTextMessage(_ seller: Bool) {
-        guard MFMessageComposeViewController.canSendText() else {
+    func composeTextMessage(_ seller: Bool, shouldRemoveListing: Bool) {
+        let recipient = seller ? displayListing.seller : displayListing.buyer!
+        let messageString = Constants.MessagingPath + recipient.phoneNumber
+        guard let messageURL = URL(string: messageString) else {
             showAlert(title: "Messaging Not Available", message: "This device does not support functionality for sending a text message.")
             return
         }
         
-        let message = MFMessageComposeViewController()
-        message.messageComposeDelegate = self
+        var completion: ((Bool) -> Void)?
+        if shouldRemoveListing {
+            completion = { (success) in
+                guard success else {
+                    return
+                }
+                let successTitle = "Sale Pending"
+                let successMessage = "This sale is now pending. The seller will have to confirm the purchase."
+                self.removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
+            }
+        }
         
-        let recipient = seller ? displayListing.seller : displayListing.buyer!
-        message.recipients = [recipient.phoneNumber]
-        
-        present(message, animated: true)
+        UIApplication.shared.open(messageURL, options: [:], completionHandler: completion)
     }
     
     func finishImagesDownload(finished: Bool) {
@@ -422,8 +428,7 @@ class ListingDetailViewController: UIViewController {
             let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                self.applePayUsed = true
-                self.composeTextMessage(true)
+                self.composeTextMessage(true, shouldRemoveListing: true)
             }))
             self.present(alert, animated: true, completion: nil)
         case Constants.PaymentMethods.Cash,
@@ -555,22 +560,6 @@ extension ListingDetailViewController: MFMailComposeViewControllerDelegate {
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
-    }
-    
-}
-
-// MARK: - Extension for MFMessageComposeViewControllerDelegate
-
-extension ListingDetailViewController: MFMessageComposeViewControllerDelegate {
-    
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        controller.dismiss(animated: true)
-        if applePayUsed && result == .sent {
-            let successTitle = "Sale Pending"
-            let successMessage = "This sale is now pending. The seller will have to confirm the purchase."
-            removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
-        }
-        applePayUsed = false
     }
     
 }

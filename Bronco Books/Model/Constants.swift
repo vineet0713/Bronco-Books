@@ -48,33 +48,37 @@ struct Constants {
     static let MaximumPhotoUpload = 4
     
     // Maximum File Size to Download (currently set to 1 MB)
-    static let MaximumFileSize = 1 * 1024 * 1024;
+    static let MaximumFileSize = 1 * 1024 * 1024
+    
+    // Contacting Options
+    static let ContactEmail = "Email"
+    static let ContactPhoneNumber = "Text Message"
     
     // Email Template
     static let EmailGreeting = "Hello"
     static let EmailClosing = "Thanks"
     
-    // Contacting Seller
-    static let ContactSellerOptions = ["More Images", "Discuss Price", "Change Payment Method", "Custom"]
-    static let ContactSellerEmailBodies = [
-        ContactSellerOptions[0] : "Can you please post more images of the textbook? I would like to get a better idea of the textbook's condition.",
-        ContactSellerOptions[1] : "Would you be willing to sell this textbook at a price of $ ?",
-        ContactSellerOptions[2] : "Would you be willing to accept the payment for this textbook through ?",
-        ContactSellerOptions[3] : ""
+    // Emailing Seller
+    static let EmailSellerOptions = ["More Images", "Discuss Price", "Change Payment Method", "Custom"]
+    static let SellerEmailBodies = [
+        EmailSellerOptions[0] : "Can you please post more images of the textbook? I would like to get a better idea of the textbook's condition.",
+        EmailSellerOptions[1] : "Would you be willing to sell this textbook at a price of $ ?",
+        EmailSellerOptions[2] : "Would you be willing to accept the payment for this textbook through ?",
+        EmailSellerOptions[3] : ""
     ]
     
-    // Contacting Buyer
-    static let ContactBuyerOptions = ["Discuss Exchange Location", "Option2", "Option3", "Custom"]
-    static let ContactBuyerEmailBodies = [
-        ContactBuyerOptions[0] : "Where do you want to meet to exchange this textbook and complete the purchase?",
-        ContactBuyerOptions[1] : "Body2",
-        ContactBuyerOptions[2] : "Body3",
-        ContactBuyerOptions[3] : ""
+    // Emailing Buyer
+    static let EmailBuyerOptions = ["Discuss Exchange Location", "Option2", "Option3", "Custom"]
+    static let BuyerEmailBodies = [
+        EmailBuyerOptions[0] : "Where do you want to meet to exchange this textbook and complete the purchase?",
+        EmailBuyerOptions[1] : "Body2",
+        EmailBuyerOptions[2] : "Body3",
+        EmailBuyerOptions[3] : ""
     ]
     
-    // Contacting Options
-    static let ContactEmail = "Email"
-    static let ContactPhoneNumber = "Text Message"
+    // Messaging
+    static let CountryCode = "+1"
+    static let MessagingPath = "sms:" + CountryCode
     
     // contains all field names for Listing object
     struct ListingKeys {
