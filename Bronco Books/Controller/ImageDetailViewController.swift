@@ -42,13 +42,13 @@ class ImageDetailViewController: UIViewController {
         updateImage()
     }
     
-    // MARK: - Helper Functions
+    // MARK: - Helper Function
     
     func updateImage() {
         imageView.image = photos[selectedIndex]
     }
     
-    // MARK: - Selector Functions
+    // MARK: - Selector Function
     
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {

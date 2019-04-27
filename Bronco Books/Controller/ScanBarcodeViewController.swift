@@ -123,50 +123,32 @@ class ScanBarcodeViewController: UIViewController {
     func stopCaptureSession() {
         captureSession.stopRunning()
         
-        if let inputs = captureSession.inputs as? [AVCaptureDeviceInput] {
-            for input in inputs {
-                captureSession.removeInput(input)
-            }
+        guard let inputs = captureSession.inputs as? [AVCaptureDeviceInput] else {
+            return
+        }
+        
+        for input in inputs {
+            captureSession.removeInput(input)
         }
     }
     
     func getImageFromSampleBuffer(buffer: CMSampleBuffer) -> UIImage? {
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
-            let ciImage = CIImage(cvImageBuffer: pixelBuffer)
-            let context = CIContext()
-            let imageRect = CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer))
-            
-            if let image = context.createCGImage(ciImage, from: imageRect) {
-                return UIImage(cgImage: image, scale: UIScreen.main.scale, orientation: .right)
-            }
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) else {
+            return nil
         }
         
-        return nil
+        let ciImage = CIImage(cvImageBuffer: pixelBuffer)
+        let context = CIContext()
+        let imageRect = CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer))
+        
+        guard let image = context.createCGImage(ciImage, from: imageRect) else {
+            return nil
+        }
+        
+        return UIImage(cgImage: image, scale: UIScreen.main.scale, orientation: .right)
     }
     
     // MARK: - Helper Functions
-    
-    func detectBarcode(with image: UIImage) {
-        MLKit.sharedInstance().detectBarcode(from: image) { (barcode, error) in
-            guard let validBarcode = barcode else {
-                return
-            }
-            
-            // starts the GET request on a background queue
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.makeGoogleBooksRequest(with: validBarcode)
-            }
-            
-            self.stopTimer()
-            
-            let alert = UIAlertController(title: "Barcode Scanned", message: validBarcode, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: "Default Action"), style: .default, handler: { (action) in
-                self.continuePressed = true
-                self.checkToPerformSegue()
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
     
     func makeGoogleBooksRequest(with isbn: String) {
         GoogleBooksClient.sharedInstance().getBookInformation(from: isbn, completionHandler: { (result, error) in
@@ -180,18 +162,20 @@ class ScanBarcodeViewController: UIViewController {
     }
     
     func checkToPerformSegue() {
-        if continuePressed && requestFinished {
-            DispatchQueue.main.async {
-                if let message = self.loadErrorMessage {
-                    let alert = UIAlertController(title: "Load Failed", message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { (action) in
-                        self.continuePressed = false
-                        self.startTimer()
-                    }))
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
-                }
+        guard continuePressed && requestFinished else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            if let message = self.loadErrorMessage {
+                let alert = UIAlertController(title: "Load Failed", message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { (action) in
+                    self.continuePressed = false
+                    self.startTimer()
+                }))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                self.performSegue(withIdentifier: "scanToFieldsSegue", sender: self)
             }
         }
     }
@@ -217,25 +201,51 @@ class ScanBarcodeViewController: UIViewController {
     
 }
 
+// MARK: - Extension for AVCaptureVideoDataOutputSampleBufferDelegate
+
 extension ScanBarcodeViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         // this is called when our capture session is running (all the time!)
         
-        if shouldProcessPhoto {
-            shouldProcessPhoto = false
-            
-            if let image = getImageFromSampleBuffer(buffer: sampleBuffer) {
-                detectBarcode(with: image)
+        guard shouldProcessPhoto else {
+            return
+        }
+        
+        shouldProcessPhoto = false
+        
+        guard let image = getImageFromSampleBuffer(buffer: sampleBuffer) else {
+            return
+        }
+        
+        MLKit.sharedInstance().detectBarcode(from: image) { (barcode, error) in
+            guard let validBarcode = barcode else {
+                return
             }
+            
+            // starts the GET request on a background queue
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.makeGoogleBooksRequest(with: validBarcode)
+            }
+            
+            self.stopTimer()
+            
+            let alert = UIAlertController(title: "Barcode Scanned", message: validBarcode, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: "Default Action"), style: .default, handler: { (action) in
+                self.continuePressed = true
+                self.checkToPerformSegue()
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? SellFieldsViewController {
-            destinationVC.previousViewController = "ScanBarcodeViewController"
-            destinationVC.fieldsFromBarcodeScan = scannedBookDictionary
+        guard let destinationVC = segue.destination as? SellFieldsViewController else {
+            return
         }
+        
+        destinationVC.previousViewController = "ScanBarcodeViewController"
+        destinationVC.fieldsFromBarcodeScan = scannedBookDictionary
     }
     
 }

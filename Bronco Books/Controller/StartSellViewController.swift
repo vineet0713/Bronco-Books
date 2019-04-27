@@ -11,8 +11,6 @@
 
 import UIKit
 
-import Firebase
-
 class StartSellViewController: UIViewController {
     
     // MARK: - Life Cycle

@@ -365,49 +365,50 @@ class SellFieldsViewController: UIViewController {
     func addListingToFirebase(listingToAdd: [String : Any?]) {
         let listingReference = editingMode ? databaseReferenceListings.child(listingToEdit.id!) : databaseReferenceListings.childByAutoId()
         listingReference.setValue(listingToAdd) { (error, databaseReference) in
-            if error == nil {
-                let key = databaseReference.key!
-                if self.imagesToUpload.count > 0 {
-                    // Cases to deal with:
-                    //      1. The user removed images (and may have added images), so call remove
-                    //      2. The user didn't add or remove any images, so don't call delete or add
-                    //      3. The user only added images (and did not remove any images), so only call add
-                    if self.photosWereRemoved {
-                        // Case 1
-                        DispatchQueue.main.async {
-                            self.uploadProgressView.setProgress(Float(1) / Float(self.imagesToUpload.count + 2), animated: true)
-                        }
-                        self.deletePhotosFromFirebase(listingKey: key, photoIndex: 0)
-                    } else if self.imageStartIndex == self.imagesToUpload.count {
-                        // Case 2
-                        DispatchQueue.main.async {
-                            self.uploadProgressView.setProgress(1, animated: true)
-                        }
-                        self.uploadCompleted(with: self.imagesToUpload.count)
-                    } else {
-                        // Case 3
-                        DispatchQueue.main.async {
-                            self.uploadProgressView.setProgress(Float(1) / Float(self.imagesToUpload.count + 1), animated: true)
-                        }
-                        self.addPhotosToFirebase(listingKey: key, photoIndex: self.imageStartIndex, successfulUploads: self.imageStartIndex)
-                    }
-                } else if self.photosWereRemoved {
-                    DispatchQueue.main.async {
-                        self.uploadProgressView.setProgress(Float(1) / Float(2), animated: true)
-                    }
-                    self.deletePhotosFromFirebase(listingKey: key, photoIndex: 0)
-                } else {
-                    DispatchQueue.main.async {
-                        self.uploadProgressView.setProgress(1, animated: true)
-                    }
-                    self.uploadCompleted(with: 0)
-                }
-            } else {
+            guard error == nil else {
                 DispatchQueue.main.async {
                     self.uploadProgressView.isHidden = true
                     self.setUIComponents(enabled: true)
                     self.showAlert(title: "Post Failed", message: "There was an error in posting the listing. Sorry about that!")
                 }
+                return
+            }
+            
+            let key = databaseReference.key!
+            if self.imagesToUpload.count > 0 {
+                // Cases to deal with:
+                //      1. The user removed images (and may have added images), so call remove
+                //      2. The user didn't add or remove any images, so don't call delete or add
+                //      3. The user only added images (and did not remove any images), so only call add
+                if self.photosWereRemoved {
+                    // Case 1
+                    DispatchQueue.main.async {
+                        self.uploadProgressView.setProgress(Float(1) / Float(self.imagesToUpload.count + 2), animated: true)
+                    }
+                    self.deletePhotosFromFirebase(listingKey: key, photoIndex: 0)
+                } else if self.imageStartIndex == self.imagesToUpload.count {
+                    // Case 2
+                    DispatchQueue.main.async {
+                        self.uploadProgressView.setProgress(1, animated: true)
+                    }
+                    self.uploadCompleted(with: self.imagesToUpload.count)
+                } else {
+                    // Case 3
+                    DispatchQueue.main.async {
+                        self.uploadProgressView.setProgress(Float(1) / Float(self.imagesToUpload.count + 1), animated: true)
+                    }
+                    self.addPhotosToFirebase(listingKey: key, photoIndex: self.imageStartIndex, successfulUploads: self.imageStartIndex)
+                }
+            } else if self.photosWereRemoved {
+                DispatchQueue.main.async {
+                    self.uploadProgressView.setProgress(Float(1) / Float(2), animated: true)
+                }
+                self.deletePhotosFromFirebase(listingKey: key, photoIndex: 0)
+            } else {
+                DispatchQueue.main.async {
+                    self.uploadProgressView.setProgress(1, animated: true)
+                }
+                self.uploadCompleted(with: 0)
             }
         }
     }

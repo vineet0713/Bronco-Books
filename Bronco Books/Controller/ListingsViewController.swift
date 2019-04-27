@@ -136,7 +136,7 @@ class ListingsViewController: UIViewController {
         }
     }
     
-    // MARK: - Helper Function
+    // MARK: - Helper Functions
     
     func startActivityIndicator() {
         DispatchQueue.main.async {

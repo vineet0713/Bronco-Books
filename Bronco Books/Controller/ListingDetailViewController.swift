@@ -285,6 +285,82 @@ class ListingDetailViewController: UIViewController {
         }
     }
     
+    // MARK: - Prompt Functions
+    
+    func promptRemoveListing() {
+        let alertTitle = displayListing.onSale ? "Confirm Removal" : "Confirm Sell"
+        var alertMessage = "Are you sure that you want to "
+        alertMessage += (displayListing.onSale ? "remove this listing from sale?" : "post this listing back for sale?")
+        
+        // remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            self.setUIComponents(enabled: false)
+            
+            let successTitle = self.displayListing.onSale ? "Listing Removed" : "Listing On Sale"
+            var successMessage = "This listing is "
+            successMessage += (self.displayListing.onSale ? "no longer up for sale." : "back up for sale!")
+            
+            self.removeListingFromSale(newOnSaleValue: !(self.displayListing.onSale), setBuyer: false, successTitle, successMessage)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func promptBuyListing() {
+        let payment = displayListing.paymentMethod
+        switch payment {
+        case Constants.PaymentMethods.ApplePay:
+            let seller = displayListing.seller.displayName
+            
+            let promptTitle = "Confirm Purchase"
+            let promptMessage = "Do you want to buy this listing with Apple Pay? You will be redirected to the Messages app to send the payment to the seller (\(seller)) using Apple Pay Cash."
+            
+            let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                self.composeTextMessage(true, shouldRemoveListing: true)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        case Constants.PaymentMethods.Cash,
+             Constants.PaymentMethods.Check:
+            // Cash or Check
+            let paymentMethod = displayListing.paymentMethod.lowercased()
+            let seller = displayListing.seller.displayName
+            
+            let promptTitle = "Confirm Purchase"
+            let promptMessage = "Do you want to buy this listing with \(paymentMethod)? The purchase will be pending until the seller (\(seller)) confirms the sale."
+            
+            let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                let successTitle = "Sale Pending"
+                let successMessage = "This sale is now pending. The seller will have to confirm the purchase."
+                self.removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        default:
+            // Google Pay or an invalid value (which would be a database issue)
+            let alertTitle = "Incompatible Payment Method"
+            let alertMessage = "\(payment) is incompatible with this device. Please contact the seller to request to change the payment method."
+            showAlert(title: alertTitle, message: alertMessage)
+        }
+    }
+    
+    func promptConfirmPurchase(with buyerToPurchase: User) {
+        let buyer = buyerToPurchase.displayName
+        let method = displayListing.paymentMethod.lowercased()
+        let amount = getFormattedPrice(from: displayListing.price)
+        let message = "Do you want to confirm this purchase? This will confirm that \(buyer) has already used \(method) to pay you \(amount)."
+        
+        let alert = UIAlertController(title: "Confirm Purchase", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            self.setPurchaseConfirmed()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Backend Functions
     
     func retrieveImagesFromFirebase(counter: Int) {
@@ -308,26 +384,6 @@ class ListingDetailViewController: UIViewController {
                 self.retrieveImagesFromFirebase(counter: counter + 1)
             }
         }
-    }
-    
-    func promptRemoveListing() {
-        let alertTitle = displayListing.onSale ? "Confirm Removal" : "Confirm Sell"
-        var alertMessage = "Are you sure that you want to "
-        alertMessage += (displayListing.onSale ? "remove this listing from sale?" : "post this listing back for sale?")
-        
-        // remove the listing (set 'onSale' to false) from Firebase and go back to ListingsViewController
-        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            self.setUIComponents(enabled: false)
-            
-            let successTitle = self.displayListing.onSale ? "Listing Removed" : "Listing On Sale"
-            var successMessage = "This listing is "
-            successMessage += (self.displayListing.onSale ? "no longer up for sale." : "back up for sale!")
-            
-            self.removeListingFromSale(newOnSaleValue: !(self.displayListing.onSale), setBuyer: false, successTitle, successMessage)
-        }))
-        self.present(alert, animated: true, completion: nil)
     }
     
     // this function is used either to remove a listing from sale, or to put a listing back up for sale
@@ -414,60 +470,6 @@ class ListingDetailViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
-    }
-    
-    func promptBuyListing() {
-        let payment = displayListing.paymentMethod
-        switch payment {
-        case Constants.PaymentMethods.ApplePay:
-            let seller = displayListing.seller.displayName
-            
-            let promptTitle = "Confirm Purchase"
-            let promptMessage = "Do you want to buy this listing with Apple Pay? You will be redirected to the Messages app to send the payment to the seller (\(seller)) using Apple Pay Cash."
-            
-            let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                self.composeTextMessage(true, shouldRemoveListing: true)
-            }))
-            self.present(alert, animated: true, completion: nil)
-        case Constants.PaymentMethods.Cash,
-             Constants.PaymentMethods.Check:
-            // Cash or Check
-            let paymentMethod = displayListing.paymentMethod.lowercased()
-            let seller = displayListing.seller.displayName
-            
-            let promptTitle = "Confirm Purchase"
-            let promptMessage = "Do you want to buy this listing with \(paymentMethod)? The purchase will be pending until the seller (\(seller)) confirms the sale."
-            
-            let alert = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                let successTitle = "Sale Pending"
-                let successMessage = "This sale is now pending. The seller will have to confirm the purchase."
-                self.removeListingFromSale(newOnSaleValue: false, setBuyer: true, successTitle, successMessage)
-            }))
-            self.present(alert, animated: true, completion: nil)
-        default:
-            // Google Pay or an invalid value (which would be a database issue)
-            let alertTitle = "Incompatible Payment Method"
-            let alertMessage = "\(payment) is incompatible with this device. Please contact the seller to request to change the payment method."
-            showAlert(title: alertTitle, message: alertMessage)
-        }
-    }
-    
-    func promptConfirmPurchase(with buyerToPurchase: User) {
-        let buyer = buyerToPurchase.displayName
-        let method = displayListing.paymentMethod.lowercased()
-        let amount = getFormattedPrice(from: displayListing.price)
-        let message = "Do you want to confirm this purchase? This will confirm that \(buyer) has already used \(method) to pay you \(amount)."
-        
-        let alert = UIAlertController(title: "Confirm Purchase", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            self.setPurchaseConfirmed()
-        }))
-        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - IBActions

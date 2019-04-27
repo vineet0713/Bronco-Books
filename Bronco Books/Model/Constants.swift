@@ -13,7 +13,7 @@ struct Constants {
     // Authentication
     static let ValidEmailSuffix = "@scu.edu"
     
-    // UserDefaults
+    // UserDefaults Keys
     static let UserEmailKey = "email"
     static let UserDisplayNameKey = "displayName"
     static let UserPhoneNumberKey = "phoneNumber"
@@ -68,12 +68,10 @@ struct Constants {
     ]
     
     // Emailing Buyer
-    static let EmailBuyerOptions = ["Discuss Exchange Location", "Option2", "Option3", "Custom"]
+    static let EmailBuyerOptions = ["Discuss Exchange Details", "Custom"]
     static let BuyerEmailBodies = [
-        EmailBuyerOptions[0] : "Where do you want to meet to exchange this textbook and complete the purchase?",
-        EmailBuyerOptions[1] : "Body2",
-        EmailBuyerOptions[2] : "Body3",
-        EmailBuyerOptions[3] : ""
+        EmailBuyerOptions[0] : "Where and when do you want to meet to exchange this textbook and complete the purchase?",
+        EmailBuyerOptions[1] : ""
     ]
     
     // Messaging

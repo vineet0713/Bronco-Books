@@ -69,6 +69,8 @@ class ProfileViewController: UIViewController {
         setupChildChangedObserver()
     }
     
+    // MARK: - Firebase Setup Functions
+    
     func setupChildAddedObserver() {
         let databaseReferenceListings = Database.database().reference().child(Constants.ListingPathString)
         
